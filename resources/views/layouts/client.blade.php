@@ -53,7 +53,7 @@
                                     <a href="{{ route('client.home') }}" class="nav-link">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('client.careers') }}" class="nav-link">Careers</a>
+                                    <a href="{{ route('client.careers') }}" class="nav-link ">Careers</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('client.contact') }}" class="nav-link">Contact Us</a>

@@ -35,26 +35,26 @@
                             <ul>
                                 <li>
                                     <a href="#">
-										+94 72 9353 066
+                                        +94 72 9353 066
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
+                    
                     <div class="col-md-4 col-sm-6">
                         <div class="contact-card">
                             <i class='bx bx-mail-send' ></i>
                             <ul>
                                 <li>
                                     <a href="#">
-										bir06720@gmail.com
+                                        bir06720@gmail.com
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
+                    
                     <div class="col-md-4 col-sm-6 offset-sm-3 offset-md-0">
                         <div class="contact-card">
                             <i class='bx bx-location-plus' ></i>
@@ -77,50 +77,70 @@
     <div class="container">
         <div class="contact-area">
             <h3>Submit your inquiry here</h3>
-            <form id="contactForm">
+            <form method="post" action="{{ route('contactPOST') }}">
+                @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="text" name="name" id="name" class="form-control" required data-error="Name is required" placeholder="Your Name">
-                            <div class="help-block with-errors"></div>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" value="{{ old('name') }}">
+                            
+                            @error('name')
+                            <div class="help-block with-errors">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="email" name="email" id="email" class="form-control" required data-error="Email is required" placeholder="Your Email">
-                            <div class="help-block with-errors"></div>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" value="{{ old('email') }}">
+                            
+                            @error('email')
+                            <div class="help-block with-errors">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="number" name="number" id="number" class="form-control" required data-error="Phone Number is required" placeholder="Phone Number">
-                            <div class="help-block with-errors"></div>
+                            <input type="text" name="number" id="number" class="form-control" placeholder="Phone Number" value="{{ old('number') }}">
+                            
+                            @error('number')
+                            <div class="help-block with-errors">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="text" name="subject" id="subject" class="form-control" required data-error="Subject is required" placeholder="Your Subject">
-                            <div class="help-block with-errors"></div>
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Your Subject" value="{{ old('subject') }}">
+                            
+                            @error('subject')
+                            <div class="help-block with-errors">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                
+                    
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
-                            <textarea name="message" class="form-control message-field" id="message" cols="30" rows="7" required data-error="Please type your message" placeholder="Write Message"></textarea>
-                            <div class="help-block with-errors"></div>
+                            <textarea name="message" class="form-control message-field" id="message" cols="30" rows="7" placeholder="Write Message">{{ old('message') }}</textarea>
+                            
+                            @error('message')
+                            <div class="help-block with-errors">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                
+                    
                     <div class="col-lg-12 col-md-12 text-center">
-                        <button type="submit" class="col-md-12 default-btn contact-btn">
-                            Submit
-                        </button>
-                        <div id="msgSubmit" class="h3 alert-text text-center hidden"></div>
-                        <div class="clearfix"></div>
+                        <button type="submit" class="col-md-12 default-btn contact-btn"> Submit </button>
                     </div>
+                    
+                    @if (session('success'))
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </form>
         </div>
