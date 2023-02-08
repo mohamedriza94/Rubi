@@ -26,14 +26,14 @@
 <!-- Registration Section Start -->
 <div class="job-post ptb-100">
     <div class="container">
-        <form class="job-post-from" action="{{ route('registrationPOST') }}" method="post">
+        <form class="job-post-from" action="{{ route('registrationPOST') }}" method="post" enctype="multipart/form-data">
             @csrf
             <h2>Registration - Step Two</h2>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Business Name</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                         
                         @error('name')
                         <div class="help-block with-errors">{{ $message }}</div>
@@ -68,7 +68,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Business Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="e.g. hello@company.com">
+                        <input type="email" class="form-control" name="email" placeholder="e.g. hello@company.com" value="{{ old('email') }}">
                         
                         @error('email')
                         <div class="help-block with-errors">{{ $message }}</div>
@@ -79,7 +79,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Business Website (Optional)</label>
-                        <input type="text" class="form-control" name="website" placeholder="e.g www.companyname.com">
+                        <input type="text" class="form-control" name="website" placeholder="e.g www.companyname.com" value="{{ old('website') }}">
                         
                         @error('website')
                         <div class="help-block with-errors">{{ $message }}</div>
@@ -90,42 +90,50 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Country of Origin</label>
-                        <input type="text" class="form-control" name="country" placeholder="e.g. London">
+                        <input type="text" class="form-control" name="country" placeholder="e.g. London" value="{{ old('country') }}">
                     </div>
                 </div>
                 
                 <div class="col-md-1">
                     <div class="form-group">
                         <label>Logo</label>
-                        <img src="assets/img/company-logo/1.png" alt="logo" id="logoDisplay">
+                        <img src="assets/img/company-logo/1.png" alt="logo" id="photoDisplay">
                     </div>
                 </div>
                 
                 <div class="col-md-11">
                     <div class="form-group">
                         <label>Business Logo</label>
-                        <input type="file" class="form-control" name="logo" id="logo">
+                        <input type="file" class="form-control" name="logo" id="photo">
+                        
+                        @error('logo')
+                        <div class="help-block with-errors">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 
                 <div class="col-md-12 text-center">
                     <button type="submit" class="post-btn">Register</button>
                 </div>
+                
+                @if (session('success'))
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
+                    </div>
+                </div>
+                @endif
+
+                @if (session('error'))
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <div class="help-block" style="color:red"><b>{{ session('error') }}</b></div> 
+                    </div>
+                </div>
+                @endif
             </div>
         </form>
     </div>
 </div>
-
-<script>
-    //display the browsed and chosen thumbnail
-    $("#logo").change(function(){
-        var reader = new FileReader();
-        reader.onload = function(){
-            var output = document.getElementById('logoDisplay');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-</script>
 <!-- Registration Section End -->
 @endsection

@@ -37,7 +37,7 @@
 		<!-- Menu For Mobile Device -->
 		<div class="mobile-nav">
 			<a href="{{ route('client.home') }}" class="logo">
-				<img src="{{ asset('assets/img/logo.png') }}" alt="logo">
+				<img src="https://i.ibb.co/sv7c7d7/output-onlinepngtools.png" alt="logo">
 			</a>
 		</div>
 		
@@ -46,7 +46,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg navbar-light">
 					<a class="navbar-brand" href="{{ route('client.home') }}">
-						<img src="assets/img/logo.png" alt="logo">
+						<img src="https://i.ibb.co/sv7c7d7/output-onlinepngtools.png" alt="logo">
 					</a>
 					<div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
 						<ul class="navbar-nav m-auto">
@@ -119,7 +119,7 @@
 					<div class="footer-widget">
 						<div class="footer-logo">
 							<a href="{{ route('client.home') }}">
-								<img src="assets/img/logo.png" alt="logo">
+								<img src="https://i.ibb.co/sv7c7d7/output-onlinepngtools.png" alt="logo">
 							</a>
 						</div>
 						

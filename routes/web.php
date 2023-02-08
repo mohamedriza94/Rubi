@@ -17,3 +17,4 @@ Route::get('/Registration+step+two', [App\Http\Controllers\public\pathController
 Route::post('/contactPOST', [App\Http\Controllers\public\ContactController::class, 'contactPOST'])->name('contactPOST');
 Route::post('/newsLetterSubscribe', [App\Http\Controllers\public\NewsLetterController::class, 'newsLetterSubscribe'])->name('newsLetterSubscribe');
 Route::post('/registrationPOST', [App\Http\Controllers\public\BusinessController::class, 'registrationPOST'])->name('registrationPOST');
+Route::get('/verifyBusiness/{businessNo}', [App\Http\Controllers\public\BusinessController::class, 'verifyBusiness'])->name('verifyBusiness');

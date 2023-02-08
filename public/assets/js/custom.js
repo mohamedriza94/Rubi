@@ -5,7 +5,17 @@ jQuery(function ($) {
     jQuery('.mean-menu').meanmenu({
         meanScreenWidth: "991"
     });
-
+    
+    //display selected photo
+    $("#photo").change(function(){
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('photoDisplay');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+    
     // Navbar JS
     $(window).on('scroll',function() {
         if ($(this).scrollTop()>150){  
@@ -38,7 +48,7 @@ jQuery(function ($) {
             }
         }
     })
-
+    
     // Tastimonial Slider JS
     $('.testimonial-slider').owlCarousel({
         loop:true,
@@ -54,11 +64,11 @@ jQuery(function ($) {
             "<i class='bx bx-chevrons-right bx-tada'></i>"
         ]
     })
-
+    
     // Nice Select
     $('select').niceSelect();
-
-
+    
+    
     // Tastimonial Two Slider JS
     $('.testimonial-slider-two').owlCarousel({
         loop:true,
@@ -81,23 +91,23 @@ jQuery(function ($) {
             }
         }
     })
-
-
+    
+    
     // Magnific JS
     $('.popup-youtube').magnificPopup({
-		disableOn: 320,
-		type: 'iframe',
-		mainClass: 'mfp-fade',
-		removalDelay: 160,
-		preloader: false,
-
-		fixedContentPos: false
+        disableOn: 320,
+        type: 'iframe',
+        mainClass: 'mfp-fade',
+        removalDelay: 160,
+        preloader: false,
+        
+        fixedContentPos: false
     });
     
     // Subscribe form
     $(".newsletter-form").validator().on("submit", function (event) {
         if (event.isDefaultPrevented()) {
-        // handle the invalid form...
+            // handle the invalid form...
             formErrorSub();
             submitMSGSub(false, "Please enter your email correctly.");
         } else {
@@ -140,26 +150,26 @@ jQuery(function ($) {
         url: "https://envytheme.us20.list-manage.com/subscribe/post?u=60e1ffe2e8a68ce1204cd39a5&amp;id=42d6d188d9", // Your url MailChimp
         callback: callbackFunction
     });
-
+    
     // FAQ JS
     $(".accordion-title").click(function(e){
         var accordionitem = $(this).attr("data-tab");
         $("#"+accordionitem).slideToggle().parent().siblings().find(".accordion-content").slideUp();
-
+        
         $(this).toggleClass("active-title");
         $("#"+accordionitem).parent().siblings().find(".accordion-title").removeClass("active-title");
     });
-
+    
     // Back To Top
     $(window).scroll(function () {
         if ($(this).scrollTop() != 0) {
-                $('.top-btn').addClass('active');
-            }
+            $('.top-btn').addClass('active');
+        }
         else {
             $('.top-btn').removeClass('active');
         }
     });
-
+    
     $('.top-btn').on('click',function(){
         $("html, body").animate({ scrollTop: 0 }, 2500);
         return false;
