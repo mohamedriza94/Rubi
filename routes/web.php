@@ -16,3 +16,4 @@ Route::get('/Registration+step+two', [App\Http\Controllers\public\pathController
 //post routes
 Route::post('/contactPOST', [App\Http\Controllers\public\ContactController::class, 'contactPOST'])->name('contactPOST');
 Route::post('/newsLetterSubscribe', [App\Http\Controllers\public\NewsLetterController::class, 'newsLetterSubscribe'])->name('newsLetterSubscribe');
+Route::post('/registrationPOST', [App\Http\Controllers\public\BusinessController::class, 'registrationPOST'])->name('registrationPOST');
