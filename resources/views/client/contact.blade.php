@@ -79,6 +79,15 @@
             <h3>Submit your inquiry here</h3>
             <form method="post" action="{{ route('contactPOST') }}">
                 @csrf
+
+                @if (session('success'))
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
+                    </div>
+                </div>
+                @endif
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -133,14 +142,6 @@
                     <div class="col-lg-12 col-md-12 text-center">
                         <button type="submit" class="col-md-12 default-btn contact-btn"> Submit </button>
                     </div>
-                    
-                    @if (session('success'))
-                    <div class="col-lg-12 col-md-12">
-                        <div class="form-group">
-                            <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
-                        </div>
-                    </div>
-                    @endif
                 </div>
             </form>
         </div>

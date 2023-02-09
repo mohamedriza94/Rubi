@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Business;
+use App\Http\Controllers\common\CommonController;
+use Carbon\Carbon;
 
 class BusinessController extends Controller
 {
@@ -20,7 +22,6 @@ class BusinessController extends Controller
         DB::beginTransaction();
         
         try {
-            
             // Validate the request data
             $validator = Validator::make($request->all(), [     
                 'name' => 'required|max:255',
@@ -153,9 +154,113 @@ class BusinessController extends Controller
             return redirect()->back()->with('error', 'Something\'s Wrong. Please retry in a while: '. $e->getMessage());
         }
         
-        $message = "YOUR ACCOUNT HAS BEEN VERIFIED SUCCESFULLY :)";
+        $message = "YOUR ACCOUNT HAS BEEN VERIFIED SUCCESSFULLY :)";
         $message2 = "You will receive your signin credentials in an Email, shortly. Thank you.";
         $title = "Verification";
         return view('client.verification')->with('message', $message)->with('message2', $message2)->with('title', $title);
+    }
+    
+    public function verifyEmailAndSendOTP(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [     
+            'email' => 'required|email'
+        ], [
+            'email.required' => 'Email is required',
+            'email.email' => 'This should be an Email',
+        ]);
+        
+        if ($validator->fails()) { 
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        else
+        {
+            //check whether an active business with this email exists
+            $exists = Business::where('email', $request->input('email'))->where('status', 'active')->exists();
+            
+            if ($exists) 
+            {
+                $commonController = new CommonController();
+                $result = $commonController->sendOtp($request->input('email'));
+                
+                $message = $result['message'];
+                
+                if ($message != 'success') {
+                    return redirect()->back()->with('error', $message);
+                } else {
+                    $title = "Reset Password";
+                    return redirect()->route('client.resetPassword', [ //redirect with get method
+                        'title' => $title,
+                        'email' => $request->input('email'),
+                    ]);
+                }
+            }
+            else
+            {
+                return redirect()->back()->with('error', 'This Email has not been registered. Please enter a valid Email');
+            }
+        }
+    }
+    
+    public function resetPassword(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [     
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+            'otp' => 'required'
+        ], [
+            'email.required' => 'Email is required',
+            'email.email' => 'This should be an Email',
+            'otp.required' => 'OTP is required'
+        ]);
+        
+        if ($validator->fails()) { 
+            return redirect()->back()->withErrors($validator)->withInput();
+            return view('client.resetPassword')->with('title', $title)->with('email', $request->input('email'));
+        }
+        else
+        {
+            //check whether an active business with this email exists
+            $exists = Business::where('email', $request->input('email'))->where('status', 'active')->exists();
+            
+            if ($exists) 
+            {
+                $commonController = new CommonController();
+                $result = $commonController->verifyOtp($request->input('email'),$request->input('otp'));
+                
+                $message = $result['message'];
+                
+                if ($message != 'success') 
+                {
+                    return redirect()->back()->with('error', $message);
+                }
+                else 
+                {
+                    DB::beginTransaction();
+                    try 
+                    {
+                        //if OTP has been verified
+                        $hashedPassword = Hash::make($request->input('password'));
+                        
+                        Business::where('email', $request->input('email'))->update([
+                            'password' => $hashedPassword
+                        ]);
+                        
+                        DB::commit();
+                    } 
+                    catch (\Exception $e) 
+                    {
+                        DB::rollBack();
+                        return redirect()->back()->with('error', 'Something\'s Wrong. Try Again Later: '. $e->getMessage());
+                    }
+                    return redirect()->back()->with('success', 'Password Changed Succesfully');
+                }
+            }
+            else
+            {
+                return redirect()->back()->with('error', 'The Email is invalid');
+            }
+        }
     }
 }

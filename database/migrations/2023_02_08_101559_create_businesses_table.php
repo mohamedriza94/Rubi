@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('product');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('website')->nullable();
             $table->string('country');
             $table->text('photo');
             $table->text('photoPath');
-            $table->string('no');
+            $table->unsignedBigInteger('no')->unique();
             $table->string('status');
             $table->string('verifiedDate')->nullable();
             $table->string('password')->nullable();

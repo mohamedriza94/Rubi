@@ -11,6 +11,9 @@
                 <li>
                     <a href="{{ route('client.home') }}">Home</a>
                 </li>
+                <li>
+                    <a href="{{ route('client.signin') }}">Signin</a>
+                </li>
                 <li>{{ $title }}</li>
             </ul>
         </div>
@@ -28,26 +31,26 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
-                <form class="signin-form">
+                <form class="signin-form" method="post" action="{{ route('verifyEmailAndSendOTP') }}">
+                    @csrf
                     <div class="form-group">
-                      <label>Enter Business Email</label>
-                      <input type="email" class="form-control" placeholder="Enter Business Email" required>
+                        <label>Enter Business Email</label>
+                        <input type="email" class="form-control" name="email" placeholder="Enter Business Email" value="{{ old('email') }}">
+                        
+                        @if (session('error'))
+                        <div class="help-block with-errors">{{ session('error') }}</div>
+                        @enderror
                     </div>
-
-                    <div class="form-group">
-                      <label>Enter Your Email</label>
-                      <input type="email" class="form-control" placeholder="Enter Your Email" required>
-                    </div>
-
+                    
                     <div class="signin-btn text-center">
                         <button type="submit">Submit</button>
                     </div>
-
+                    
                     <div class="create-btn text-center">
                         
-                            <a href="{{ route('client.signin') }}">
-                                Back
-                            </a>
+                        <a href="{{ route('client.signin') }}">
+                            Back
+                        </a>
                     </div>
                 </form>
             </div>  

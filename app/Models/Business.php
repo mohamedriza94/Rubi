@@ -25,4 +25,9 @@ class Business extends Authenticatable
         'password',
         'verifiedDate',
     ];
+
+    public function packages()
+    {
+        return $this->belongsToMany(Package::class, 'business_packages', 'business_no', 'package_no');
+    }
 }

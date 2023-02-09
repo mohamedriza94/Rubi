@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use App\Models\NewLetterSubscriber;
+use App\Models\NewsLetterSubscriber;
 
 class NewsLetterController extends Controller
 {
@@ -35,7 +35,7 @@ class NewsLetterController extends Controller
             else
             {
                 // Perform database operation
-                NewLetterSubscriber::create([
+                NewsLetterSubscriber::create([
                     'email' => $request->input('email'),
                     'status' => 'active',
                 ]);

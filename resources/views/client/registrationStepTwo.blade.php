@@ -28,6 +28,23 @@
     <div class="container">
         <form class="job-post-from" action="{{ route('registrationPOST') }}" method="post" enctype="multipart/form-data">
             @csrf
+            
+            @if (session('success'))
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                    <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
+                </div>
+            </div>
+            @endif
+            
+            @if (session('error'))
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                    <div class="help-block" style="color:red"><b>{{ session('error') }}</b></div> 
+                </div>
+            </div>
+            @endif
+            
             <h2>Registration - Step Two</h2>
             <div class="row">
                 <div class="col-md-6">
@@ -115,22 +132,6 @@
                 <div class="col-md-12 text-center">
                     <button type="submit" class="post-btn">Register</button>
                 </div>
-                
-                @if (session('success'))
-                <div class="col-lg-12 col-md-12">
-                    <div class="form-group">
-                        <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
-                    </div>
-                </div>
-                @endif
-
-                @if (session('error'))
-                <div class="col-lg-12 col-md-12">
-                    <div class="form-group">
-                        <div class="help-block" style="color:red"><b>{{ session('error') }}</b></div> 
-                    </div>
-                </div>
-                @endif
             </div>
         </form>
     </div>

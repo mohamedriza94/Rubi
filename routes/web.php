@@ -17,4 +17,9 @@ Route::get('/Registration+step+two', [App\Http\Controllers\public\pathController
 Route::post('/contactPOST', [App\Http\Controllers\public\ContactController::class, 'contactPOST'])->name('contactPOST');
 Route::post('/newsLetterSubscribe', [App\Http\Controllers\public\NewsLetterController::class, 'newsLetterSubscribe'])->name('newsLetterSubscribe');
 Route::post('/registrationPOST', [App\Http\Controllers\public\BusinessController::class, 'registrationPOST'])->name('registrationPOST');
+
+//verification routes
 Route::get('/verifyBusiness/{businessNo}', [App\Http\Controllers\public\BusinessController::class, 'verifyBusiness'])->name('verifyBusiness');
+Route::post('/verifyEmailAndSendOTP', [App\Http\Controllers\public\BusinessController::class, 'verifyEmailAndSendOTP'])->name('verifyEmailAndSendOTP');
+Route::get('resetPassword/{title}/{email}', function ($title, $email) {return view('client.resetPassword',['title' => $title, 'email' => $email, ]);})->name('client.resetPassword');
+Route::post('/resetPassword', [App\Http\Controllers\public\BusinessController::class, 'resetPassword'])->name('resetPassword');
