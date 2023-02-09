@@ -22,6 +22,7 @@ class CommonController extends Controller
             $otp = rand(100000, 999999);
             
             // Store OTP and its expiry time in the database
+            DB::table('password_resets')->where('email', $email)->delete(); //if there is any otp for this email, delete it and send a new one
             DB::table('password_resets')->insert([
                 'email' => $email,
                 'otp' => $otp,
