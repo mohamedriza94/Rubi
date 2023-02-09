@@ -29,10 +29,8 @@ class DeleteOtp extends Command
     */
     public function handle()
     {
-        $expiredAt = Carbon::now()->subMinutes(10);
+        // $expiredAt = Carbon::now()->subMinutes(10);
         
-        DB::table('password_resets')
-        ->where('created_at', '<', $expiredAt)
-        ->delete();
+        // DB::table('password_resets')->where('created_at', '<', $expiredAt)->delete();
     }
 }

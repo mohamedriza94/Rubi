@@ -9,7 +9,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:deleteOTP')->everyMinute(); //auto delete OTP 10 mins after sending
+        //$schedule->command('command:deleteOTP')->everyMinute(); //auto delete OTP 10 mins after sending
     }
 
     protected function commands()
