@@ -93,8 +93,8 @@
                     
                     <div class="create-btn text-center">
                         
-                        <a href="{{ route('client.forgotPassword') }}">
-                            Back
+                        <a href="{{ route('client.signin') }}">
+                            Signin
                         </a>
                     </div>
                 </form>
