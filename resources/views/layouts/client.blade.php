@@ -5,29 +5,29 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('client/assets/css/bootstrap.min.css') }}"/>
 	<!-- Owl Carousel CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/owl.carousel.min.css') }}">
 	<!-- Owl Carousel Theme Default CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/owl.theme.default.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/owl.theme.default.min.css') }}">
 	<!-- Box Icon CSS-->
-	<link rel="stylesheet" href="{{ asset('assets/css/boxicon.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/boxicon.min.css') }}">
 	<!-- Flaticon CSS-->
-	<link rel="stylesheet" href="{{ asset('assets/fonts/flaticon/flaticon.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/fonts/flaticon/flaticon.css') }}">
 	<!-- Magnific CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/magnific-popup.css') }}">
 	<!-- Meanmenu CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/meanmenu.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/meanmenu.css') }}">
 	<!-- Nice Select CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/nice-select.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/nice-select.css') }}">
 	<!-- Style CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/style.css') }}">
 	<!-- Responsive CSS -->
-	<link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+	<link rel="stylesheet" href="{{ asset('client/assets/css/responsive.css') }}">
 	<!-- Title CSS -->
 	<title>RUBI - {{ $title }}</title>
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">  
+	<link rel="icon" type="image/png" href="{{ asset('client/assets/img/favicon.png') }}">  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
@@ -101,8 +101,8 @@
 						<div class="help-block with-errors" style="color:white">{{ $message }}</div>
 						@enderror
 						
-						@if (session('success'))
-						<div id="validator-newsletter" style="color:white">{{ session('success') }}</div>
+						@if (session('successNewsLetter'))
+						<div id="validator-newsletter" style="color:white">{{ session('successNewsLetter') }}</div>
 						@endif
 					</form>
 				</div>
@@ -219,23 +219,23 @@
 	<!-- Back To Top End -->
 	
 	<!-- jQuery first, then Bootstrap JS -->
-	<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-	<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/jquery.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/bootstrap.bundle.min.js') }}"></script>
 	<!-- Owl Carousel JS -->
-	<script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/owl.carousel.min.js') }}"></script>
 	<!-- Nice Select JS -->
-	<script src="{{ asset('assets/js/jquery.nice-select.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/jquery.nice-select.min.js') }}"></script>
 	<!-- Magnific Popup JS -->
-	<script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/jquery.magnific-popup.min.js') }}"></script>
 	<!-- Subscriber Form JS -->
-	<script src="{{ asset('assets/js/jquery.ajaxchimp.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/jquery.ajaxchimp.min.js') }}"></script>
 	<!-- Form Velidation JS -->
-	<script src="{{ asset('assets/js/form-validator.min.js') }}"></script>
+	<script src="{{ asset('client/assets/js/form-validator.min.js') }}"></script>
 	<!-- Contact Form -->
-	<script src="{{ asset('assets/js/contact-form-script.js') }}"></script>
+	<script src="{{ asset('client/assets/js/contact-form-script.js') }}"></script>
 	<!-- Meanmenu JS -->
-	<script src="{{ asset('assets/js/meanmenu.js') }}"></script>
+	<script src="{{ asset('client/assets/js/meanmenu.js') }}"></script>
 	<!-- Custom JS -->
-	<script src="{{ asset('assets/js/custom.js') }}"></script>
+	<script src="{{ asset('client/assets/js/custom.js') }}"></script>
 </body>
 </html>

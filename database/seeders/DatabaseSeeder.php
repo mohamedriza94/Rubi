@@ -20,5 +20,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        \App\Models\RubiAdmin::factory()->create([
+            'email' => 'admin@example.com',
+        ]);
     }
 }

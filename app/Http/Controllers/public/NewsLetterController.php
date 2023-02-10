@@ -50,10 +50,10 @@ class NewsLetterController extends Controller
             DB::rollBack();
             
             // Return an error message to the view
-            return redirect()->back()->with('error', 'Something\'s Wrong. Please retry in a while: '. $e->getMessage());
+            return redirect()->back()->with('errorNewsLetter', 'Something\'s Wrong. Please retry in a while: '. $e->getMessage());
         }
         
         // Return success message to the view
-        return redirect()->back()->with('success', 'Subscribed!');
+        return redirect()->back()->with('successNewsLetter', 'Subscribed!');
     }
 }

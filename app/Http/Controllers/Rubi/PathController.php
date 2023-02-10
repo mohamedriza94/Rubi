@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Controllers\Rubi;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class PathController extends Controller
+{
+    public function dashboard()
+    {
+        $view_data['title'] = 'Dashboard'; $view_data['brand'] = 'Rubi';
+        return view('rubi.dashboard.index')->with($view_data);
+    }
+}
