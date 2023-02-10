@@ -26,9 +26,9 @@
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">
-                        <b><img src="admin/assets/images/rubi-logo.png" class="light-logo" /></b> {{-- icon logo --}}
-                        <span><img src="admin/assets/images/rubi-logo-text.png" class="light-logo" alt="Rubi" /></span> {{-- text logo  --}}
+                    <a class="navbar-brand" href="{{ route('rubi.dashboard') }}">
+                        <b><img src="{{ asset('admin/assets/images/rubi-logo.png') }}" class="light-logo" /></b> {{-- icon logo --}}
+                        <span><img src="{{ asset('admin/assets/images/rubi-logo-text.png') }}" class="light-logo" alt="Rubi" /></span> {{-- text logo  --}}
                     </a>
                 </div>
                 
@@ -85,7 +85,7 @@
                         
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="admin/assets/images/rubi-logo.png" alt="Rubi" class=""> 
+                                <img src="{{ asset('admin/assets/images/rubi-logo.png') }}" alt="Rubi" class=""> 
                                 <span class="hidden-md-down">Rubi &nbsp;<i class="fa fa-angle-down"></i></span> 
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
@@ -109,7 +109,7 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-envelope-open"></i><span class="hide-menu">Messages</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-notebook"></i><span class="hide-menu">Business</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
