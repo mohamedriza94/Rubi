@@ -12,4 +12,10 @@ class PathController extends Controller
         $view_data['title'] = 'Dashboard'; $view_data['brand'] = 'Rubi';
         return view('rubi.dashboard.index')->with($view_data);
     }
+
+    public function messages()
+    {
+        $view_data['title'] = 'Messages'; $view_data['brand'] = 'Rubi';
+        return view('rubi.dashboard.messages')->with($view_data);
+    }
 }

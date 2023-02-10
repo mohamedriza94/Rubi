@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>{{$brand}} {{$title}}</title>
+    <title>{{$brand}} - {{$title}}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,15 +12,17 @@
     <link href="{{ asset('admin/assets/node_modules/morrisjs/morris.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body class="skin-purple fixed-layout">
-    {{-- <div class="preloader">
+    <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
             <p class="loader__label">RUBI</p>
         </div>
-    </div> --}}
+    </div>
     
     <div id="main-wrapper">
         <header class="topbar">
@@ -46,7 +48,9 @@
                     
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-bell"></i></a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-bell"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-end mailbox animated bounceInDown">
                                 <ul>
                                     <li>
@@ -65,7 +69,9 @@
                         </li>
                         
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i></a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
                             <div class="dropdown-menu mailbox dropdown-menu-end animated bounceInDown" aria-labelledby="2">
                                 <ul>
                                     <li>
@@ -110,7 +116,7 @@
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
                         <li><a class="waves-effect waves-dark" href="{{ route('rubi.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-envelope-open"></i><span class="hide-menu">Messages</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.messages') }}"><i class="icon-envelope-open"></i><span class="hide-menu">Messages</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-notebook"></i><span class="hide-menu">Business</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         
