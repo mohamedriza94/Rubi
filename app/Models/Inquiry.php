@@ -17,6 +17,6 @@ class Inquiry extends Model
         'message',
         'status',
         'is_deleted',
-        'is_Starred',
+        'is_starred',
     ];
 }

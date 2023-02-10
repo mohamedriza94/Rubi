@@ -22,7 +22,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-
+                
                 <div class="row">
                     <div class="col-lg-3 col-md-4">
                         <div class="card-body inbox-panel">
@@ -73,14 +73,12 @@
                                 <div class="inbox-center table-responsive">
                                     <table class="table table-hover no-wrap font-12">
                                         <tbody id="messageTable">
-                                            <tr class="">
-                                                <td>
-                                                    <input type="checkbox" class="form-check-input" id="checkbox0" value="check">
-                                                </td>
-                                                <td class="hidden-xs-down"><a id="star"><i class="fas fa-star text-primary"></i></a></td>
+                                            <tr>
+                                                <td><input type="checkbox" class="form-check-input" id="checkbox0" value="check"></td>
+                                                <td class="hidden-xs-down"><a id="star"><i class="far fa-star"></i></a></td>
                                                 <td class="hidden-xs-down">Hritik Roshan</td>
                                                 <td class="max-texts"> <a href=""><span class="label label-info m-r-10">Work</span> Lorem ipsum perspiciatis unde omnis iste natus error sit voluptatem</td>
-                                                    <td class="text-end"> 12:30 PM </td>
+                                                <td class="text-end"> 12:30 PM </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -89,12 +87,12 @@
                             </div>
                         </div>
                     </div>
-
+                    
                 </div>
             </div>
         </div>
     </div>
-
+    
     {{-- Modals --}}
     <div class="modal bs-example-modal-lg animated fadeIn" id="composeModal" tabindex="-1" aria-hidden="true" style="display:none;">
         <div class="modal-dialog modal-xl">
@@ -113,7 +111,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
+    
     @endsection
     
     
@@ -127,7 +125,7 @@
             //configure the url that gets the message
             var type = 'inbox';
             var url = "{{ url('rubi/dashboard/readMessages/:type') }}";
-
+            
             function configureUrl()
             {
                 url = "{{ url('rubi/dashboard/readMessages/:type') }}";
@@ -137,33 +135,111 @@
             //buttons to change messageType
             $(document).on('click', '#openInbox', function(e) {
                 type = 'inbox'; configureUrl();
-                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active");
+                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
             });
             $(document).on('click', '#openStarred', function(e) {
                 type = 'starred'; configureUrl();
-                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active");
+                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
             });
             $(document).on('click', '#openSent', function(e) {
                 type = 'sent'; configureUrl();
-                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active");
+                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
             });
             $(document).on('click', '#openTrash', function(e) {
                 type = 'trash'; configureUrl();
-                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active");
+                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
             });
             $(document).on('click', '#openReplies', function(e) {
                 type = 'replies'; configureUrl(); 
-                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active");
+                $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
             });
             
             //configuration to limit the number of messages displayed
             var limit = 0;
             $(document).on('click', '#btnNext', function(e) {
-                limit = limit + 12;
+                limit = limit + 12; readMessage();
             });
             $(document).on('click', '#btnPrev', function(e) {
-                limit = limit - 12; if(limit < 0) { limit = 0; }
+                limit = limit - 12; if(limit < 0) { limit = 0; } readMessage();
             });
+
+            //reload message list
+            $(document).on('click', '#btnReload', function(e) {
+                readMessage();
+            });
+            
+            function readMessage()
+            {
+                $.ajax({
+                    type: "GET", url:url, dataType:"json",
+                    success:function(response){
+                        $('#messageTable').html('');
+                        $.each(response.messages,function(key,item){
+                            //variables to sort message
+                            var status = item.status;
+                            var is_starred = item.is_starred;
+                            var is_deleted = item.is_deleted;
+
+                            //badges
+                            var status_badge = '';
+                            var star_badge = '';
+                            var button = '';
+                            
+                            //sorting STATUS
+                            switch(status) {
+                                case 'unread':
+                                status_badge = "<span class="label label-warning m-r-10">Unread</span>" //UNREAD
+                                break;
+                                case 'read':
+                                status_badge = "<span class="label label-info m-r-10">Read</span>" //READ
+                                break;
+                                case 'replied':
+                                status_badge = "<span class="label label-success m-r-10">Replied</span>" //REPLIED
+                                break;
+                            }
+                            
+                            //sorting STARRED MESSAGE
+                            switch(is_starred) {
+                                case '1':
+                                star_badge = "<i class="fas fa-star text-warning"></i>" //STARRED
+                                break;
+                                case '0':
+                                star_badge = "<i class="far fa-star"></i>" //UN-STARRED
+                                break;
+                            }
+                            
+                            //sorting TRASH MESSAGE
+                            switch(is_deleted) {
+                                case '1':
+                                //STARRED
+                                break;
+                                case '0':
+                                //UN-STARRED
+                                break;
+                            }
+                            
+                            //sorting MESSAGE
+                            switch (type) {
+                                case 'inbox':
+                                // INBOX
+                                break;
+                                case 'starred':
+                                // STARRED MESSAGES
+                                break;
+                                case 'trash':
+                                // TRASH MESSAGES
+                                break;
+                                case 'replies':
+                                // REPLIES
+                                break;
+                                case 'sent':
+                                // SENT MESSAGES
+                                break;
+                            }
+                        });
+                    }
+                });
+            }
             
         });
     </script>

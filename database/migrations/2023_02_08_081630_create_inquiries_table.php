@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('message');
             $table->string('status');
             $table->tinyInteger('is_deleted')->nullable();
-            $table->tinyInteger('is_Starred')->nullable();
+            $table->tinyInteger('is_starred')->nullable();
             $table->timestamps();
         });
     }

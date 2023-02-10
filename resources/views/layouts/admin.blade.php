@@ -13,6 +13,8 @@
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('admin/assets/dist/css/pages/ribbon-page.css') }}" rel="stylesheet"> --}}
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
