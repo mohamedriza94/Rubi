@@ -13,9 +13,12 @@
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/assets/node_modules/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('admin/assets/dist/css/pages/ribbon-page.css') }}" rel="stylesheet"> --}}
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 </head>
 
 <body class="skin-purple fixed-layout">
@@ -174,6 +177,8 @@
     <script src="{{ asset('admin/assets/node_modules/morrisjs/morris.min.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/toast-master/js/jquery.toast.js') }}"></script>
+    <script src="{{ asset('admin/assets/dist/js/pages/toastr.js') }}"></script>
 </body>
 
 </html>

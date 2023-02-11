@@ -27,7 +27,7 @@
 	<!-- Title CSS -->
 	<title>RUBI - {{ $title }}</title>
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="{{ asset('client/assets/img/favicon.png') }}">  
+	<link rel="icon" type="image/png" href="{{ asset('admin/assets/images/favicon.png') }}">  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 

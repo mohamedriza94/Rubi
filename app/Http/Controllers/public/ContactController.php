@@ -47,7 +47,9 @@ class ContactController extends Controller
                     'email' => $request->input('email'),
                     'subject' => $request->input('subject'),
                     'message' => $request->input('message'),
-                    'status' => 'pending',
+                    'status' => 'unread',
+                    'is_starred' => '0',
+                    'is_deleted' => '0'
                 ]);
                 
                 // Commit the transaction if everything goes well
