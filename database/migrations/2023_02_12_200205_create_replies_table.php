@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inquiries', function (Blueprint $table) {
+        Schema::create('replies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('number');
-            $table->string('email');
-            $table->text('subject');
-            $table->text('message');
-            $table->string('status');
-            $table->tinyInteger('is_deleted')->nullable();
-            $table->tinyInteger('is_starred')->nullable();
+            $table->text('reply');
+            $table->unsignedBigInteger('inquiry_id');
+            $table->foreign('inquiry_id')->references('id')->on('inquiries')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inquiries');
+        Schema::dropIfExists('replies');
     }
 };

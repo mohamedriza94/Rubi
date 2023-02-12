@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('dob')->nullable();
             $table->string('status')->nullable();
             $table->string('email');
-            $table->string('photo')->nullable();
-            $table->string('photoPath')->nullable();
+            $table->text('photo')->nullable();
+            $table->text('photoPath')->nullable();
             $table->string('telephone')->nullable();
             $table->string('password');
             $table->timestamps();

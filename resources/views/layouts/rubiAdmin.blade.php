@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admin/assets/images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.css') }}">
     <link href="{{ asset('admin/assets/node_modules/morrisjs/morris.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
@@ -153,7 +154,16 @@
                 
                 
                 
-                
+                <script>
+                    $(document).ready(function(){
+                        //csrf token
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    });
+                </script>
                 
                 
                 
@@ -179,6 +189,10 @@
     <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/toast-master/js/jquery.toast.js') }}"></script>
     <script src="{{ asset('admin/assets/dist/js/pages/toastr.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('admin/assets/node_modules/html5-editor/wysihtml5-0.3.0.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.js') }}"></script>
+    <script> $(document).ready(function() { $('.textarea_editor').wysihtml5(); }); </script>
 </body>
 
 </html>
