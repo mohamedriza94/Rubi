@@ -499,6 +499,7 @@
 
         //open a message
         $(document).on('click', '#messageRow', function(e){
+            e.preventDefault();
             var id = $(this).find("#check").val(); //get message id
             var urlOpenMessage = '{{ url("rubi/dashboard/seeMessage/:id") }}'; urlOpenMessage = urlOpenMessage.replace(':id', id);
             $.ajax({
@@ -513,6 +514,7 @@
                     $('#messageContact').text(response.data.number);
                     $('#messageDescription').text(response.data.message);
                     
+                    var date = ''; var time = '';
                     var created_at = moment.utc(response.data.created_at).local(); var now = moment(); var time = ''; var date = '';
                     if (created_at.isSame(now, 'day')) {
                         time = created_at.format('h:mm A'); // if the message was sent today, only display the time
@@ -520,7 +522,7 @@
                         date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
                         time = created_at.format('h:mm A');
                     }
-                    $('#messageTime').text(created_at);
+                    $('#messageTime').text(date+'    '+time);
                     
                     // switch(response.status) {
                         //     case 'unread': case 'read':
@@ -538,7 +540,8 @@
 
         //go back
         $(document).on('click', '#btnBack', function(e){
-                    $('#messageListDisplay').show(); $('#openSingleMessage').hide();  //CLOSE MESSAGE
+            e.preventDefault();
+            $('#messageListDisplay').show(); $('#openSingleMessage').hide();  //CLOSE MESSAGE
         });
 
         });
