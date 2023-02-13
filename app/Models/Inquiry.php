@@ -9,6 +9,8 @@ class Inquiry extends Model
 {
     use HasFactory;
 
+    protected $table = 'inquiries';
+    
     protected $fillable = [
         'name',
         'number',
@@ -19,4 +21,9 @@ class Inquiry extends Model
         'is_deleted',
         'is_starred',
     ];
+
+    public function reply()
+    {
+        return $this->hasOne('App\Models\Reply', 'inquiry_id', 'id');
+    }
 }

@@ -52,7 +52,7 @@
                     <div class="col-lg-9 col-md-8 bg-light border-start" id="messageListDisplay">
                         <div class="card-body">
                             <div class="btn-group m-b-10 m-r-10">
-                                <input id="searchMessage" class="form-control" placeholder="Search Here"> {{-- Search --}}
+                                <input id="searchMessage" class="form-control" placeholder="Search Inbox"> {{-- Search --}}
                             </div>
                             
                             <div class="btn-group m-b-10 m-r-10">
@@ -119,11 +119,11 @@
                                     <hr class="m-t-0">
                                 </div>
                                 <div class="card-body">
-                                    <h4><b>Reply</b></h4>
                                     <div class="row" id="sendReply" style="display:none">
+                                        <h4><b>Reply</b></h4>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <textarea class="textarea_editor form-control" rows="8" id="replyMessage" placeholder="Enter reply..."></textarea>
+                                                <textarea class="reset textarea_editor form-control" rows="8" id="replyMessage" placeholder="Enter reply..."></textarea>
                                             </div>
                                         </div>
 
@@ -135,6 +135,7 @@
                                     </div>
 
                                     <div class="row" id="viewReply" style="display:none">
+                                        <h4><b>Reply</b></h4>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                <p id="replyText"></p>
@@ -178,20 +179,20 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="email"
+                                            <input type="text" class="reset form-control" id="email"
                                             placeholder="Enter the recipient's email">
                                             <label for="tb-fname">Email</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" id="subject" class="form-control" placeholder="Enter the subject">
+                                            <input type="text" id="subject" class="reset form-control" placeholder="Enter the subject">
                                             <label for="subject">Subject</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <textarea class="textarea_editor form-control" rows="8" id="message" placeholder="Enter message..."></textarea>
+                                            <textarea class="reset textarea_editor form-control" rows="8" id="message" placeholder="Enter message..."></textarea>
                                         </div>
                                     </div>
                                     
@@ -229,9 +230,12 @@
         
         function configureUrl()
         {
-            url = "{{ url('rubi/dashboard/readMessages/:type/:limit') }}";
-            url = url.replace(':type', type);
-            url = url.replace(':limit', limit);
+            var length = $('#searchMessage').val().length;
+            if (length == 0) {
+                url = "{{ url('rubi/dashboard/readMessages/:type/:limit') }}";
+                url = url.replace(':type', type);
+                url = url.replace(':limit', limit);
+            }
         }
         
         //Run methon on document load
@@ -247,7 +251,7 @@
             $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
         });
         $(document).on('click', '#openSent', function(e) {
-            type = 'sent';
+            type = 'sent'; $('#sendReply').hide(); $('#viewReply').hide();  //HIDE REPLY SECTION
             $("#messageTypeOptions li").removeClass("active"); $(this).addClass("active"); readMessage();
         });
         $(document).on('click', '#openTrash', function(e) {
@@ -273,6 +277,7 @@
             readMessage();
         });
         
+        //read message
         function readMessage()
         {
             configureUrl(); selectedMessages = [];
@@ -317,9 +322,10 @@
                         
                         //sorting TRASH MESSAGE
                         switch(item.is_deleted) {
-                            case 1: case 3:
+                            case 1: case 3: //case 3 is a fake number for SENT messages
                             //IN TRASH
                             delete_and_star = '<td><input type="checkbox" class="form-check-input" id="check" value="'+item.id+'"></td>';
+                            status_badge = '<span class="label label-danger m-r-10">Deleted</span>' //REPLIED
                             break;
                             case 0:
                             //NOT IN TRASH
@@ -334,24 +340,19 @@
                         var message = item.message.slice(0,25)+'...';
                         
                         //format time
-                        var created_at = moment.utc(item.created_at).local(); var now = moment(); var time = ''; var date = '';
-                        if (created_at.isSame(now, 'day')) {
-                            time = created_at.format('h:mm A'); // if the message was sent today, only display the time
-                        } else {
-                            date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
-                            time = created_at.format('h:mm A');
-                        }
+                        formatTime(item.created_at);
                         
                         //sorting MESSAGE
                         switch (type) {
                             case 'inbox': case 'starred': case 'trash': case 'sent':// INBOX or STARRED MESSAGES or TRASH MESSAGES or SENT MESSAGES
                             
                             //append data to Message List
-                            $('#messageTable').append('<tr id="messageRow">\
+                            $('#messageTable').append('<tr>\
                                 '+delete_and_star+'\
+                                <td id="messageRow" data-id="'+item.id+'" class="text-center bg-secondary text-info"><i class="fa fa-eye"></i></td>\
                                 <td class="hidden-xs-down">'+name+'</td>\
-                                <td class="max-texts"> <a href="">'+status_badge+' <strong>'+subject+'</strong> - '+message+'</td>\
-                                    <td class="text-end">'+date+'<b>'+time+'</b></td>\
+                                <td class="max-texts">'+status_badge+' <strong>'+subject+'</strong> - '+message+'</td>\
+                                <td class="text-end">'+date+'<b>'+time+'</b></td>\
                                 </tr>'); 
                                 
                                 break;
@@ -363,6 +364,14 @@
                     }
                 });
         }
+
+        //search message
+        $(document).on('keyup', '#searchMessage', function(e) {
+            url = "{{ url('rubi/dashboard/searchMessages/:search/:limit') }}";
+            url = url.replace(':search', $(this).val());
+            url = url.replace(':limit', limit);
+            readMessage();
+        });
         
         //Starring Messages
         $(document).on('click', '#btnStar', function(e) {
@@ -460,8 +469,9 @@
             }
         });
         
+        //send message
         $(document).on('click', '#btnSend', function(e) {
-            $('#btnSend').text('Sending...');
+            $("#btnSend").prop("disabled", true).text("Sending...");
             var data = { 'email' : $('#email').val(),  'subject' : $('#subject').val(), 'message' : $('#message').val() }
             $.ajax({
                 type:"POST",
@@ -471,71 +481,110 @@
                 success: function(response){
                     if(response.status == 600)
                     {
-                        $('#errorList').html('');
                         $.each(response.errors,function(key,error)
                         {
-                            $('#errorList').append('<div class="p-2 rounded alert-danger alert-rounded m-b-5">\
-                                '+error+'</div>');
-                            });
-                            
-                            $('#btnSend').text('Send');
-                        }
-                        else if(response.status == 400)
-                        {
-                            $('#errorList').html(''); $('#btnSend').text('Send');
-                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
-                        }
-                        else if(response.status == 200)
-                        {
-                            $('#errorList').html(''); $('#btnSend').text('Send');
-                            
-                            Swal.fire({ title: 'Success', text: "Message Sent",
-                            icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK'
+                            toastMessage = '';
+                            toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
                         });
+                        
+                        $("#btnSend").prop("disabled", false).text("Send");
+                    }
+                    else if(response.status == 400)
+                    {
+                        $("#btnSend").prop("disabled", false).text("Send");
+
+                        toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                    }
+                    else if(response.status == 200)
+                    {
+                        $("#btnSend").prop("disabled", false).text("Send");
+                        $('.reset').val(''); //UNIVERSAL RESET INPUT
+
+                        Swal.fire({ title: 'Success', text: "Message Sent",
+                        icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
                     }
                 }
             })
         });
 
         //open a message
+        //VARIABLES TO STORE MESSAGE DATA INORDER TO SEND REPLY
+        var subject = ''; var email = ''; var inquiry_id = ''; var messageTime = '';
+
         $(document).on('click', '#messageRow', function(e){
             e.preventDefault();
-            var id = $(this).find("#check").val(); //get message id
-            var urlOpenMessage = '{{ url("rubi/dashboard/seeMessage/:id") }}'; urlOpenMessage = urlOpenMessage.replace(':id', id);
+            var id = $(this).attr("data-id"); //get message id
+            var urlOpenMessage = '{{ url("rubi/dashboard/seeMessage/:id/:type") }}'; urlOpenMessage = urlOpenMessage.replace(':id', id);
+            urlOpenMessage = urlOpenMessage.replace(':type', type);
             $.ajax({
                 type:"GET", url:urlOpenMessage, dataType:"json",
                 success: function(response)
                 {
                     $('#messageListDisplay').hide(); $('#openSingleMessage').show();  //OPEN MESSAGE
                     
-                    $('#messageTitle').text(response.data.subject);
-                    $('#senderName').text(response.data.name);
-                    $('#messageEmail').text(response.data.email);
-                    $('#messageContact').text(response.data.number);
-                    $('#messageDescription').text(response.data.message);
+                    //format time
+                    formatTime(response.inquiry.created_at);
                     
-                    var date = ''; var time = '';
-                    var created_at = moment.utc(response.data.created_at).local(); var now = moment(); var time = ''; var date = '';
-                    if (created_at.isSame(now, 'day')) {
-                        time = created_at.format('h:mm A'); // if the message was sent today, only display the time
-                    } else {
-                        date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
-                        time = created_at.format('h:mm A');
+                    //STORE DATA INTO MESSAGE VARIABLES
+                    subject = response.inquiry.subject; email = response.inquiry.email; inquiry_id = response.inquiry.id; messageTime = date+time;
+                    
+                    $('#messageTime').html(messageTime); $('#messageTitle').text(subject);
+                    $('#senderName').text(response.inquiry.name); $('#messageEmail').text(email);
+                    $('#messageContact').text(response.inquiry.number); $('#messageDescription').text(response.inquiry.message);
+                    
+                    switch(response.inquiry.status) {
+                        case 'unread': case 'read':
+                        $('#sendReply').show(); $('#viewReply').hide();  //NOT REPLIED
+                        break;
+                        case 'replied':
+                        $('#sendReply').hide(); $('#viewReply').show(); //REPLIED
+                        $('#replyText').html(response.reply.reply);
+
+                        formatTime(response.reply.created_at);
+                        $('#replyDate').html(date+time);
+                        break;
                     }
-                    $('#messageTime').text(date+'    '+time);
-                    
-                    // switch(response.status) {
-                        //     case 'unread': case 'read':
-                        //     $('#sendReply').show(); $('#viewReply').hide();  //UNREAD
-                        //     break;
-                        //     case 'replied':
-                        //     $('#sendReply').hide(); $('#viewReply').show(); //REPLIED
-                        //     $('#replyText').text(response.data.reply);
-                        //     $('#replyDate').text(response.data.reply_created_at);
-                        //     break;
-                        // }
                 }
             });
+        });
+
+        //send reply
+        $(document).on('click', '#btnSendReply', function(e) {
+            $("#btnSendReply").prop("disabled", true).text("Sending Reply...");
+            var data = { 'reply' : $('#replyMessage').val(), 'subject' : subject, 'messageTime' : messageTime, 'email' : email, 'inquiry_id' : inquiry_id }
+            $.ajax({
+                type:"POST",
+                url: '{{ url("rubi/dashboard/sendReply") }}',
+                data:data,
+                dataType:"json",
+                success: function(response){
+                    if(response.status == 600)
+                    {
+                        $.each(response.errors,function(key,error)
+                        {
+                            toastMessage = '';
+                            toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                        });
+                        
+                        $("#btnSendReply").prop("disabled", false).text("Send Reply");
+                    }
+                    else if(response.status == 400)
+                    {
+                        $("#btnSendReply").prop("disabled", false).text("Send Reply");
+                        toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                    }
+                    else if(response.status == 200)
+                    {
+                        $("#btnSendReply").prop("disabled", false).text("Send Reply");
+                        $('.reset').val(''); //UNIVERSAL RESET INPUT
+                        readMessage();
+                        $('#messageListDisplay').show(); $('#openSingleMessage').hide();  //CLOSE MESSAGE
+                        
+                        Swal.fire({ title: 'Success', text: "Reply Sent",
+                        icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
+                    }
+                }
+            })
         });
 
         //go back
@@ -544,6 +593,19 @@
             $('#messageListDisplay').show(); $('#openSingleMessage').hide();  //CLOSE MESSAGE
         });
 
+        //FORMAT TIME
+        var time = ''; var date = '';
+        function formatTime(timeToBeFormatted)
+        {
+            var created_at = moment.utc(timeToBeFormatted).local(); var now = moment();
+            if (created_at.isSame(now, 'day')) {
+                date = 'Today'+'&nbsp;&nbsp;';
+                time = created_at.format('h:mm A'); // if the message was sent today, only display the time
+            } else {
+                date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
+                time = created_at.format('h:mm A');
+            }
+        }
         });
     </script>
     @endsection

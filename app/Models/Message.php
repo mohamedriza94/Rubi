@@ -14,9 +14,4 @@ class Message extends Model
         'subject',
         'message',
     ];
-
-    public function reply()
-    {
-        return $this->hasOne(Reply::class);
-    }
 }

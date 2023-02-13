@@ -9,6 +9,8 @@ class Reply extends Model
 {
     use HasFactory;
 
+    protected $table = 'replies';
+    
     protected $fillable = [
         'reply',
         'inquiry_id'
@@ -17,6 +19,6 @@ class Reply extends Model
 
     public function inquiry()
     {
-        return $this->belongsTo(Inquiry::class);
+        return $this->belongsTo('App\Models\Inquiry', 'id', 'inquiry_id');
     }
 }

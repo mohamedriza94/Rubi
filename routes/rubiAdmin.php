@@ -20,7 +20,9 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/starMessage/{id}/{status}', 'MessageController@starMessage');
             Route::put('/moveToTrash/{type}', 'MessageController@moveToTrash');
             Route::post('/sendMessage', 'MessageController@sendMessage');
-            Route::get('/seeMessage/{id}', 'MessageController@seeMessage');
+            Route::get('/seeMessage/{id}/{type}', 'MessageController@seeMessage');
+            Route::post('/sendReply', 'MessageController@sendReply');
+            Route::get('/searchMessages/{search}/{limit}', 'MessageController@searchMessages');
 
             
         });

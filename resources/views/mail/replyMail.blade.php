@@ -2,5 +2,5 @@
     <img src="https://i.ibb.co/sv7c7d7/output-onlinepngtools.png" alt="RUBI">
 </div>
 <hr><br>
-<h3>{!! $subject !!}</h3>
-<p>{!! $messageDescription !!}</p>
+<h3>{!!$subject!!}</h3>
+<p>{!!$reply!!}</p>
