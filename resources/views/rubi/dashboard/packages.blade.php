@@ -128,6 +128,85 @@
         <!-- /.modal-dialog -->
     </div>
     
+    {{-- view modal --}}
+    <div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">View Package</h4>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                    <form class="row" id="updateForm" enctype="multipart/form-data" method="post">
+                                        
+                                        <input type="hidden" class="form-control" id="id" name="id">
+
+                                        <div class="form-group col-12">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name">
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label">Duration</label>
+                                            <input type="number" class="form-control" id="periodDuration" name="periodDuration">
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label">Unit</label>
+                                            <select class="form-select" id="periodUnit" name="periodUnit">
+                                                <option value="Day">Day</option>
+                                                <option value="Week">Week</option>
+                                                <option value="Month">Month</option>
+                                                <option value="Year">Year</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label">Price (USD)</label>
+                                            <input type="number" class="form-control" id="price" name="price">
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label" id="createdOn">Created On</label>
+                                        </div>
+                                        
+                                        <div class="form-group col-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="textarea_editor form-control" rows="5" id="description" name="description"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group col-9">
+                                            <label class="form-label">Upload Photo</label>
+                                            <input type="file" id="input-file-now" class="dropify" name="photo">
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label">Current Photo</label>
+                                            <img src="" id="viewPhoto" class="form-control" alt="">
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <div class="d-md-flex align-items-center">
+                                                <button type="submit" id="btnUpdate" class="col-12 btn btn-info">Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    
     @endsection
     
     
@@ -174,17 +253,17 @@
                             switch(item.status) {
                                 case 'active':
                                 status_badge = '<span class="label label-success">Active</span>'; //ACTIVE
-                                status_button = '<button id="btnChangeStatus" class="btn btn-danger">Deactivate</button>';
+                                status_button = '<button id="btnChangeStatus" value="'+item.id+'" class="btn btn-danger">Deactivate</button>';
                                 break;
                                 case 'inactive':
                                 status_badge = '<span class="label label-danger">Inactive</span>'; //INACTIVE
-                                status_button = '<button id="btnChangeStatus" class="btn btn-success">Activate</button>';
+                                status_button = '<button id="btnChangeStatus" value="'+item.id+'" class="btn btn-success">Activate</button>';
                                 break;
                             }
                             
                             //SORTING Data
                             var name = item.name.slice(0,15);
-                            var price = item.price;
+                            var price = item.price+' USD';
                             var period = item.periodDuration+' '+item.periodUnit;
                             
                             $('#packageTable').append('<tr>\
@@ -195,8 +274,8 @@
                                 <td>\
                                     <div class="btn-group m-b-10 m-r-10">\
                                         '+status_button+'\
-                                        <button id="btnView" class="btn btn-light"><i class="fas fa-eye"></i></button>\
-                                        <button id="btnDelete" class="btn btn-dark"><i class="fas fa-trash"></i></button>\
+                                        <button id="btnView" value="'+item.id+'" class="btn btn-light"><i class="fas fa-eye"></i></button>\
+                                        <button id="btnDelete" value="'+item.id+'" class="btn btn-dark"><i class="fas fa-trash"></i></button>\
                                     </div>\
                                 </td>\
                                 </tr>'); 
@@ -204,46 +283,174 @@
                         }
                     });
             }
+            
+            //Create
+            $(document).on('click', '#btnCreate', function(e) {
+                e.preventDefault();
                 
-                //Create
-                $(document).on('click', '#btnCreate', function(e) {
-                    e.preventDefault();
-                    
-                    $("#btnCreate").prop("disabled", true).text("Creating...");
-                    
-                    let formData = new FormData($('#createForm')[0]);
-                    $.ajax({
-                        type: "POST", url: "{{ url('rubi/dashboard/createPackage') }}",
-                        data: formData, contentType:false, processData:false,
-                        success: function(response){
-                            if(response.status==600)
+                $("#btnCreate").prop("disabled", true).text("Creating...");
+                
+                let formData = new FormData($('#createForm')[0]);
+                $.ajax({
+                    type: "POST", url: "{{ url('rubi/dashboard/createPackage') }}",
+                    data: formData, contentType:false, processData:false,
+                    success: function(response){
+                        if(response.status==600)
+                        {
+                            $.each(response.errors,function(key,error)
                             {
-                                $.each(response.errors,function(key,error)
-                                {
-                                    toastMessage = '';
-                                    toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
-                                });
-                                
-                                $("#btnCreate").prop("disabled", false).text("Create");
-                            }
-                            else if(response.status == 400)
-                            {
-                                $("#btnCreate").prop("disabled", false).text("Create");
-                                toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
-                            }
-                            else if(response.status == 200)
-                            {
-                                $("#btnCreate").prop("disabled", false).text("Send");
-                                $('#createForm')[0].reset(); //FORM RESET INPUT
-                                readPackages();
-                                
-                                Swal.fire({ title: 'Success', text: "Package Created",
-                                icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
-                                
-                            }
+                                toastMessage = '';
+                                toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                            });
+                            
+                            $("#btnCreate").prop("disabled", false).text("Create");
                         }
-                    });
+                        else if(response.status == 400)
+                        {
+                            $("#btnCreate").prop("disabled", false).text("Create");
+                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        }
+                        else if(response.status == 200)
+                        {
+                            $("#btnCreate").prop("disabled", false).text("Create");
+                            $('#createForm')[0].reset(); //FORM RESET INPUT
+                            readPackages();
+                            
+                            Swal.fire({ title: 'Success', text: "Package Created",
+                            icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
+                            
+                        }
+                    }
                 });
             });
+
+            //Delete
+            $(document).on('click', '#btnDelete', function(e) {
+                
+                var id = $(this).val();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: '',
+                    icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) 
+                    { 
+                        //Delete ajax code
+                        var data = { 'id':id }
+                        $.ajax({
+                            type:"PUT",
+                            url: "{{ url('rubi/dashboard/deletePackage') }}",
+                            data:data,
+                            dataType:"json",
+                            success: function(response){
+                                if(response.status == 400)
+                                {
+                                    toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                    readPackages();
+                                }
+                                else if(response.status == 200)
+                                {
+                                    toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                    readPackages();
+                                }
+                            }
+                        });
+                    }
+                })
+            });
+
+            //View
+            $(document).on('click', '#btnView', function(e){
+                e.preventDefault();
+                var id = $(this).val(); //get message id
+                var urlView = '{{ url("rubi/dashboard/readOnePackage/:id") }}'; urlView = urlView.replace(':id', id);
+                $.ajax({
+                    type:"GET", url:urlView, dataType:"json",
+                    success: function(response)
+                    {
+                        $('#viewModal').modal('show');  //OPEN MODAL
+                        
+                        //format time
+                        formatTime(response.data.created_at);
+                        
+                        $('#createdOn').html('Created On: '+'<b>'+date+time+'</b>');
+                        $('#name').val(response.data.name);
+                        $('#id').val(response.data.id);
+                        $('#periodDuration').val(response.data.periodDuration);
+                        $('#periodUnit').val(response.data.periodUnit);
+                        $('#price').val(response.data.price);
+                        $('#description').val(response.data.description);
+                        $('#viewPhoto').attr('src',response.data.photo);
+                    }
+                });
+            });
+
+            //update status
+            $(document).on('click', '#btnChangeStatus', function(e) {
+                e.preventDefault();
+                var id = $(this).val();
+                var data = { 'id':id }
+                $.ajax({
+                    type:"PUT",
+                    url: "{{ url('rubi/dashboard/updatePackageStatus') }}",
+                    data:data,
+                    dataType:"json",
+                    success: function(response){
+                        if(response.status == 400)
+                        {
+                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                            readPackages();
+                        }
+                        else if(response.status == 200)
+                        {
+                            toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                            readPackages();
+                        }
+                    }
+                });
+            });
+            
+            //update
+            $(document).on('click', '#btnUpdate', function(e) {
+                e.preventDefault();
+                
+                $("#btnUpdate").prop("disabled", true).text("Updating...");
+                
+                let formData = new FormData($('#updateForm')[0]);
+                $.ajax({
+                    type: "POST", url: "{{ url('rubi/dashboard/updatePackage') }}",
+                    data: formData, contentType:false, processData:false,
+                    success: function(response){
+                        if(response.status==600)
+                        {
+                            $.each(response.errors,function(key,error)
+                            {
+                                toastMessage = '';
+                                toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                            });
+                            
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                        }
+                        else if(response.status == 400)
+                        {
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        }
+                        else if(response.status == 200)
+                        {
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                            $('#updateForm')[0].reset(); //FORM RESET INPUT
+                            readPackages();
+                            $('#viewModal').modal('hide');  //CLOSE MODAL
+                            
+                            Swal.fire({ title: 'Success', text: "Package Updated",
+                            icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
+                        }
+                    }
+                });
+            });
+        });
         </script>
         @endsection

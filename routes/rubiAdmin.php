@@ -27,8 +27,12 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/searchMessages/{search}/{limit}', 'MessageController@searchMessages');
 
             //packages
-            Route::get('/readPackage/{limit}', 'PackageController@readPackage');
-            Route::post('/createPackage', 'PackageController@createPackage');
+            Route::get('/readPackage/{limit}', 'PackageController@read');
+            Route::post('/createPackage', 'PackageController@create');
+            Route::post('/updatePackage', 'PackageController@update');
+            Route::put('/deletePackage', 'PackageController@delete');
+            Route::get('/readOnePackage/{id}', 'PackageController@readOne');
+            Route::put('/updatePackageStatus', 'PackageController@updateStatus');
 
         });
     });
