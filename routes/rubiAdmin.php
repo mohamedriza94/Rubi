@@ -12,8 +12,10 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
         
         Route::prefix('dashboard')->middleware(['auth:rubiAdmin'])->group(function () { //Rubi dashboard routes
 
+            //page routes
             Route::get('/', 'PathController@dashboard')->name('rubi.dashboard');
             Route::get('/messages', 'PathController@messages')->name('rubi.messages');
+            Route::get('/packages', 'PathController@packages')->name('rubi.packages');
 
             //messages
             Route::get('/readMessages/{type}/{limit}', 'MessageController@readMessages');
@@ -24,7 +26,10 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::post('/sendReply', 'MessageController@sendReply');
             Route::get('/searchMessages/{search}/{limit}', 'MessageController@searchMessages');
 
-            
+            //packages
+            Route::get('/readPackage/{limit}', 'PackageController@readPackage');
+            Route::post('/createPackage', 'PackageController@createPackage');
+
         });
     });
 });

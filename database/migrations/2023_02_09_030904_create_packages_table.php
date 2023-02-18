@@ -15,11 +15,15 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->text('photo')->nullable();
+            $table->text('photoPath')->nullable();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->string('price');
-            $table->string('period');
+            $table->integer('periodDuration');
+            $table->string('periodUnit');
             $table->string('status');
+            $table->tinyInteger('is_deleted');
             $table->timestamps();
         });
     }

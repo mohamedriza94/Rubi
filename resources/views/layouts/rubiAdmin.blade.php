@@ -15,11 +15,14 @@
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/node_modules/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/dropify/dist/css/dropify.min.css') }}">
     {{-- <link href="{{ asset('admin/assets/dist/css/pages/ribbon-page.css') }}" rel="stylesheet"> --}}
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+    
 </head>
 
 <body class="skin-purple fixed-layout">
@@ -104,7 +107,7 @@
                                 <a href="{{ route('rubi.logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                             </div>
-
+                            
                             <form id="logout-form" action="{{ route('rubi.logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
@@ -127,7 +130,7 @@
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         
                         <li class="nav-small-cap">--- OTHER</li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-credit-card"></i><span class="hide-menu">Package</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.packages') }}"><i class="icon-credit-card"></i><span class="hide-menu">Packages</span></a></li>
                         <li><a class="waves-effect waves-dark" href="#"><i class="icon-wallet"></i><span class="hide-menu">Cash Inflow</span></a></li>
                     </ul>
                 </nav>
@@ -192,7 +195,30 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('admin/assets/node_modules/html5-editor/wysihtml5-0.3.0.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/dropify/dist/js/dropify.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/upload.js') }}"></script>
     <script> $(document).ready(function() { $('.textarea_editor').wysihtml5(); }); </script>
+    
+    
+    <script>
+        var created_at = ''; //variable to format time
+        
+        //FORMAT TIME
+        var time = ''; var date = '';
+        function formatTime(timeToBeFormatted)
+        {
+            var created_at = moment.utc(timeToBeFormatted).local(); var now = moment();
+            if (created_at.isSame(now, 'day')) {
+                date = 'Today'+'&nbsp;&nbsp;';
+                time = created_at.format('h:mm A'); // if the message was sent today, only display the time
+            } else {
+                date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
+                time = created_at.format('h:mm A');
+            }
+        }
+    </script>
 </body>
 
 </html>

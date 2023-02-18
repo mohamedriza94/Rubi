@@ -172,11 +172,6 @@
                             <div class="card-body">
                                 
                                 <div class="row">
-                                    <div class="col-lg-12 col-md-12" id="errorList">
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="reset form-control" id="email"
@@ -225,7 +220,6 @@
         
         //configure the url that gets the message
         var type = 'inbox';
-        var created_at = ''; //variable to format time
         var url = "{{ url('rubi/dashboard/readMessages/:type/:limit') }}";
         
         function configureUrl()
@@ -592,20 +586,6 @@
             e.preventDefault();
             $('#messageListDisplay').show(); $('#openSingleMessage').hide();  //CLOSE MESSAGE
         });
-
-        //FORMAT TIME
-        var time = ''; var date = '';
-        function formatTime(timeToBeFormatted)
-        {
-            var created_at = moment.utc(timeToBeFormatted).local(); var now = moment();
-            if (created_at.isSame(now, 'day')) {
-                date = 'Today'+'&nbsp;&nbsp;';
-                time = created_at.format('h:mm A'); // if the message was sent today, only display the time
-            } else {
-                date = created_at.format('MMM D, YYYY')+'&nbsp;&nbsp;';
-                time = created_at.format('h:mm A');
-            }
-        }
         });
     </script>
     @endsection
