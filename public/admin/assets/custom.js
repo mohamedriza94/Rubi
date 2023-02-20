@@ -1,5 +1,4 @@
-(document).ready(function() { $('.textarea_editor').wysihtml5(); });
-
+$('.textarea_editor').wysihtml5();
 
 var created_at = ''; //variable to format time
 

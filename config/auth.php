@@ -39,7 +39,7 @@ return [
             'model' => App\Models\RubiAdmin::class,
         ],
         
-        'business' => [
+        'businesses' => [
             'driver' => 'eloquent',
             'model' => App\Models\Business::class,
         ],

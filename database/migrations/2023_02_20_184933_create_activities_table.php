@@ -13,23 +13,17 @@ return new class extends Migration
     */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('nickname')->nullable();
-            $table->string('status');
-            $table->bigInteger('business');
+            $table->string('userType');
+            $table->string('activity');
+            $table->string('user');
             $table->timestamps();
         });
     }
     
-    /**
-    * Reverse the migrations.
-    *
-    * @return void
-    */
     public function down()
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('activities');
     }
 };

@@ -16,7 +16,8 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/', 'PathController@dashboard')->name('rubi.dashboard');
             Route::get('/messages', 'PathController@messages')->name('rubi.messages');
             Route::get('/packages', 'PathController@packages')->name('rubi.packages');
-
+            Route::get('/activity', 'PathController@activity')->name('rubi.activity');
+            
             //messages
             Route::get('/readMessages/{type}/{limit}', 'MessageController@readMessages');
             Route::get('/starMessage/{id}/{status}', 'MessageController@starMessage');

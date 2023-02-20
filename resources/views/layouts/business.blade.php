@@ -37,9 +37,8 @@
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ route('rubi.dashboard') }}">
-                        <b><img src="{{ asset('admin/assets/images/rubi-logo.png') }}" class="light-logo" /></b> {{-- icon logo --}}
-                        <span><img src="{{ asset('admin/assets/images/rubi-logo-text.png') }}" class="light-logo" alt="Rubi" /></span> {{-- text logo  --}}
+                    <a class="navbar-brand profile-pic" href="{{ route('rubi.dashboard') }}">
+                        <img src="{{ auth()->guard('business')->user()->photo }}" class="light-logo" />
                     </a>
                 </div>
                 
@@ -97,23 +96,26 @@
                                 </ul>
                             </div>
                         </li>
-                        
-                        <li class="nav-item dropdown u-pro">
-                            
-                            <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
 
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('admin/assets/images/rubi-logo.png') }}" alt="Rubi" class=""> 
-                                <span class="hidden-md-down">Rubi &nbsp;<i class="fa fa-angle-down"></i></span> 
+                        <li class="nav-item dropdown u-pro">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ auth()->guard('business')->user()->photo }}" alt="user" class=""> 
+                                <span class="hidden-md-down">{{ auth()->guard('business')->user()->name }} &nbsp;<i class="fa fa-angle-down"></i></span> 
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
+                                <!-- text-->
+                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                                <!-- text-->
+                                <div class="dropdown-divider"></div>
+                                <!-- text-->
                                 <a href="{{ route('business.logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                                <!-- text-->
+
+                                <form id="logout-form" action="{{ route('business.logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </div>
-                            
-                            <form id="logout-form" action="{{ route('business.logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
                         </li>
                     </ul>
                 </div>

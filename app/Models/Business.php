@@ -22,8 +22,11 @@ class Business extends Authenticatable
         'photoPath',
         'no',
         'status',
-        'password',
         'verifiedDate',
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     public function packages()

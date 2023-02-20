@@ -20,6 +20,11 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
             Route::get('/cashOutFlow', 'PathController@cashOutFlow')->name('business.cashOutFlow');
             Route::get('/messages', 'PathController@messages')->name('business.messages');
 
+            //departments
+            Route::get('/readDepartments', 'DepartmentsController@read');
+            Route::post('/createDepartment', 'DepartmentsController@create');
+            Route::get('/readOneDepartment/{id}', 'DepartmentsController@readOne');
+            Route::put('/updateDepartmentStatus', 'DepartmentsController@updateStatus');
         });
     });
 });

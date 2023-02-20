@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PathController extends Controller
 {
@@ -11,7 +12,10 @@ class PathController extends Controller
 
     public function __construct()
     {
-        $this->brand = auth()->guard('business')->user()->name;
+        $this->middleware(function ($request, $next) {
+            $this->brand = Auth::guard('business')->user()->name;
+            return $next($request);
+        });
     }
 
     public function dashboard()
