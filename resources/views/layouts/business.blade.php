@@ -99,16 +99,19 @@
                         </li>
                         
                         <li class="nav-item dropdown u-pro">
+                            
+                            <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('admin/assets/images/rubi-logo.png') }}" alt="Rubi" class=""> 
                                 <span class="hidden-md-down">Rubi &nbsp;<i class="fa fa-angle-down"></i></span> 
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
-                                <a href="{{ route('rubi.logout') }}" onclick="event.preventDefault();
+                                <a href="{{ route('business.logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                             </div>
                             
-                            <form id="logout-form" action="{{ route('rubi.logout') }}" method="POST" class="d-none">
+                            <form id="logout-form" action="{{ route('business.logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </li>
@@ -124,14 +127,13 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.messages') }}"><i class="icon-envelope-open"></i><span class="hide-menu">Messages</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-notebook"></i><span class="hide-menu">Business</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.departments') }}"><i class="icon-notebook"></i><span class="hide-menu">Departments</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.admins') }}"><i class="icon-notebook"></i><span class="hide-menu">Admins</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         
                         <li class="nav-small-cap">--- OTHER</li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.packages') }}"><i class="icon-credit-card"></i><span class="hide-menu">Packages</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-wallet"></i><span class="hide-menu">Cash Inflow</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.cashOutFlow') }}"><i class="icon-credit-card"></i><span class="hide-menu">Cash Outflow</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -154,8 +156,6 @@
                 
                 @yield('content')
                 @yield('script')
-                
-                
                 
                 
                 

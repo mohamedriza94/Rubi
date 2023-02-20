@@ -19,6 +19,12 @@ return [
             'driver' => 'session',
             'provider' => 'rubiAdmins',
         ],
+        
+        
+        'business' => [
+            'driver' => 'session',
+            'provider' => 'businesses',
+        ],
     ],
     
     //providers
@@ -33,6 +39,11 @@ return [
             'model' => App\Models\RubiAdmin::class,
         ],
         
+        'business' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Business::class,
+        ],
+        
     ],
     
     'passwords' => [
@@ -45,6 +56,13 @@ return [
 
         'rubiAdmins' => [
             'provider' => 'rubiAdmins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'businesses' => [
+            'provider' => 'businesses',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

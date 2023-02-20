@@ -103,7 +103,7 @@
                                         
                                         <div class="form-group col-12">
                                             <label class="form-label">Description</label>
-                                            <textarea class="textarea_editor form-control" rows="5" name="description"></textarea>
+                                            <textarea class="form-control textarea_editor" rows="8" id="description" name="description"></textarea>
                                         </div>
                                         
                                         <div class="form-group col-12">
@@ -177,7 +177,7 @@
                                         
                                         <div class="form-group col-12">
                                             <label class="form-label">Description</label>
-                                            <textarea class="textarea_editor form-control" rows="5" id="description" name="description"></textarea>
+                                            <textarea class="form-control textarea_editor" rows="8" id="edit_description" name="description"></textarea>
                                         </div>
                                         
                                         <div class="form-group col-9">
@@ -375,7 +375,7 @@
                         //format time
                         formatTime(response.data.created_at);
                         
-                        $('#createdOn').html('Created On: '+'<b>'+date+time+'</b>');
+                        $('#createdOn').html('Created On: <br> '+'<b>'+date+time+'</b>');
                         $('#name').val(response.data.name);
                         $('#id').val(response.data.id);
                         $('#periodDuration').val(response.data.periodDuration);
