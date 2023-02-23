@@ -126,7 +126,7 @@
                         <li class="nav-small-cap">--- GENERAL</li>
                         <li><a class="waves-effect waves-dark" href="{{ route('rubi.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('rubi.messages') }}"><i class="icon-envelope-open"></i><span class="hide-menu">Messages</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="#"><i class="icon-notebook"></i><span class="hide-menu">Business</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('rubi.business') }}"><i class="icon-notebook"></i><span class="hide-menu">Business</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('rubi.activity') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         
                         <li class="nav-small-cap">--- OTHER</li>

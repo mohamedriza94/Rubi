@@ -23,7 +23,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <input type="text" class="form-control" placeholder="Search here">
+                    <input type="text" id="searchActivities" class="form-control" placeholder="Search here">
                 </div>
             </div>
         </div>
@@ -36,11 +36,9 @@
                         <table class="table color-table purple-table">
                             <thead>
                                 <tr>
-                                    <th>User</th>
-                                    <th>User Type</th>
+                                    <th>Business</th>
                                     <th>Activity</th>
                                     <th>Date</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="activityTable">
@@ -57,87 +55,6 @@
             </div>
         </div>
     </div>
-    
-    {{-- Modals --}}
-    {{-- view modal --}}
-    <div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">View Package</h4>
-                    <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    
-                                    <form class="row" id="updateForm" enctype="multipart/form-data" method="post">
-                                        
-                                        <input type="hidden" class="form-control" id="id" name="id">
-
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name">
-                                        </div>
-                                        
-                                        <div class="form-group col-3">
-                                            <label class="form-label">Duration</label>
-                                            <input type="number" class="form-control" id="periodDuration" name="periodDuration">
-                                        </div>
-                                        
-                                        <div class="form-group col-3">
-                                            <label class="form-label">Unit</label>
-                                            <select class="form-select" id="periodUnit" name="periodUnit">
-                                                <option value="Day">Day</option>
-                                                <option value="Week">Week</option>
-                                                <option value="Month">Month</option>
-                                                <option value="Year">Year</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <div class="form-group col-3">
-                                            <label class="form-label">Price (USD)</label>
-                                            <input type="number" class="form-control" id="price" name="price">
-                                        </div>
-                                        
-                                        <div class="form-group col-3">
-                                            <label class="form-label" id="createdOn">Created On</label>
-                                        </div>
-                                        
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Description</label>
-                                            <textarea class="form-control textarea_editor" rows="8" id="edit_description" name="description"></textarea>
-                                        </div>
-                                        
-                                        <div class="form-group col-9">
-                                            <label class="form-label">Upload Photo</label>
-                                            <input type="file" id="input-file-now" class="dropify" name="photo">
-                                        </div>
-                                        
-                                        <div class="form-group col-3">
-                                            <label class="form-label">Current Photo</label>
-                                            <img src="" id="viewPhoto" class="form-control" alt="">
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <div class="d-md-flex align-items-center">
-                                                <button type="submit" id="btnUpdate" class="col-12 btn btn-info">Update</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    
     @endsection
     
     
@@ -151,8 +68,11 @@
             var url = "{{ url('rubi/dashboard/readActivities/:limit') }}";
             function configureUrl()
             {
-                url = "{{ url('rubi/dashboard/readActivities/:limit') }}";
-                url = url.replace(':limit', limit);
+                var length = $('#searchActivities').val().length;
+                if (length == 0) {
+                    url = "{{ url('rubi/dashboard/readActivities/:limit') }}";
+                    url = url.replace(':limit', limit);
+                }
             }
             
             //configuration to limit the number of messages displayed
@@ -176,51 +96,26 @@
                         $('#activityTable').html(''); 
                         
                         $.each(response.data,function(key,item){
+
+                            formatTime(item.created_at);
                             
                             $('#activityTable').append('<tr>\
-                                <td>'+item.+'</td>\
-                                <td>'+price+'</td>\
-                                <td>'+period+'</td>\
-                                <td>'+status_badge+'</td>\
-                                <td>\
-                                    <div class="btn-group m-b-10 m-r-10">\
-                                        '+status_button+'\
-                                        <button id="btnView" value="'+item.id+'" class="btn btn-light"><i class="fas fa-eye"></i></button>\
-                                        <button id="btnDelete" value="'+item.id+'" class="btn btn-dark"><i class="fas fa-trash"></i></button>\
-                                    </div>\
-                                </td>\
+                                <td><img style="width:30px;" class="m-r-10" src="'+item.logo+'">'+item.business+'</td>\
+                                <td>'+item.activity+'</td>\
+                                <td>'+date+' '+time+'</td>\
                                 </tr>'); 
                             });
                         }
                     });
-            }
-            
-
-            //View
-            $(document).on('click', '#btnView', function(e){
-                e.preventDefault();
-                var id = $(this).val(); //get message id
-                var urlView = '{{ url("rubi/dashboard/readOnePackage/:id") }}'; urlView = urlView.replace(':id', id);
-                $.ajax({
-                    type:"GET", url:urlView, dataType:"json",
-                    success: function(response)
-                    {
-                        $('#viewModal').modal('show');  //OPEN MODAL
-                        
-                        //format time
-                        formatTime(response.data.created_at);
-                        
-                        $('#createdOn').html('Created On: <br> '+'<b>'+date+time+'</b>');
-                        $('#name').val(response.data.name);
-                        $('#id').val(response.data.id);
-                        $('#periodDuration').val(response.data.periodDuration);
-                        $('#periodUnit').val(response.data.periodUnit);
-                        $('#price').val(response.data.price);
-                        $('#description').val(response.data.description);
-                        $('#viewPhoto').attr('src',response.data.photo);
-                    }
+                }
+                
+                //search business
+                $(document).on('keyup', '#searchActivities', function(e) {
+                    url = "{{ url('rubi/dashboard/searchActivities/:search/:limit') }}";
+                    url = url.replace(':search', $(this).val());
+                    url = url.replace(':limit', limit);
+                    readActivities();
                 });
-            });
         });
         </script>
         @endsection

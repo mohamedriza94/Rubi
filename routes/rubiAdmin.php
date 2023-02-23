@@ -17,6 +17,7 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/messages', 'PathController@messages')->name('rubi.messages');
             Route::get('/packages', 'PathController@packages')->name('rubi.packages');
             Route::get('/activity', 'PathController@activity')->name('rubi.activity');
+            Route::get('/business', 'PathController@business')->name('rubi.business');
             
             //messages
             Route::get('/readMessages/{type}/{limit}', 'MessageController@readMessages');
@@ -35,6 +36,15 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/readOnePackage/{id}', 'PackageController@readOne');
             Route::put('/updatePackageStatus', 'PackageController@updateStatus');
 
+            //activities
+            Route::get('/readActivities/{limit}', 'ActivityController@read');
+            Route::get('/searchActivities/{search}/{limit}', 'ActivityController@search');
+
+            //businesses
+            Route::get('/readBusinesses/{limit}/{status}', 'BusinessController@read');
+            Route::get('/searchBusinesses/{search}/{limit}/{status}', 'BusinessController@search');
+            Route::get('/readOneBusiness/{id}', 'BusinessController@readOne');
+            Route::put('/updateBusinessStatus', 'BusinessController@updateStatus');
         });
     });
 });
