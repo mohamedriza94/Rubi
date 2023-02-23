@@ -45,6 +45,9 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
             Route::get('/searchBusinesses/{search}/{limit}/{status}', 'BusinessController@search');
             Route::get('/readOneBusiness/{id}', 'BusinessController@readOne');
             Route::put('/updateBusinessStatus', 'BusinessController@updateStatus');
+
+            //dashboard
+            Route::get('/count', 'DashboardController@readCount');
         });
     });
 });

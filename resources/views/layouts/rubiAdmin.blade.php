@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.css') }}">
     <link href="{{ asset('admin/assets/node_modules/morrisjs/morris.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/assets/dist/css/pages/dashboard1.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/node_modules/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
