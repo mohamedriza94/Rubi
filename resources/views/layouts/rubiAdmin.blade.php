@@ -57,27 +57,6 @@
                     
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-bell"></i>
-                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end mailbox animated bounceInDown">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">Notifications</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            {{-- notifications --}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center link" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        
-                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
                                 <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                             </a>
@@ -177,7 +156,7 @@
     <script src="{{ asset('admin/assets/node_modules/raphael/raphael-min.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/morrisjs/morris.min.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script>
+    {{-- <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script> --}}
     <script src="{{ asset('admin/assets/node_modules/toast-master/js/jquery.toast.js') }}"></script>
     <script src="{{ asset('admin/assets/dist/js/pages/toastr.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

@@ -16,11 +16,20 @@ class DashboardController extends Controller
         $TodayBusinessRegistrations = Business::where('status','active')->whereDate('created_at', today())->count();
         $totalPendingInquiries = Inquiry::where('status','unread')->where('is_deleted','0')->count();
         
+        $businessesCountByMonth = Business::query()
+        ->selectRaw('COUNT(*) as count, MONTHNAME(created_at) as month')
+        ->groupBy('month')->get(); //Chart
+
+        //get today business registrations
+        $todayRegistration = Business::where('status','active')->whereDate('created_at', today())->get();
+        
         return response()->json([
             'totalBusiness' => $totalBusiness,
             'activeBusiness' => $activeBusiness,
             'TodayBusinessRegistrations' => $TodayBusinessRegistrations,
             'totalPendingInquiries' => $totalPendingInquiries,
+            'businessesCountByMonth' => $businessesCountByMonth,
+            'todayRegistration' => $todayRegistration
         ]);
     }
 }

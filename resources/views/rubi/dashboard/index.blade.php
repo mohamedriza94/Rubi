@@ -96,6 +96,47 @@
             </div>
         </div>
     </div>
+    {{-- chart --}}
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex m-b-40 align-items-center no-block">
+                    <h5 class="card-title ">MONTHLY REGISTRATIONS</h5>
+                    <div class="ms-auto">
+                        <ul class="list-inline font-12">
+                            <li><i class="fa fa-circle text-cyan"></i> Business Registration</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="morris-area-chart" style="height: 340px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    {{-- today registrations table --}}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" id="dataCount">TODAY'S REGISTRATIONS</h5>
+                <div class="table-responsive">
+                    <table class="text-center table color-table red-table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Business</th>
+                                <th>Type</th>
+                                <th>Product</th>
+                                <th>Country</th>
+                                <th>Registered at</th>
+                            </tr>
+                        </thead>
+                        <tbody id="businessTable">
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -106,9 +147,9 @@
 <script>
     $(document).ready(function(){
         
-        count();
+        count(); chart();
         setInterval(() => { count(); }, 5000);
-
+        
         function count()
         {
             $.ajax({
@@ -118,6 +159,45 @@
                     $('#activeBusiness').text(response.activeBusiness);
                     $('#TodayBusinessRegistrations').text(response.TodayBusinessRegistrations);
                     $('#totalPendingInquiries').text(response.totalPendingInquiries);
+                    
+                    $.each(response.todayRegistration,function(key,item){
+                        $('#businessTable').html(''); formatTime(item.created_at);
+                        
+                        $('#businessTable').append('<tr>\
+                            <td><img style="width:30px; border-radius:10px;" class="m-r-10" src="'+item.photo+'"></td>\
+                            <td>'+item.name+'</td>\
+                            <td>'+item.type+'</td>\
+                            <td>'+item.product+'</td>\
+                            <td>'+item.country+'</td>\
+                            <td>'+time+'</td>\
+                        </tr>'); 
+                    });
+                }
+            });
+        }
+        
+        function chart()
+        {
+            $.ajax({
+                type: "GET", url:"{{ url('rubi/dashboard/count') }}", dataType:"json",
+                success:function(response){
+                    var data = response.businessesCountByMonth;
+                    Morris.Area({
+                        element: 'morris-area-chart',
+                        data: data,
+                        xkey: 'month',
+                        ykeys: ['count'],
+                        labels: ['Business'],
+                        pointSize: 3,
+                        fillOpacity: 0,
+                        pointStrokeColors: ['#00bfc7'],
+                        behaveLikeLine: true,
+                        gridLineColor: '#e0e0e0',
+                        lineWidth: 3,
+                        hideHover: 'auto',
+                        lineColors: ['#00bfc7'],
+                        resize: true
+                    });
                 }
             });
         }
