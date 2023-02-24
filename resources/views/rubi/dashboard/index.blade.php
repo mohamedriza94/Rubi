@@ -181,11 +181,11 @@
             $.ajax({
                 type: "GET", url:"{{ url('rubi/dashboard/count') }}", dataType:"json",
                 success:function(response){
-                    var data = response.businessesCountByMonth;
+                    let data = response.businessesCountByMonth;
                     Morris.Area({
                         element: 'morris-area-chart',
                         data: data,
-                        xkey: 'month',
+                        xkey: ['month'],
                         ykeys: ['count'],
                         labels: ['Business'],
                         pointSize: 3,

@@ -46,32 +46,23 @@
                 <div class="navbar-collapse">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"> <a class="nav-link nav-toggler d-block d-md-none waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
-                        <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>
-                        
-                        <li class="nav-item">
-                            <form class="app-search d-none d-md-block d-lg-block">
-                                <input type="text" class="form-control" placeholder="Search Here"> {{-- Search --}}
-                            </form>
-                        </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>                   
                     </ul>
                     
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
-                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                                <div class="notify" id="notificationBeat"> <span class="heartbit"></span> <span class="point"></span> </div>
                             </a>
                             <div class="dropdown-menu mailbox dropdown-menu-end animated bounceInDown" aria-labelledby="2">
                                 <ul>
                                     <li>
-                                        <div class="drop-title">4 new messages</div>
+                                        <div class="drop-title"><span id="pendingInquiryCount"></span> unread inquiries</div>
                                     </li>
                                     <li>
-                                        <div class="message-center">
+                                        <div class="message-center" id="notifications">
                                             {{-- message --}}
                                         </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center link" href="javascript:void(0);"> <strong>See all Messages</strong> <i class="fa fa-angle-right"></i> </a>
                                     </li>
                                 </ul>
                             </div>
@@ -136,38 +127,76 @@
                 
                 
                 
-                
-                
-                
-                
-                
-                
+                <script>
+                    $(document).ready(function(){
+                        
+                        notification();
+                        setInterval(() => { notification(); }, 5000);
+                        
+                        function notification()
+                        {
+                            $.ajax({
+                                type: "GET", url:"{{ url('rubi/dashboard/notification') }}", dataType:"json",
+                                success:function(response){
+                                    
+                                    if(response.pendingInquiryCount > 0)
+                                    {
+                                        $('#notificationBeat').show();
+                                    }
+                                    else
+                                    {
+                                        $('#notificationBeat').hide();
+                                    }
+                                    
+                                    $('#pendingInquiryCount').text(response.pendingInquiryCount); //show pending inquiry count
+                                    $('#notifications').html(''); 
+                                    $.each(response.pendingInquiries,function(key,item){
+                                        formatTime(item.created_at);
+                                        var message = item.message.slice(0,30)+'...';
+                                        
+                                        $('#notifications').append('<a href="{{ route("rubi.messages") }}">\
+                                        <div class="btn btn-warning btn-circle text-white"><i class="fa fa-envelope"></i></div>\
+                                        <div class="mail-contnet"><h5>'+item.name+'</h5>\
+                                        <span class="mail-desc">'+message+'</span>\
+                                        <span class="time"><b>'+date+''+time+'</b></span> </div>\
+                                        </a>');
+                                    });
+                                    }
+                            });
+                        }
+                    })
+                </script>
+                    
+                    
+                    
+                    
+                    
+                </div>
             </div>
+            <footer class="footer">© <?php echo date('Y'); ?> Rubi </footer>
         </div>
-        <footer class="footer">© <?php echo date('Y'); ?> Rubi </footer>
-    </div>
-    <script src="{{ asset('admin/assets/node_modules/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/perfect-scrollbar.jquery.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/waves.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/custom.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/skycons/skycons.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/raphael/raphael-min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/morrisjs/morris.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
-    {{-- <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script> --}}
-    <script src="{{ asset('admin/assets/node_modules/toast-master/js/jquery.toast.js') }}"></script>
-    <script src="{{ asset('admin/assets/dist/js/pages/toastr.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="{{ asset('admin/assets/node_modules/html5-editor/wysihtml5-0.3.0.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/node_modules/dropify/dist/js/dropify.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/upload.js') }}"></script>
-    <script src="{{ asset('admin/assets/custom.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/dist/js/perfect-scrollbar.jquery.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/dist/js/waves.js') }}"></script>
+        <script src="{{ asset('admin/assets/dist/js/sidebarmenu.js') }}"></script>
+        <script src="{{ asset('admin/assets/dist/js/custom.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/skycons/skycons.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/raphael/raphael-min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/morrisjs/morris.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
+        {{-- <script src="{{ asset('admin/assets/dist/js/dashboard4.js') }}"></script> --}}
+        <script src="{{ asset('admin/assets/node_modules/toast-master/js/jquery.toast.js') }}"></script>
+        <script src="{{ asset('admin/assets/dist/js/pages/toastr.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="{{ asset('admin/assets/node_modules/html5-editor/wysihtml5-0.3.0.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/html5-editor/bootstrap-wysihtml5.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/node_modules/dropify/dist/js/dropify.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/upload.js') }}"></script>
+        <script src="{{ asset('admin/assets/custom.js') }}"></script>
+        
+    </body>
     
-</body>
-
-</html>
+    </html>

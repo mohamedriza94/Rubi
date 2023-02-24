@@ -48,6 +48,9 @@ Route::prefix('rubi')->namespace('App\Http\Controllers\Rubi')->middleware(['web'
 
             //dashboard
             Route::get('/count', 'DashboardController@readCount');
+
+            //notification
+            Route::get('/notification', 'DashboardController@notification');
         });
     });
 });

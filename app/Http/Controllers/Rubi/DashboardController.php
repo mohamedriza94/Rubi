@@ -32,4 +32,16 @@ class DashboardController extends Controller
             'todayRegistration' => $todayRegistration
         ]);
     }
+
+    public function notification()
+    {
+        $pendingInquiryCount = Inquiry::where('status','unread')->where('is_deleted','0')->count();
+        $pendingInquiries = Inquiry::where('status','unread')->where('is_deleted','0')->orderBy('id','DESC')->limit(4)->get();
+            
+
+        return response()->json([
+            'pendingInquiryCount' => $pendingInquiryCount,
+            'pendingInquiries' => $pendingInquiries
+        ]);
+    }
 }
