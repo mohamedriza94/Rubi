@@ -56,9 +56,16 @@ class DepartmentsController extends Controller
                     'user' => auth()->guard('business')->user()->id ];
                     $activityController = new \App\Http\Controllers\common\ActivityController;
                     $activityController->recordActivity($data);
+
+                    $nickname = $request->input('nickname');
+                    if($request->input('nickname') == "")
+                    {
+                        $nickname = "-";
+                    }
                     
                     Department::create([ 'name' => $request->input('department'), 
-                    'status' => $request->input('status'), 
+                    'status' => $request->input('status'),
+                    'nickname' => $nickname,
                     'business' => $businessNo]);
                     
                     DB::commit();

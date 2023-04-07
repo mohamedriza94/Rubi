@@ -131,7 +131,7 @@
                         <li class="nav-small-cap">--- GENERAL</li>
                         <li><a class="waves-effect waves-dark" href="{{ route('business.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('business.departments') }}"><i class="icon-notebook"></i><span class="hide-menu">Departments</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.admins') }}"><i class="icon-notebook"></i><span class="hide-menu">Admins</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('business.admins') }}"><i class="icon-user"></i><span class="hide-menu">Admins</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('business.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         
                         <li class="nav-small-cap">--- OTHER</li>

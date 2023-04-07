@@ -30,6 +30,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Nickname</th>
                                     <th>Since</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -185,7 +186,7 @@
                         
                         $.each(response.data,function(key,item){
                             //display badges
-                            var status_badge = ''; var status_button = '';
+                            var status_badge = ''; var status_button = ''; var nickname = '';
                             
                             //sorting STATUS
                             switch(item.status) {
@@ -199,17 +200,24 @@
                                 break;
                             }
 
+                            if(item.nickname == null)
+                            {
+                                nickname = '-';
+                            }else{
+                                nickname = item.nickname;
+                            }
+
                             //format time
                             formatTime(item.created_at);
                             
                             $('#departmentTable').append('<tr>\
                                 <td>'+item.name+'</td>\
+                                <td>'+nickname+'</td>\
                                 <td>'+date+''+time+'</td>\
                                 <td>'+status_badge+'</td>\
                                 <td>\
                                     <div class="btn-group m-b-10 m-r-10">\
                                         '+status_button+'\
-                                        <button id="btnView" value="'+item.id+'" class="btn btn-dark"><i class="fas fa-eye"></i></button>\
                                     </div>\
                                 </td>\
                                 </tr>'); 

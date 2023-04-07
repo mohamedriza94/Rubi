@@ -55,7 +55,8 @@ class LoginController extends Controller
     public function validateLogin(Request $request)
     {
         // Attempt to log the user in
-        if ($this->guard()->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'])) {
+        if ($this->guard()->attempt(['email' => $request->email, 
+        'password' => $request->password, 'status' => 'active'])) {
             
             //Record Activity
             $data = [ 'userType' => 'business', 'activity' => 'Logged In', 
@@ -89,15 +90,18 @@ class LoginController extends Controller
     */
     public function logout(Request $request)
     {
-        //Record Activity
-        $data = [ 'userType' => 'business', 'activity' => 'Logged Out', 
-        'user' => auth()->guard('business')->user()->id ];
-        $activityController = new \App\Http\Controllers\common\ActivityController;
-        $activityController->recordActivity($data);
+        $userData = auth()->guard('business')->user()->id;
         
         $this->guard()->logout();
         Session::flush();
         $request->session()->regenerate(true);
+        
+        //Record Activity
+        $data = [ 'userType' => 'business', 'activity' => 'Logged Out', 
+        'user' => $userData];
+        $activityController = new \App\Http\Controllers\common\ActivityController;
+        $activityController->recordActivity($data);
+
         return redirect()->route('business.login');
     }
 }

@@ -20,7 +20,7 @@
     </div>
 
     <div class="banner-img">
-        <img src="{{ asset('assets/img/home.jpg') }}" alt="banner image">
+        <img src="https://d1acq29e7jo33e.cloudfront.net/media/images/SDWAN_SmarterTeams.74b9ac04.fill-1000x1000-c0.jpg" alt="banner image">
     </div>
 </div>
 <!-- Banner Section End -->
