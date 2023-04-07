@@ -25,6 +25,14 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
             Route::post('/createDepartment', 'DepartmentsController@create');
             Route::get('/readOneDepartment/{id}', 'DepartmentsController@readOne');
             Route::put('/updateDepartmentStatus', 'DepartmentsController@updateStatus');
+
+            //business admins
+            Route::get('/readBusinessAdmins', 'BusinessAdminController@read');
+            Route::post('/createBusinessAdmins', 'BusinessAdminController@create');
+            Route::get('/readOneBusinessAdmin/{id}', 'BusinessAdminController@readOne');
+            Route::put('/updateBusinessAdminStatus', 'BusinessAdminController@updateStatus');
+            Route::put('/updateBusinessAdmin', 'BusinessAdminController@update');
+            Route::put('/deleteBusinessAdmin', 'BusinessAdminController@delete');
         });
     });
 });
