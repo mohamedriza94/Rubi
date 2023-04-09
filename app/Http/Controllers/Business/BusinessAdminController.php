@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Department;
 use App\Models\Business;
@@ -15,7 +16,14 @@ class BusinessAdminController extends Controller
 {
     public function read()
     {
-        $admins = BusinessAdmin::where('business',auth()->guard('business')->user()->id)->orderBy('id','DESC')->get();
+        $admins = BusinessAdmin::join('departments','business_admins.department','=','departments.id')->
+        where('business_admins.business',auth()->guard('business')->user()->id)->orderBy('business_admins.id','DESC')->get([
+            'business_admins.fullname AS fullname',
+            'business_admins.status AS status',
+            'business_admins.photo AS photo',
+            'business_admins.id AS id',
+            'departments.name AS department',
+        ]);
         return response()->json(['data' => $admins]);
     }
 
@@ -35,9 +43,9 @@ class BusinessAdminController extends Controller
                 'fullname' => 'required|string',
                 'dob' => 'required|string',
                 'email' => 'required|string|email',
-                'photo' => 'required|string',
+                'photo' => 'required|image',
                 'telephone' => 'required|string',
-                'password' => 'required|confirmed|min:8',
+                'password' => 'required|min:8',
             ], [
                 'department.required' => 'Choose a department',
                 'fullname.required' => 'Full name is required',
@@ -73,13 +81,17 @@ class BusinessAdminController extends Controller
                     
                     $hashedPassword = Hash::make($request->input('password'));
 
+                    //generate photo path
+                    $photoPath = request('photo')->store('businessAdmin','public');
+                    $photo = '/'.'storage/'.$photoPath;
+
                     BusinessAdmin::create([ 
                         'no' => $businessAdminNo,
                         'fullname' => $request->input('fullname'),
                         'dob' => $request->input('dob'),
                         'status' => 'active',
                         'email' => $request->input('email'),
-                        'photo' => $request->input('photo'),
+                        'photo' => $photo,
                         'telephone' => $request->input('telephone'),
                         'business' => auth()->guard('business')->user()->id,
                         'department' => $request->input('department'),
@@ -114,14 +126,14 @@ class BusinessAdminController extends Controller
             
             //get current status
             $businessAdmin = BusinessAdmin::where('id', $id)->first(); 
-            $currentStatus = $business->status;
+            $currentStatus = $businessAdmin->status;
             
             switch ($currentStatus) {
                 case 'active':
-                    Department::where('id', $id)->update(['status' => 'inactive']); 
+                    BusinessAdmin::where('id', $id)->update(['status' => 'inactive']); 
                     break;
                     case 'inactive':
-                        Department::where('id', $id)->update(['status' => 'active']); 
+                        BusinessAdmin::where('id', $id)->update(['status' => 'active']); 
                         break;
                     }
                     
@@ -160,7 +172,7 @@ class BusinessAdminController extends Controller
             }
             else
             {
-                BusinessAdmin::where('id', $request->input('fullname'))->update([ 
+                BusinessAdmin::where('id', $request->input('id'))->update([ 
                     'fullname' => $request->input('fullname'),
                     'dob' => $request->input('dob'),
                     'telephone' => $request->input('telephone'),
@@ -175,6 +187,50 @@ class BusinessAdminController extends Controller
                 return response()->json([
                     'status'=>400,
                     'message'=>'Could not update this admin\'s account. Try again'
+                ]);
+            }
+            
+            return response()->json([
+                'status'=>200
+            ]);
+    }
+    
+    public function updateProfilePicture(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            // Validate the request data
+            $validator = Validator::make($request->all(), [     
+                'photo' => 'required|image'
+            ], [
+                'photo.required' => 'Photo is required',
+                'photo.image' => 'Photo must be an image',
+            ]);
+            
+            if ($validator->fails()) { 
+                return response()->json([
+                    'status'=>800,
+                    'errors'=>$validator->messages()
+                ]);
+            }
+            else
+            {
+                //generate photo path
+                $photoPath = request('photo')->store('businessAdmin','public');
+                $photo = '/'.'storage/'.$photoPath;
+                
+                BusinessAdmin::where('id', $request->input('id'))->update([ 
+                    'photo' => $photo]);
+                    
+                    DB::commit();
+                }
+                
+            } catch (\Exception $e) {
+                
+                DB::rollBack();
+                return response()->json([
+                    'status'=>400,
+                    'message'=>'Could not update the profile picture. Try again'
                 ]);
             }
             

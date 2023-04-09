@@ -21,9 +21,6 @@ class BusinessAdmin extends Authenticatable
         'telephone',
         'business',
         'department',
-    ];
-    
-    protected $hidden = [
         'password',
     ];
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('photo');
             $table->string('telephone');
             $table->string('business');
+            $table->string('password');
             $table->string('department');
             $table->timestamps();
         });

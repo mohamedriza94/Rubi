@@ -15,6 +15,11 @@ class DepartmentsController extends Controller
         $departments = Department::where('business',auth()->guard('business')->user()->id)->orderBy('id','DESC')->get();
         return response()->json(['data' => $departments]);
     }
+    public function readActive()
+    {
+        $departments = Department::where('business',auth()->guard('business')->user()->id)->where('status','active')->orderBy('id','DESC')->get();
+        return response()->json(['data' => $departments]);
+    }
     
     public function create(Request $request)
     {

@@ -25,3 +25,14 @@ $(document).ready(function(){
         }
     });
 });
+
+
+//display selected photo
+$("#photo").change(function(){
+    var reader = new FileReader();
+    reader.onload = function(){
+        var output = document.getElementById('photoDisplay');
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+});
