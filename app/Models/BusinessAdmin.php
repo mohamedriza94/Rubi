@@ -21,6 +21,7 @@ class BusinessAdmin extends Authenticatable
         'telephone',
         'business',
         'department',
+        'role',
         'password',
     ];
 }

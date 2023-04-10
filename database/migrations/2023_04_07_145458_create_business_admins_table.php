@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('telephone');
             $table->string('business');
             $table->string('password');
+            $table->string('role');
             $table->string('department');
             $table->timestamps();
         });

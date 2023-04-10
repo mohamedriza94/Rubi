@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Department;
 use App\Models\Business;
@@ -42,7 +43,7 @@ class BusinessAdminController extends Controller
                 'department' => 'required|string',
                 'fullname' => 'required|string',
                 'dob' => 'required|string',
-                'email' => 'required|string|email',
+                'email' => 'required|string|email|unique:business_admins',
                 'photo' => 'required|image',
                 'telephone' => 'required|string',
             ], [
@@ -63,10 +64,10 @@ class BusinessAdminController extends Controller
             else
             {
                 //generate a business no
-                $no = mt_rand();
+                $no = rand(0000,9999);
                 $exists = BusinessAdmin::where('no', $no)->exists();
                 while ($exists) {
-                    $no = mt_rand();
+                    $no = rand(0000,9999);
                     $exists = BusinessAdmin::where('no', $no)->exists();
                 }
 
@@ -84,9 +85,10 @@ class BusinessAdminController extends Controller
                 $photo = '/'.'storage/'.$photoPath;
 
                 BusinessAdmin::create([ 
-                    'no' => $businessAdminNo,
+                    'no' => $no,
                     'fullname' => $request->input('fullname'),
                     'dob' => $request->input('dob'),
+                    'role' => 'admin',
                     'status' => 'active',
                     'email' => $request->input('email'),
                     'photo' => $photo,
@@ -176,7 +178,7 @@ class BusinessAdminController extends Controller
             }
             else
             {
-                BusinessAdmin::where('id', $request->input('id'))->update([ 
+                BusinessAdmin::where('id',$request->input('id'))->update([ 
                     'fullname' => $request->input('fullname'),
                     'dob' => $request->input('dob'),
                     'department' => $request->input('department'),

@@ -88,9 +88,9 @@
                                             </select>
                                         </div>
                                         
-                                        <div class="form-group col-6">
-                                            <label class="form-label">Password</label>
-                                            <input class="form-control" type="password" id="password" name="password">
+                                        <div class="form-group col-12">
+                                            <label class="form-label">Photo</label>
+                                            <input class="form-control" type="file" id="photo" name="photo">
                                         </div>
                                         
                                         <div class="form-group col-12">
@@ -130,7 +130,7 @@
                                     
                                     <form class="row" id="updateForm" enctype="multipart/form-data" method="post">
                                         
-                                        <input type="hidden" name="id">
+                                        <input type="hidden" name="id" id="id">
 
                                         <div class="form-group col-12">
                                             <label class="form-label" id="registeredAt">Registered At</label>
@@ -363,7 +363,7 @@
                         $('#telephone').val(response.data.telephone);
                         $('#editDepartment').val(response.data.department);
                         $('#viewPhoto').attr('src',response.data.photo);
-                        $('#id').attr('src',response.data.id);
+                        $('#id').val(response.data.id);
 
                     }
                 });
