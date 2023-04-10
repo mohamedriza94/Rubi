@@ -29,7 +29,7 @@ class BusinessAdminController extends Controller
 
     public function readOne($id)
     {
-        $admin = BusinessAdmin::where('id',$id)->get();
+        $admin = BusinessAdmin::find($id);
         return response()->json(['data' => $admin]);
     }
     
@@ -45,7 +45,6 @@ class BusinessAdminController extends Controller
                 'email' => 'required|string|email',
                 'photo' => 'required|image',
                 'telephone' => 'required|string',
-                'password' => 'required|min:8',
             ], [
                 'department.required' => 'Choose a department',
                 'fullname.required' => 'Full name is required',
@@ -63,44 +62,51 @@ class BusinessAdminController extends Controller
             }
             else
             {
-                $businessAdminNo = rand(1515,9999);
-                //check if admin with same number already exists
-                $exists = BusinessAdmin::where('no',$businessAdminNo)->exists();
-                
-                if($exists)
-                {
-                    $businessAdminNo = rand(1515,9999);
+                //generate a business no
+                $no = mt_rand();
+                $exists = BusinessAdmin::where('no', $no)->exists();
+                while ($exists) {
+                    $no = mt_rand();
+                    $exists = BusinessAdmin::where('no', $no)->exists();
                 }
-                else
-                {
-                    //Record Activity
-                    $data = [ 'userType' => 'business', 'activity' => 'Added a new admin', 
-                    'user' => auth()->guard('business')->user()->id ];
-                    $activityController = new \App\Http\Controllers\common\ActivityController;
-                    $activityController->recordActivity($data);
-                    
-                    $hashedPassword = Hash::make($request->input('password'));
 
-                    //generate photo path
-                    $photoPath = request('photo')->store('businessAdmin','public');
-                    $photo = '/'.'storage/'.$photoPath;
+                //Record Activity
+                $data = [ 'userType' => 'business', 'activity' => 'Added a new admin', 
+                'user' => auth()->guard('business')->user()->id ];
+                $activityController = new \App\Http\Controllers\common\ActivityController;
+                $activityController->recordActivity($data);
+                
+                $password = rand(00000000,99999999);
+                $hashedPassword = Hash::make($password);
 
-                    BusinessAdmin::create([ 
-                        'no' => $businessAdminNo,
-                        'fullname' => $request->input('fullname'),
-                        'dob' => $request->input('dob'),
-                        'status' => 'active',
-                        'email' => $request->input('email'),
-                        'photo' => $photo,
-                        'telephone' => $request->input('telephone'),
-                        'business' => auth()->guard('business')->user()->id,
-                        'department' => $request->input('department'),
-                        'password' => $hashedPassword]);
-                    
-                    DB::commit();
-                }
+                //generate photo path
+                $photoPath = request('photo')->store('businessAdmin','public');
+                $photo = '/'.'storage/'.$photoPath;
+
+                BusinessAdmin::create([ 
+                    'no' => $businessAdminNo,
+                    'fullname' => $request->input('fullname'),
+                    'dob' => $request->input('dob'),
+                    'status' => 'active',
+                    'email' => $request->input('email'),
+                    'photo' => $photo,
+                    'telephone' => $request->input('telephone'),
+                    'business' => auth()->guard('business')->user()->id,
+                    'department' => $request->input('department'),
+                    'password' => $hashedPassword]);
+
+                //Send Credentials in Email
+                $data["email"] = $request->input('email');
+                $data["title"] = "Admin Credentials";
+                $data["password"] = $password;
+                $data["business"] = auth()->guard('business')->user()->name;
                 
+                Mail::send('mail.businessAdminCredentials', $data, function($message)use($data) {
+                    $message->to($data["email"])
+                    ->subject($data["title"]);
+                });
                 
+                DB::commit();
             }
             
         } catch (\Exception $e) {
@@ -153,12 +159,10 @@ class BusinessAdminController extends Controller
         try {
             // Validate the request data
             $validator = Validator::make($request->all(), [     
-                'department' => 'required|string',
                 'fullname' => 'required|string',
                 'dob' => 'required|string',
                 'telephone' => 'required|string',
             ], [
-                'department.required' => 'Choose a department',
                 'fullname.required' => 'Full name is required',
                 'dob.required' => 'Date of birth is required',
                 'telephone.required' => 'Telephone number is required',
@@ -175,8 +179,8 @@ class BusinessAdminController extends Controller
                 BusinessAdmin::where('id', $request->input('id'))->update([ 
                     'fullname' => $request->input('fullname'),
                     'dob' => $request->input('dob'),
-                    'telephone' => $request->input('telephone'),
-                    'department' => $request->input('department'),]);
+                    'department' => $request->input('department'),
+                    'telephone' => $request->input('telephone')]);
                     
                     DB::commit();
                 }

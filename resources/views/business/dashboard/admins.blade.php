@@ -64,22 +64,22 @@
                                         
                                         <div class="form-group col-9">
                                             <label class="form-label">Fullname</label>
-                                            <input class="form-control" id="fullname" name="fullname">
+                                            <input class="form-control" name="fullname">
                                         </div>
                                         
                                         <div class="form-group col-3">
                                             <label class="form-label">Date of Birth</label>
-                                            <input class="form-control" type="date" id="dob" name="dob">
+                                            <input class="form-control" type="date" name="dob">
                                         </div>
 
                                         <div class="form-group col-4">
                                             <label class="form-label">Email</label>
-                                            <input class="form-control" type="email" id="email" name="email">
+                                            <input class="form-control" type="email" name="email">
                                         </div>
 
                                         <div class="form-group col-4">
                                             <label class="form-label">Telephone</label>
-                                            <input class="form-control" id="telephone" name="telephone">
+                                            <input class="form-control" name="telephone">
                                         </div>
                                         
                                         <div class="form-group col-4">
@@ -91,16 +91,6 @@
                                         <div class="form-group col-6">
                                             <label class="form-label">Password</label>
                                             <input class="form-control" type="password" id="password" name="password">
-                                        </div>
-                                        
-                                        <div class="form-group col-6">
-                                            <label class="form-label">Confirm Password</label>
-                                            <input class="form-control" type="password" id="password_confirmation" name="password_confirmation">
-                                        </div>
-                                        
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Profile Photo</label>
-                                            <input class="form-control" id="photo" name="photo" type="file">
                                         </div>
                                         
                                         <div class="form-group col-12">
@@ -125,11 +115,11 @@
     </div>
     
     {{-- view modal --}}
-    <div class="modal bs-example-modal-sm animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
-        <div class="modal-dialog modal-sm">
+    <div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">View Department</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">View Business Admin</h4>
                     <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
@@ -137,35 +127,49 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form class="row" id="viewForm" enctype="multipart/form-data" method="post">
-                                        <div class="form-group col-6">
+                                    
+                                    <form class="row" id="updateForm" enctype="multipart/form-data" method="post">
+                                        
+                                        <input type="hidden" name="id">
+
+                                        <div class="form-group col-12">
+                                            <label class="form-label" id="registeredAt">Registered At</label>
+                                        </div>
+
+                                        <div class="form-group col-9">
+                                            <label class="form-label">Fullname</label>
+                                            <input class="form-control" id="fullname" name="fullname">
+                                        </div>
+                                        
+                                        <div class="form-group col-3">
+                                            <label class="form-label">Date of Birth</label>
+                                            <input class="form-control" type="date" id="dob" name="dob">
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="email" readonly id="email" name="email">
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Telephone</label>
+                                            <input class="form-control" id="telephone" name="telephone">
+                                        </div>
+                                        
+                                        <div class="form-group col-4">
                                             <label class="form-label">Department</label>
-                                            <input type="text" readonly class="form-control" id="viewDepartment">
-                                        </div>
-                                        
-                                        <div class="form-group col-6">
-                                            <label class="form-label">Added On</label>
-                                            <input type="text" readonly class="form-control" id="viewAddedOn">
+                                            <select class="form-select" name="department" id="editDepartment">
+                                            </select>
                                         </div>
                                         
                                         <div class="form-group col-12">
-                                            <label class="form-label">Nickname</label>
-                                            <input type="text" readonly class="form-control" id="viewNickname">
+                                            <img id="viewPhoto" class="col-12">
                                         </div>
                                         
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Active Employees</label>
-                                            <input type="text" readonly class="form-control" id="viewActiveEmployees">
-                                        </div>
-                                        
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Inactive Employees</label>
-                                            <input type="text" readonly class="form-control" id="viewInactiveEmployees">
-                                        </div>
-                                        
-                                        <div class="form-group col-12">
-                                            <label class="form-label">Total Employees</label>
-                                            <input type="text" readonly class="form-control" id="viewTotalEmployees">
+                                        <div class="col-12">
+                                            <div class="d-md-flex align-items-center">
+                                                <button type="submit" id="btnUpdate" class="col-12 btn btn-info">Update</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -205,10 +209,12 @@
                     type: "GET", url:"{{ url('business/dashboard/readActiveDepartments') }}", dataType:"json",
                     success:function(response){
                         $('#department').html(''); 
+                        $('#editDepartment').html(''); 
                         
                         $.each(response.data,function(key,item){
                            
                             $('#department').append('<option value="'+item.id+'">'+item.name+'</option>'); 
+                            $('#editDepartment').append('<option value="'+item.id+'">'+item.name+'</option>'); 
                             });
                         }
                     });
@@ -260,54 +266,87 @@
             $(document).on('click', '#btnCreate', function(e) {
                 e.preventDefault();
                 
-                if($('#password_confirmation').val() == $('#password').val())
-                {
-                    $("#btnCreate").prop("disabled", true).text("Creating...");
-                    
-                    let formData = new FormData($('#createForm')[0]);
-                    $.ajax({
-                        type: "POST", url: "{{ url('business/dashboard/createBusinessAdmin') }}",
-                        data: formData, contentType:false, processData:false,
-                        success: function(response){
-                            if(response.status==800)
+                $("#btnCreate").prop("disabled", true).text("Creating...");
+                
+                let formData = new FormData($('#createForm')[0]);
+                $.ajax({
+                    type: "POST", url: "{{ url('business/dashboard/createBusinessAdmin') }}",
+                    data: formData, contentType:false, processData:false,
+                    success: function(response){
+                        if(response.status==800)
+                        {
+                            $.each(response.errors,function(key,error)
                             {
-                                $.each(response.errors,function(key,error)
-                                {
-                                    toastMessage = '';
-                                    toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
-                                });
-                                
-                                $("#btnCreate").prop("disabled", false).text("Create");
-                            }
-                            else if(response.status == 400 || response.status == 600)
-                            {
-                                $("#btnCreate").prop("disabled", false).text("Create");
-                                toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
-                            }
-                            else if(response.status == 200)
-                            {
-                                $("#btnCreate").prop("disabled", false).text("Create");
-                                $('#createForm')[0].reset(); //FORM RESET INPUT
-                                readAdmins();
-                                
-                                Swal.fire({ title: 'Success', text: "Admin Account Created",
-                                icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
-                                
-                            }
+                                toastMessage = '';
+                                toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                            });
+                            
+                            $("#btnCreate").prop("disabled", false).text("Create");
                         }
-                    });
-                }
-                else
-                {
-                    toastType = 'error'; toastMessage = 'Passwords do not match'; showToast(); //TOAST ALERT
-                }
+                        else if(response.status == 400 || response.status == 600)
+                        {
+                            $("#btnCreate").prop("disabled", false).text("Create");
+                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        }
+                        else if(response.status == 200)
+                        {
+                            $("#btnCreate").prop("disabled", false).text("Create");
+                            $('#createForm')[0].reset(); //FORM RESET INPUT
+                            readAdmins();
+                            
+                            Swal.fire({ title: 'Success', text: "Admin Account Created",
+                            icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
+                            
+                        }
+                    }
+                });
+            });
+            
+            //update
+            $(document).on('click', '#btnUpdate', function(e) {
+                e.preventDefault();
+                
+                $("#btnUpdate").prop("disabled", true).text("Updating...");
+                
+                let formData = new FormData($('#updateForm')[0]);
+                $.ajax({
+                    type: "POST", url: "{{ url('business/dashboard/updateBusinessAdmin') }}",
+                    data: formData, contentType:false, processData:false,
+                    success: function(response){
+                        if(response.status==800)
+                        {
+                            $.each(response.errors,function(key,error)
+                            {
+                                toastMessage = '';
+                                toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                            });
+                            
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                        }
+                        else if(response.status == 400 || response.status == 600)
+                        {
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                            toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        }
+                        else if(response.status == 200)
+                        {
+                            $("#btnUpdate").prop("disabled", false).text("Update");
+                            $('#updateForm')[0].reset(); //FORM RESET INPUT
+                            readAdmins();
+                            
+                            Swal.fire({ title: 'Success', text: "Admin Account Updated",
+                            icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });
+                            
+                        }
+                    }
+                });
             });
 
             //View
             $(document).on('click', '#btnView', function(e){
                 e.preventDefault();
                 var id = $(this).val(); //get message id
-                var urlView = '{{ url("business/dashboard/readOneDepartment/:id") }}'; urlView = urlView.replace(':id', id);
+                var urlView = '{{ url("business/dashboard/readOneBusinessAdmin/:id") }}'; urlView = urlView.replace(':id', id);
                 $.ajax({
                     type:"GET", url:urlView, dataType:"json",
                     success: function(response)
@@ -317,12 +356,15 @@
                         //format time
                         formatTime(response.data.created_at);
                         
-                        $('#viewDepartment').val(response.data.name);
-                        $('#viewAddedOn').val(date+time);
-                        $('#viewNickname').val(response.data.nickname);
-                        $('#viewActiveEmployees').val(response.data.active);
-                        $('#viewInactiveEmployees').val(response.data.inactive);
-                        $('#viewTotalEmployees').val(response.data.total);
+                        $('#registeredAt').html('<label class="form-label" id="registeredAt"><b>Registered At</b>: '+date+time+'</label>');
+                        $('#fullname').val(response.data.fullname);
+                        $('#dob').val(response.data.dob);
+                        $('#email').val(response.data.email);
+                        $('#telephone').val(response.data.telephone);
+                        $('#editDepartment').val(response.data.department);
+                        $('#viewPhoto').attr('src',response.data.photo);
+                        $('#id').attr('src',response.data.id);
+
                     }
                 });
             });

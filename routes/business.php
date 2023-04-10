@@ -32,7 +32,7 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
             Route::post('/createBusinessAdmin', 'BusinessAdminController@create');
             Route::get('/readOneBusinessAdmin/{id}', 'BusinessAdminController@readOne');
             Route::put('/updateBusinessAdminStatus', 'BusinessAdminController@updateStatus');
-            Route::put('/updateBusinessAdmin', 'BusinessAdminController@update');
+            Route::post('/updateBusinessAdmin', 'BusinessAdminController@update');
             Route::put('/deleteBusinessAdmin', 'BusinessAdminController@delete');
         });
     });
