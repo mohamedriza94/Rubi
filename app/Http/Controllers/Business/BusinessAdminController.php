@@ -18,7 +18,8 @@ class BusinessAdminController extends Controller
     public function read()
     {
         $admins = BusinessAdmin::join('departments','business_admins.department','=','departments.id')->
-        where('business_admins.business',auth()->guard('business')->user()->id)->orderBy('business_admins.id','DESC')->get([
+        where('business_admins.business',auth()->guard('business')->user()->id)
+        ->where('business_admins.role','admin')->orderBy('business_admins.id','DESC')->get([
             'business_admins.fullname AS fullname',
             'business_admins.status AS status',
             'business_admins.photo AS photo',

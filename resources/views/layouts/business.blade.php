@@ -104,7 +104,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
                                 <!-- text-->
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                                <a data-bs-toggle="modal" data-bs-target="#profileModal" class="dropdown-item"><i class="ti-user"></i>Business Profile</a>
                                 <!-- text-->
                                 <div class="dropdown-divider"></div>
                                 <!-- text-->
@@ -190,6 +190,42 @@
     <script src="{{ asset('admin/assets/node_modules/dropify/dist/js/dropify.min.js') }}"></script>
     <script src="{{ asset('admin/assets/upload.js') }}"></script>
     <script src="{{ asset('admin/assets/custom.js') }}"></script>
+
+
+    {{-- Profile modal --}}
+    <div class="modal bs-example-modal-lg animated fadeIn" id="profileModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">Business Profile</h4>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row" id="updateForm" enctype="multipart/form-data" method="post">
+                                        <div class="form-group col-12">
+                                            <label class="form-label"><b>Name:</b> {{ auth()->guard('business')->user()->name }}</label><br>
+                                            <label class="form-label"><b>Type:</b> {{ auth()->guard('business')->user()->type }}</label><br>
+                                            <label class="form-label"><b>Product:</b> {{ auth()->guard('business')->user()->product }}</label><br>
+                                            <label class="form-label"><b>Email:</b> {{ auth()->guard('business')->user()->email }}</label><br>
+                                            <label class="form-label"><b>Website:</b> {{ auth()->guard('business')->user()->website }}</label><br>
+                                            <label class="form-label"><b>Country:</b> {{ auth()->guard('business')->user()->country }}</label><br>
+                                            <label class="form-label"><b>Verified On:</b> {{ auth()->guard('business')->user()->verifiedDate }}</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     
 </body>
 
