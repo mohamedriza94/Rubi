@@ -20,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
     public const RUBIADMIN = '/rubiAdmin/dashboard';
     public const BUSINESS = '/business/dashboard';
+    public const BUSINESSADMIN = '/sub/dashboard';
 
 
     /**
@@ -36,6 +37,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')->group(base_path('routes/web.php'));
             Route::middleware('web')->group(base_path('routes/rubiAdmin.php'));
             Route::middleware('web')->group(base_path('routes/business.php'));
+            Route::middleware('web')->group(base_path('routes/sub.php'));
         });
     }
 

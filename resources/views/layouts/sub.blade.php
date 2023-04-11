@@ -38,7 +38,7 @@
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
                     <a class="navbar-brand profile-pic" href="{{ route('rubi.dashboard') }}">
-                        <img src="{{ auth()->guard('business')->user()->photo }}" class="light-logo" />
+                        <img id="logo" class="light-logo" />
                     </a>
                 </div>
                 
@@ -46,12 +46,6 @@
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"> <a class="nav-link nav-toggler d-block d-md-none waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                         <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>
-                        
-                        <li class="nav-item">
-                            <form class="app-search d-none d-md-block d-lg-block">
-                                <input type="text" class="form-control" placeholder="Search Here"> {{-- Search --}}
-                            </form>
-                        </li>
                     </ul>
                     
                     <ul class="navbar-nav my-lg-0">
@@ -96,11 +90,11 @@
                                 </ul>
                             </div>
                         </li>
-
+                        
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ auth()->guard('business')->user()->photo }}" alt="user" class=""> 
-                                <span class="hidden-md-down">{{ auth()->guard('business')->user()->name }} &nbsp;<i class="fa fa-angle-down"></i></span> 
+                                <img src="{{ auth()->guard('businessAdmin')->user()->photo }}" alt="user" class=""> 
+                                <span class="hidden-md-down">{{ auth()->guard('businessAdmin')->user()->fullname }} &nbsp;<i class="fa fa-angle-down"></i></span> 
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
                                 <!-- text-->
@@ -111,7 +105,7 @@
                                 <a href="{{ route('business.logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                                 <!-- text-->
-
+                                
                                 <form id="logout-form" action="{{ route('business.logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
@@ -129,13 +123,40 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.departments') }}"><i class="icon-notebook"></i><span class="hide-menu">Departments</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.admins') }}"><i class="icon-user"></i><span class="hide-menu">Admins</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
+
+                        @if(auth('businessAdmin')->user()->role == 'admin')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.tasks') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Tasks</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
+                        @endif
                         
-                        <li class="nav-small-cap">--- OTHER</li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('business.cashOutFlow') }}"><i class="icon-credit-card"></i><span class="hide-menu">Cash Outflow</span></a></li>
+                        @if(auth('businessAdmin')->user()->role == 'employee')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.notes') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Notes</span></a></li>
+
+                        <li class="nav-small-cap">--- Other</li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.pettyExpense') }}"><i class="icon-calculator"></i><span class="hide-menu">Petty Expense</span></a></li>
+                        @endif
+
+                        {{-- get department name --}}
+                        @php
+                        $user = auth('businessAdmin')->user();
+                        $department = \App\Models\Department::find($user->department);
+                        @endphp
+                        
+                        @if($department && $department->name == 'HR' && $user->role== 'employee')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.attendance') }}"><i class="icon-check"></i><span class="hide-menu">Attendance</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
+                        @endif
+                        
+                        @if($department && $department->name == 'HR' && $user->role== 'admin')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.employees') }}"><i class="icon-people"></i><span class="hide-menu">Employees & Vacancies</span></a></li>
+                        @endif
+                        
+                        @if($department && $department->name == 'Finance' && $user->role== 'admin')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.pettyExpenseReport') }}"><i class="icon-people"></i><span class="hide-menu">Petty Expenses</span></a></li>
+                        @endif
+
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -144,11 +165,6 @@
         </aside>
         <div class="page-wrapper">
             <div class="container-fluid">
-                
-                
-                
-                
-                
                 
                 
                 
@@ -190,29 +206,37 @@
     <script src="{{ asset('admin/assets/node_modules/dropify/dist/js/dropify.min.js') }}"></script>
     <script src="{{ asset('admin/assets/upload.js') }}"></script>
     <script src="{{ asset('admin/assets/custom.js') }}"></script>
-
-
+    
+    
     {{-- Profile modal --}}
     <div class="modal bs-example-modal-lg animated fadeIn" id="profileModal" tabindex="-1" aria-hidden="true" style="display:none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">Business Profile</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">My Profile</h4>
                     <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="row" id="updateForm" enctype="multipart/form-data" method="post">
+                        <form class="row" id="profileForm" enctype="multipart/form-data" method="post">
                             <div class="form-group col-12">
-                                <label class="form-label"><b>Name:</b> {{ auth()->guard('business')->user()->name }}</label><br>
-                                <label class="form-label"><b>Type:</b> {{ auth()->guard('business')->user()->type }}</label><br>
-                                <label class="form-label"><b>Product:</b> {{ auth()->guard('business')->user()->product }}</label><br>
-                                <label class="form-label"><b>Email:</b> {{ auth()->guard('business')->user()->email }}</label><br>
-                                <label class="form-label"><b>Website:</b> {{ auth()->guard('business')->user()->website }}</label><br>
-                                <label class="form-label"><b>Country:</b> {{ auth()->guard('business')->user()->country }}</label><br>
-                                <label class="form-label"><b>Verified On:</b> {{ auth()->guard('business')->user()->verifiedDate }}</label><br>
+                                <label class="form-label"><b>Fullname:</b>     <span id="Fullname"></span>   </label><br>
+                                <label class="form-label"><b>Date of Birth:</b>     <span id="dob"></span>   </label><br>
+                                <label class="form-label"><b>Email:</b>     <span id="Email"></span>   </label><br>
+                                <label class="form-label"><b>Telephone:</b>     <span id="Telephone"></span>   </label><br>
+                                <label class="form-label"><b>Role:</b>     <span id="Role"></span>   </label><br>
+                                <label class="form-label"><b>Department:</b>     <span id="Department"></span>   </label><br>
+                                <label class="form-label"><b>Business:</b>     <span id="Business"></span>   </label><br>
                             </div>
-                        </div>
+                            <div class="form-group col-6">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" id="password">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" name="password_confirmation" id="confirmPassword">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

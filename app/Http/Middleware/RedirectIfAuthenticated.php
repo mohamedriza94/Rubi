@@ -36,6 +36,13 @@ class RedirectIfAuthenticated
                             return redirect()->route('business.dashboard'); //if business is authenticated, redirect to business dashboard
                         }
                         break;
+                
+                        case 'businessAdmin':
+                            if (Auth::guard($guard)->check()) 
+                            {
+                                return redirect()->route('sub.dashboard'); //if user is authenticated, redirect to business dashboard
+                            }
+                            break;
                     
                     // default:
                     //     if (Auth::guard($guard)->check()) {

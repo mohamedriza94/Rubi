@@ -42,6 +42,7 @@ class Handler extends ExceptionHandler
         switch ($guard) {
             case 'rubiAdmin': $login = 'rubi.login'; break;
             case 'business': $login = 'business.login'; break;
+            case 'businessAdmin': $login = 'sub.login'; break;
             
             // default:
             //     $login = 'login';

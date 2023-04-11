@@ -35,6 +35,9 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
             Route::post('/updateBusinessAdmin', 'BusinessAdminController@update');
             Route::post('/updateBusinessAdminProfilePicture', 'BusinessAdminController@updateProfilePicture');
             Route::put('/deleteBusinessAdmin', 'BusinessAdminController@delete');
+
+            //dashboard statistics
+            Route::get('/readStatistics', 'DashboardController@statistics');
         });
     });
 });

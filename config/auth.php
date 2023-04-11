@@ -25,6 +25,12 @@ return [
             'driver' => 'session',
             'provider' => 'businesses',
         ],
+        
+        
+        'businessAdmin' => [
+            'driver' => 'session',
+            'provider' => 'businessAdmins',
+        ],
     ],
     
     //providers
@@ -42,6 +48,11 @@ return [
         'businesses' => [
             'driver' => 'eloquent',
             'model' => App\Models\Business::class,
+        ],
+        
+        'businessAdmins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\BusinessAdmin::class,
         ],
         
     ],
@@ -63,6 +74,13 @@ return [
 
         'businesses' => [
             'provider' => 'businesses',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'businessAdmins' => [
+            'provider' => 'businessAdmins',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
