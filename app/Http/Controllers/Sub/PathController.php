@@ -34,4 +34,52 @@ class PathController extends Controller
             return view('sub.dashboard.employeeIndex')->with($view_data);
         }
     }
+
+    public function tasks()
+    {
+        $view_data['title'] = 'Tasks'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.tasks')->with($view_data);
+    }
+
+    public function activities()
+    {
+        $view_data['title'] = 'Activities'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.activities')->with($view_data);
+    }
+
+    public function notes()
+    {
+        $view_data['title'] = 'Notes'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.notes')->with($view_data);
+    }
+
+    public function pettyExpense()
+    {
+        $view_data['title'] = 'Petty Expense'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.pettyExpense')->with($view_data);
+    }
+
+    public function attendance()
+    {
+        $view_data['title'] = 'Attendance'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.attendance')->with($view_data);
+    }
+
+    public function payroll()
+    {
+        $view_data['title'] = 'Payroll'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.payroll')->with($view_data);
+    }
+
+    public function employees()
+    {
+        $view_data['title'] = 'Employees'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.employees')->with($view_data);
+    }
+
+    public function pettyExpenseReport()
+    {
+        $view_data['title'] = 'Petty Expense Report'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.pettyExpenseReport')->with($view_data);
+    }
 }

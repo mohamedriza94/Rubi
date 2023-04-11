@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Sub\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -51,15 +48,16 @@ class LoginController extends Controller
     */
     public function showLoginForm()
     {
-        $view_data['title'] = 'Signin';
-        return view('client.signin', $view_data);
+        $view_data['title'] = 'Login';
+        $view_data['brand'] = 'Business';
+        return view('sub.auth.login', $view_data);
     }
     
     public function validateLogin(Request $request)
     {
         // Attempt to log the user in
         if ($this->guard()->attempt(['email' => $request->email, 
-        'password' => $request->password, 'status' => 'active'])) {
+        'password' => $request->password])) {
             
             //Record Activity
             $userID = auth()->guard('businessAdmin')->user()->id;
@@ -86,7 +84,7 @@ class LoginController extends Controller
         ? $this->redirectTo()
         : (property_exists($this, 'redirectToRoute')
         ? redirect()->route($this->redirectToRoute)
-        : redirect()->route('business.dashboard'));
+        : redirect()->route('sub.dashboard'));
     }
     
     /**
@@ -110,7 +108,7 @@ class LoginController extends Controller
         $activityController = new \App\Http\Controllers\common\ActivityController;
         $activityController->recordActivity($data);
 
-        return redirect()->route('business.login');
+        return redirect()->route('sub.login');
     }
 }
 

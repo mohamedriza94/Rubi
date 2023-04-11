@@ -38,7 +38,13 @@
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
                     <a class="navbar-brand profile-pic" href="{{ route('rubi.dashboard') }}">
-                        <img id="logo" class="light-logo" />
+                        
+                        @php
+                        $user = auth('businessAdmin')->user();
+                        $business = \App\Models\Business::find($user->business);
+                        @endphp
+
+                        <img id="logo" src="{{ $business->photo }}" class="light-logo" />
                     </a>
                 </div>
                 
@@ -123,15 +129,15 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
-
-                        @if(auth('businessAdmin')->user()->role == 'admin')
+                        
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.tasks') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Tasks</span></a></li>
+
+                        @if(auth('businessAdmin')->user()->role == 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         @endif
                         
                         @if(auth('businessAdmin')->user()->role == 'employee')
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.notes') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Notes</span></a></li>
 
                         <li class="nav-small-cap">--- Other</li>
