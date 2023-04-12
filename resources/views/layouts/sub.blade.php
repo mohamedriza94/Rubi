@@ -37,13 +37,14 @@
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
-                    <a class="navbar-brand profile-pic" href="{{ route('rubi.dashboard') }}">
+                    <a class="navbar-brand profile-pic" href="{{ route('sub.dashboard') }}">
                         
                         @php
                         $user = auth('businessAdmin')->user();
                         $business = \App\Models\Business::find($user->business);
+                        $department = \App\Models\Department::find($user->department);
                         @endphp
-
+                        
                         <img id="logo" src="{{ $business->photo }}" class="light-logo" />
                     </a>
                 </div>
@@ -132,18 +133,18 @@
                         
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.tasks') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Tasks</span></a></li>
-
+                        
                         @if(auth('businessAdmin')->user()->role == 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
                         @endif
                         
                         @if(auth('businessAdmin')->user()->role == 'employee')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.notes') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Notes</span></a></li>
-
+                        
                         <li class="nav-small-cap">--- Other</li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.pettyExpense') }}"><i class="icon-calculator"></i><span class="hide-menu">Petty Expense</span></a></li>
                         @endif
-
+                        
                         {{-- get department name --}}
                         @php
                         $user = auth('businessAdmin')->user();
@@ -162,7 +163,7 @@
                         @if($department && $department->name == 'Finance' && $user->role== 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.pettyExpenseReport') }}"><i class="icon-people"></i><span class="hide-menu">Petty Expenses</span></a></li>
                         @endif
-
+                        
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -226,13 +227,13 @@
                     <div class="row">
                         <form class="row" id="profileForm" enctype="multipart/form-data" method="post">
                             <div class="form-group col-12">
-                                <label class="form-label"><b>Fullname:</b>     <span id="Fullname"></span>   </label><br>
-                                <label class="form-label"><b>Date of Birth:</b>     <span id="dob"></span>   </label><br>
-                                <label class="form-label"><b>Email:</b>     <span id="Email"></span>   </label><br>
-                                <label class="form-label"><b>Telephone:</b>     <span id="Telephone"></span>   </label><br>
-                                <label class="form-label"><b>Role:</b>     <span id="Role"></span>   </label><br>
-                                <label class="form-label"><b>Department:</b>     <span id="Department"></span>   </label><br>
-                                <label class="form-label"><b>Business:</b>     <span id="Business"></span>   </label><br>
+                                <label class="form-label"><b>Fullname:</b>     {{ $user->fullname }}   </label><br>
+                                <label class="form-label"><b>Date of Birth:</b>     {{ $user->dob }}   </label><br>
+                                <label class="form-label"><b>Email:</b>     {{ $user->email }}   </label><br>
+                                <label class="form-label"><b>Telephone:</b>     {{ $user->telephone }}   </label><br>
+                                <label class="form-label"><b>Role:</b>     {{ $user->role }}   </label><br>
+                                <label class="form-label"><b>Department:</b>     {{ $department->name }}   </label><br>
+                                <label class="form-label"><b>Business:</b>     {{ $business->name }}   </label><br>
                             </div>
                             <div class="form-group col-6">
                                 <label class="form-label">Password</label>
@@ -242,7 +243,61 @@
                                 <label class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" name="password_confirmation" id="confirmPassword">
                             </div>
+                            <div class="form-group text-center m-t-20">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-info w-100" id="btnChange">Change</button>
+                                </div>
+                            </div>
                         </form>
+                        
+                        {{-- change password script --}}
+                        <script>
+                            $(document).ready(function(){
+                                
+                                //Change password
+                                $(document).on('click', '#btnChange', function(e) {
+                                    e.preventDefault();
+                                    
+                                    if($('#password').val() == $('#confirmPassword').val())
+                                    {
+                                        var password = $('#password').val();
+                                        var data = { 'password':password }
+                                        $.ajax({
+                                            type:"PUT",
+                                            url: "{{ url('sub/dashboard/changePassword') }}",
+                                            data:data,
+                                            dataType:"json",
+                                            success: function(response){
+                                                if(response.status==800)
+                                                {
+                                                    $.each(response.errors,function(key,error)
+                                                    {
+                                                        toastMessage = '';
+                                                        toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                                                    });
+                                                    
+                                                    $("#btnCreate").prop("disabled", false).text("Create");
+                                                }
+                                                else if(response.status == 400)
+                                                {
+                                                    toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                                }
+                                                else if(response.status == 200)
+                                                {
+                                                    toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        toastType = 'error'; toastMessage = 'Passwords do not match!'; showToast(); //TOAST ALERT
+                                    }
+                                });
+                                
+                            });
+                        </script>
+                        
                     </div>
                 </div>
             </div>

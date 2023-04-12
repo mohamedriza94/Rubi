@@ -6,7 +6,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
     Route::get('/', 'Auth\LoginController@showLoginForm')->name('sub.login');
     Route::post('/', 'Auth\LoginController@validateLogin')->name('sub.login.submit');
     
-    Route::middleware(['auth:business'])->group(function () { //if business's admin is logged in
+    Route::middleware(['auth:businessAdmin'])->group(function () { //if business's admin is logged in
         
         Route::post('/logout', 'Auth\LoginController@logout')->name('sub.logout');
         
@@ -29,6 +29,12 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/readOneTask/{id}', 'TaskController@readOne');
             Route::put('/startOrEndTask', 'TaskController@updateStatus');
             Route::get('/readTopTask', 'TaskController@readTop');
+
+            //change password
+            Route::put('/changePassword','commonController@changePassword');
+
+            //statistics
+            Route::get('/readStatistics', 'commonController@statistics');
         });
     });
 }); 

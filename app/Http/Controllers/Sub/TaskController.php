@@ -76,7 +76,8 @@ class TaskController extends Controller
         }
         
         return response()->json([
-            'status'=>200
+            'status'=>200,
+            'message'=>'Task Created'
         ]);
     }
     
@@ -122,7 +123,7 @@ class TaskController extends Controller
     
     public function readTop()
     {
-        $task = Task::where('status','pending')->first();
+        $task = Task::where('department',auth()->guard('businessAdmin')->user()->department)->where('status','pending')->first();
         return response()->json(['data' => $task]);
     }
 }
