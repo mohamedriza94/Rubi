@@ -20,7 +20,15 @@ class AttendanceController extends Controller
     public function read()
     {
         $business = auth()->guard('businessAdmin')->user()->business;
-        $attendance = Attendance::where('business',$business)->get();
+
+        $attendance = Attendance::join('business_admins.id','=','attendances.employee')
+        ->join('departments.id','=','attendances.department')
+        ->where('attendances.business',$business)->get([
+            'attendances.id AS no',
+            'business_admins.fullname AS employeeName',
+            'business_admins.photo AS employeePhoto',
+            'department.name AS department',
+            'attendances.created_at AS created_at']);
 
         return response()->json([
             'data' => $attendance

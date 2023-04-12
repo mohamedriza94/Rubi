@@ -134,10 +134,6 @@
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.tasks') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Tasks</span></a></li>
                         
-                        @if(auth('businessAdmin')->user()->role == 'admin')
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.activities') }}"><i class="icon-mouse"></i><span class="hide-menu">Activities</span></a></li>
-                        @endif
-                        
                         @if(auth('businessAdmin')->user()->role == 'employee')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.notes') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Notes</span></a></li>
                         
@@ -153,16 +149,12 @@
                         
                         {{-- human resource --}}
                         @if($department && $department->name == 'HR' && $user->role== 'employee')
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
                         @endif
                         
                         @if($department && $department->name == 'HR' && $user->role== 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.attendance') }}"><i class="icon-check"></i><span class="hide-menu">Attendance</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.employees') }}"><i class="icon-people"></i><span class="hide-menu">Employees & Vacancies</span></a></li>
-                        @endif
-                        
-                        @if($department && $department->name == 'Finance' && $user->role== 'admin')
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.pettyExpenseReport') }}"><i class="icon-people"></i><span class="hide-menu">Petty Expenses</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
                         @endif
                         
                     </ul>

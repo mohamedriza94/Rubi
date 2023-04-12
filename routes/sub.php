@@ -46,6 +46,8 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
 
             //attendance
             Route::get('/readAttendance', 'AttendanceController@read');
+
+            //vacancy
         });
     });
 }); 
