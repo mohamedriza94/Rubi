@@ -9,5 +9,13 @@ class Vacancy extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'position',
+        'description',
+        'salaryRange',
+        'type',
+        'business',
+        'status',
+        'end'
+    ];
 }

@@ -21,6 +21,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/attendance', 'PathController@attendance')->name('sub.attendance');
             Route::get('/payroll', 'PathController@payroll')->name('sub.payroll');
             Route::get('/employees', 'PathController@employees')->name('sub.employees');
+            Route::get('/vacancies', 'PathController@vacancies')->name('sub.vacancies');
             Route::get('/pettyExpenseReport', 'PathController@pettyExpenseReport')->name('sub.pettyExpenseReport');
 
             //tasks
@@ -48,6 +49,11 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/readAttendance', 'AttendanceController@read');
 
             //vacancy
+            Route::post('/createVacancy', 'VacancyController@createVacancy');
+            Route::put('/updateVacancyStatus', 'VacancyController@updateStatus');
+            Route::post('/updateVacancy', 'VacancyController@update');
+            Route::get('/readVacancies', 'VacancyController@read');
+            Route::get('/readOneVacancy/{id}', 'VacancyController@readOne');
         });
     });
 }); 
