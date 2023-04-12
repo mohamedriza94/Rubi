@@ -58,10 +58,21 @@ class LoginController extends Controller
         // Attempt to log the user in
         if ($this->guard()->attempt(['email' => $request->email, 
         'password' => $request->password])) {
+
+            $userData = auth()->guard('businessAdmin')->user();
+            //record attendance
+            if($userData->role == 'employee')
+            {
+                $data = [ 'business' => $userData->business, 'department' => $userData->department, 
+                'employee' => $userData->employee ];
+                
+                $activityController = new \App\Http\Controllers\sub\AttendanceController;
+                $activityController->recordAttendance($data);
+            }
             
             //Record Activity
-            $userID = auth()->guard('businessAdmin')->user()->id;
-            $userRole = auth()->guard('businessAdmin')->user()->role;
+            $userID = $userData->id;
+            $userRole = $userData->role;
             
             $data = [ 'userType' => $userRole, 'activity' => 'Logged In', 
             'user' => $userID ];

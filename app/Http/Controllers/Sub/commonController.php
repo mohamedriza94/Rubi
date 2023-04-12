@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Note;
+use App\Models\BusinessAdmin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,7 @@ class commonController extends Controller
             $validator = Validator::make($request->all(), [     
                 'password' => 'required|min:8'
             ], [
-                'password.required' => 'Password is required',
+                'password.required' => 'Password is required'
             ]);
             
             if ($validator->fails()) { 

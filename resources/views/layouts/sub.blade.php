@@ -151,12 +151,13 @@
                         $department = \App\Models\Department::find($user->department);
                         @endphp
                         
+                        {{-- human resource --}}
                         @if($department && $department->name == 'HR' && $user->role== 'employee')
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.attendance') }}"><i class="icon-check"></i><span class="hide-menu">Attendance</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
                         @endif
                         
                         @if($department && $department->name == 'HR' && $user->role== 'admin')
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.attendance') }}"><i class="icon-check"></i><span class="hide-menu">Attendance</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.employees') }}"><i class="icon-people"></i><span class="hide-menu">Employees & Vacancies</span></a></li>
                         @endif
                         

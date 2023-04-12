@@ -35,6 +35,17 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
 
             //statistics
             Route::get('/readStatistics', 'commonController@statistics');
+
+            //notes
+            Route::post('/createNote', 'NoteController@create');
+            Route::get('/readNotes', 'NoteController@read');
+
+            //petty expenses
+            Route::post('/recordExpense', 'NoteController@create');
+            Route::get('/readExpenses', 'NoteController@read');
+
+            //attendance
+            Route::get('/readAttendance', 'AttendanceController@read');
         });
     });
 }); 

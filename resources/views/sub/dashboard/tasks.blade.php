@@ -29,7 +29,7 @@
                 <div class="card-body">
                     <h4 class="card-title" id="dataCount"></h4>
                     <div class="table-responsive">
-                        <table class="table color-table purple-table">
+                        <table class="table color-table purple-table text-center">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -324,7 +324,7 @@
                         $('#description').val(response.data.description);
                         $('#providedOn').html('<label class="form-label" id="providedOn"><b>Provided On: </b>'+date+time+'</label>');
                         $('#start').val(response.data.start);
-                        $('#End').val(response.data.End);
+                        $('#End').val(response.data.end);
                     }
                 });
             });
