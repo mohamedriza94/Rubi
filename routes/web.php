@@ -10,7 +10,7 @@ Route::get('/about', [pathController::class, 'about'])->name('client.about');
 Route::get('/signin', [pathController::class, 'signin'])->name('client.signin');
 Route::get('/registration', [pathController::class, 'registration'])->name('client.registration');
 Route::get('/Forgot+Password', [pathController::class, 'forgotPassword'])->name('client.forgotPassword');
-Route::get('/Job+Details', [pathController::class, 'jobDetails'])->name('client.jobDetails');
+Route::get('/Job+Details/{id}', [pathController::class, 'jobDetails'])->name('client.jobDetails');
 Route::get('/Registration+step+two', [pathController::class, 'registrationStepTwo'])->name('client.registrationStepTwo');
 
 //post routes

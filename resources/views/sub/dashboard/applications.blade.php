@@ -157,6 +157,9 @@
                                     case 'selected':
                                     status_badge = '<span class="label label-success">Selected</span>'; //INACTIVE
                                     break;
+                                    case 'pending':
+                                    status_badge = '<span class="label label-warning">Pending</span>'; //INACTIVE
+                                    break;
                                 }
                                 
                                 //format time
@@ -199,6 +202,18 @@
                             $('#email').val(response.data.email);
                             $('#telephone').val(response.data.telephone);
                             $('#coverLetter').val(response.data.coverLetter);
+                            
+                            //sorting STATUS
+                            switch(response.data.status) {
+                                case 'pending':
+                                    $('#btnShortlist').removeClass('d-none');
+                                    $('#btnRejected').removeClass('d-none');
+                                break;
+                                default:
+                                    $('#btnShortlist').addClass('d-none');
+                                    $('#btnRejected').addClass('d-none');
+                                break;
+                            }
                         }
                     });
                 });

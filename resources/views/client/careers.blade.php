@@ -32,48 +32,52 @@
         </div>
         
         <div class="row">
+            
+            @foreach($vacancies as $vacancy)
+            
+            @php
+            $business = \App\Models\Business::find($vacancy->business);
+            @endphp
+            
             <div class="col-lg-12">
                 <div class="job-card-two">
                     <div class="row align-items-center">
                         <div class="col-md-1">
                             <div class="company-logo">
-                                <a href="job-details.html">
-                                    <img src="assets/img/company-logo/1.png" alt="logo">
+                                <a>
+                                    <img src="{{ $business->photo }}" alt="logo">
                                 </a>
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="job-info">
                                 <h3>
-                                    <a href="#">Web Designer, Graphic Designer, UI/UX Designer </a>
+                                    <a href="#">{{ $vacancy->position }}</a>
                                 </h3>
                                 <ul>                                          
                                     <li>
                                         <i class='bx bx-briefcase' ></i>
-                                        Graphics Designer
+                                        {{ $vacancy->salaryRange }}
                                     </li>
                                     <li>
                                         <i class='bx bx-briefcase' ></i>
-                                        $35000-$38000
+                                        {{ $vacancy->type }}
                                     </li>
                                     <li>
                                         <i class='bx bx-location-plus'></i>
-                                        Wellesley Rd, London
+                                        {{ $business->country }}
                                     </li>
                                     <li>
                                         <i class='bx bx-stopwatch' ></i>
-                                        9 days ago
+                                        {{ \Carbon\Carbon::parse($vacancy->created_at)->format('Y-m-d') }}
+
                                     </li>
                                 </ul>
-                                
-                                <div>
-                                    <span>Full Time</span>
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="theme-btn text-end">
-                                <a href="{{ route('client.jobDetails') }}" class="default-btn">
+                                <a href="{{ url('/Job+Details') }}/{{ $vacancy->id }}" class="default-btn">
                                     Browse Job
                                 </a>
                             </div>
@@ -81,6 +85,8 @@
                     </div>
                 </div>
             </div>
+            @endforeach
+            
         </div>
         
         <nav aria-label="Page navigation example">
