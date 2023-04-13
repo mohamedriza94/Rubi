@@ -207,7 +207,7 @@
 
             readVacancies();
             
-            //read packages
+            //read vacancies
             function readVacancies()
             {
                 configureUrl();
@@ -300,6 +300,7 @@
             });
 
             var vacancyID = '';
+            var updatedSalary = '';
             //View
             $(document).on('click', '#btnView', function(e){
                 e.preventDefault();
@@ -318,6 +319,7 @@
                         $('#edit_description').val(response.data.description);
                         $('#edit_type').val(response.data.type);
                         $('#edit_end').val(response.data.end);
+                        updatedSalary = response.data.salaryRange;
                         $('#postedOn').val(date+time);
                     }
                 });
@@ -328,12 +330,21 @@
                 e.preventDefault();
                 
                 $("#btnUpdate").prop("disabled", true).text("Saving...");
-
+                var salary = '';
                 var position = $('#edit_position').val();
                 var description = $('#edit_description').val();
                 var type = $('#edit_type').val();
                 var end = $('#edit_end').val();
-                var salary = $('#edit_salaryFrom').val() + ' - ' + $('#edit_salaryTo').val();
+
+                //check if new salary range is entered
+                if($('#edit_salaryFrom').val() != "" && $('#edit_salaryTo').val() != "")
+                {
+                    salary = $('#edit_salaryFrom').val() + ' - ' + $('#edit_salaryTo').val();
+                }
+                else
+                {
+                    salary = updatedSalary;
+                }
                 
                 var data = { 'id':vacancyID, 'position':position, 'description':description, 'salary':salary, 'type':type, 'end':end }
                 $.ajax({

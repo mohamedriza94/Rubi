@@ -154,7 +154,8 @@
                         @if($department && $department->name == 'HR' && $user->role== 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.attendance') }}"><i class="icon-check"></i><span class="hide-menu">Attendance</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.employees') }}"><i class="icon-people"></i><span class="hide-menu">Employees</span></a></li>
-                        <li><a class="waves-effect waves-dark" href="{{ route('sub.vacancies') }}"><i class="icon-people"></i><span class="hide-menu">Vacancies</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.vacancies') }}"><i class="icon-user-following"></i><span class="hide-menu">Vacancies</span></a></li>
+                        <li><a class="waves-effect waves-dark" href="{{ route('sub.applications') }}"><i class="icon-docs"></i><span class="hide-menu">Applications</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
                         @endif
                         

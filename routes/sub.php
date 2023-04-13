@@ -22,6 +22,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/payroll', 'PathController@payroll')->name('sub.payroll');
             Route::get('/employees', 'PathController@employees')->name('sub.employees');
             Route::get('/vacancies', 'PathController@vacancies')->name('sub.vacancies');
+            Route::get('/applications', 'PathController@applications')->name('sub.applications');
             Route::get('/pettyExpenseReport', 'PathController@pettyExpenseReport')->name('sub.pettyExpenseReport');
 
             //tasks
@@ -48,12 +49,19 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             //attendance
             Route::get('/readAttendance', 'AttendanceController@read');
 
-            //vacancy
+            //vacancies
             Route::post('/createVacancy', 'VacancyController@createVacancy');
             Route::put('/updateVacancyStatus', 'VacancyController@updateStatus');
             Route::post('/updateVacancy', 'VacancyController@update');
             Route::get('/readVacancies', 'VacancyController@read');
             Route::get('/readOneVacancy/{id}', 'VacancyController@readOne');
+
+            //applications
+            Route::get('/searchApplication/{search}', 'ApplicationController@search');
+            Route::get('/readApplication', 'ApplicationController@read');
+            Route::get('/readOneApplication/{id}', 'ApplicationController@readOne');
+            Route::put('/shortlistApplication', 'ApplicationController@shortlist');
+            Route::put('/rejectApplication', 'ApplicationController@reject');
         });
     });
 }); 

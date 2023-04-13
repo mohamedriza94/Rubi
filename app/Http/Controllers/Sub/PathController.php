@@ -83,6 +83,12 @@ class PathController extends Controller
         return view('sub.dashboard.vacancies')->with($view_data);
     }
 
+    public function applications()
+    {
+        $view_data['title'] = 'Applications'; $view_data['brand'] = $this->brand;
+        return view('sub.dashboard.applications')->with($view_data);
+    }
+
     public function pettyExpenseReport()
     {
         $view_data['title'] = 'Petty Expense Report'; $view_data['brand'] = $this->brand;
