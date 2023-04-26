@@ -14,13 +14,14 @@ class ApplicationController extends Controller
 {
     public function search($search)
     {
-        $applications = Application::where('name','Like','%'.$search.'%')->join('vacancies','applications.vacancy','=','vacancies.id')
-        ->where('business',auth()->guard('businessAdmin')->user()->business)->orderBy('id','DESC')->get([
+        $applications = Application::join('vacancies','applications.vacancy','=','vacancies.id')
+        ->where('vacancies.position','Like','%'.$search.'%')
+        ->where('vacancies.business',auth()->guard('businessAdmin')->user()->business)->orderBy('id','DESC')->get([
             'applications.id AS id',
             'applications.name AS name',
             'applications.email AS email',
             'applications.status AS status',
-            'vacancies.name AS vacancy'
+            'vacancies.position AS vacancy'
         ]);
         return response()->json(['data' => $applications]);
     }
@@ -28,7 +29,22 @@ class ApplicationController extends Controller
     public function read()
     {
         $applications = Application::join('vacancies','applications.vacancy','=','vacancies.id')
-        ->where('business',auth()->guard('businessAdmin')->user()->business)->orderBy('id','DESC')->get([
+        ->where('vacancies.business',auth()->guard('businessAdmin')->user()->business)->orderBy('id','DESC')->get([
+            'applications.id AS id',
+            'applications.name AS name',
+            'applications.email AS email',
+            'applications.status AS status',
+            'vacancies.position AS vacancy'
+        ]);
+        return response()->json(['data' => $applications]);
+    }
+
+    public function sort($type)
+    {
+        $applications = Application::join('vacancies','applications.vacancy','=','vacancies.id')
+        ->where('vacancies.business',auth()->guard('businessAdmin')->user()->business)
+        ->where('applications.status',$type)
+        ->orderBy('id','DESC')->get([
             'applications.id AS id',
             'applications.name AS name',
             'applications.email AS email',

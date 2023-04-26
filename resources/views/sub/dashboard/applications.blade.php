@@ -22,6 +22,14 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+                        
+        <div class="btn-group m-b-10 m-r-10">
+            <button id="btnSortAll" class="btn btn-outline-primary font-18">All</button>
+            <button id="btnSortShortlisted" class="btn btn-outline-info font-18">Shortlisted</button>
+            <button id="btnSortRejected" class="btn btn-outline-danger font-18">Rejected</button>
+            <input placeholder="Search" class="form-control" id="search">
+        </div>
+
                 <h4 class="card-title" id="dataCount"></h4>
                 <div class="table-responsive">
                     <table class="table color-table purple-table">
@@ -127,17 +135,12 @@
             $(document).ready(function(){
                 
                 var url = "{{ url('sub/dashboard/readApplication') }}";
-                function configureUrl()
-                {
-                    url = "{{ url('sub/dashboard/readApplication') }}";
-                }
                 
                 readApplication();
                 
                 //read applications
                 function readApplication()
                 {
-                    configureUrl();
                     $.ajax({
                         type: "GET", url:url, dataType:"json",
                         success:function(response){
@@ -315,6 +318,42 @@
                     {
                         $('#noteBox').removeClass('d-none');
                     }
+                });
+
+                //sort all
+                $(document).on('click','#btnSortAll',function(e){
+                    e.preventDefault();
+                    url = "{{ url('sub/dashboard/readApplication') }}";
+                    readApplication();
+                });
+                //sort shortlisted
+                $(document).on('click','#btnSortShortlisted',function(e){
+                    e.preventDefault();
+                    url = "{{ url('sub/dashboard/readApplication/:type') }}";
+                    url = url.replace(":type","shortlisted");
+                    readApplication();
+                });
+                //sort rejected
+                $(document).on('click','#btnSortRejected',function(e){
+                    e.preventDefault();
+                    url = "{{ url('sub/dashboard/readApplication/:type') }}";
+                    url = url.replace(":type","rejected");
+                    readApplication();
+                });
+                //search
+                $(document).on('keyup','#search',function(e){
+                    e.preventDefault();
+                    if($(this).val().length == 0)
+                    {
+                    url = "{{ url('sub/dashboard/readApplication') }}";
+                    url = url.replace(":search",$(this).val());
+                    }
+                    else
+                    {
+                    url = "{{ url('sub/dashboard/searchApplication/:search') }}";
+                    url = url.replace(":search",$(this).val());
+                    }
+                    readApplication();
                 });
             });
         </script>

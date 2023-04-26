@@ -58,6 +58,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
 
             //applications
             Route::get('/searchApplication/{search}', 'ApplicationController@search');
+            Route::get('/readApplication/{type}', 'ApplicationController@sort');
             Route::get('/readApplication', 'ApplicationController@read');
             Route::get('/readOneApplication/{id}', 'ApplicationController@readOne');
             Route::put('/shortlistApplication', 'ApplicationController@shortlist');
