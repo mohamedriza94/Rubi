@@ -26,7 +26,7 @@ class VacancyController extends Controller
                 'description' => 'required|string',
                 'type' => 'required|string',
                 'status' => 'required|string',
-                'salary' => 'required|numeric',
+                'salary' => 'required',
                 'end' => 'required|string',
             ], [
                 'position.required' => 'Position is required',
@@ -55,7 +55,7 @@ class VacancyController extends Controller
                 
                 Vacancy::create([ 'position' => $request->input('position'),
                 'description' => $request->input('description'),
-                'salaryRange' => $request->input('salaryRange'),
+                'salaryRange' => $request->input('salary'),
                 'type' => $request->input('type'),
                 'business' => $businessNo,
                 'status' => $request->input('status'),
@@ -114,7 +114,7 @@ class VacancyController extends Controller
                 
                 Vacancy::where('id',$request->input('id'))->update([ 'position' => $request->input('position'),
                 'description' => $request->input('description'),
-                'salaryRange' => $request->input('salaryRange'),
+                'salaryRange' => $request->input('salary'),
                 'type' => $request->input('type'),
                 'end' => $request->input('end')]);
                 
@@ -146,15 +146,14 @@ class VacancyController extends Controller
             //get current status
             $vacancy = Vacancy::where('id', $id)->first(); 
             $currentStatus = $vacancy->status;
-            $message = '';
             
             switch ($currentStatus) 
             {
                 case 'active':
-                    Task::where('id', $id)->update(['status' => 'active']);
+                    Vacancy::where('id', $id)->update(['status' => 'inactive']);
                 break;
                 case 'inactive':
-                    Task::where('id', $id)->update(['status' => 'inactive']);
+                    Vacancy::where('id', $id)->update(['status' => 'active']);
                 break;
             }
             

@@ -50,7 +50,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/readAttendance', 'AttendanceController@read');
 
             //vacancies
-            Route::post('/createVacancy', 'VacancyController@createVacancy');
+            Route::post('/createVacancy', 'VacancyController@create');
             Route::put('/updateVacancyStatus', 'VacancyController@updateStatus');
             Route::post('/updateVacancy', 'VacancyController@update');
             Route::get('/readVacancies', 'VacancyController@read');

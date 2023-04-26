@@ -44,8 +44,8 @@
 </div>
 
 {{-- view modal --}}
-<div class="modal bs-example-modal-sm animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
-    <div class="modal-dialog modal-sm">
+<div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">View Application</h4>
@@ -84,12 +84,13 @@
                                     
                                     <div class="form-group col-12">
                                         <label class="form-label">Resume</label>
-                                        <textarea class="form-control" id="coverLetter">
+                                        <object data="" id="pdfView" type="application/pdf" width="100%" height="500px">
+                                          </object>
                                         </div>
                                         
                                         <div class="form-group col-12 d-none" id="noteBox">
                                             <label class="form-label">Enter a Note</label>
-                                            <textarea class="form-control" id="note">
+                                            <textarea class="form-control" id="note"></textarea>
                                             </div>
                                             
                                             <div class="col-6">
@@ -133,7 +134,7 @@
                 
                 readApplication();
                 
-                //read vacancies
+                //read applications
                 function readApplication()
                 {
                     configureUrl();
@@ -185,8 +186,8 @@
                 //View
                 $(document).on('click', '#btnView', function(e){
                     e.preventDefault();
-                    var vacancyID = $(this).val(); //get message id
-                    var urlView = '{{ url("sub/dashboard/readOneApplication/:id") }}'; urlView = urlView.replace(':id', vacancyID);
+                    applicationID = $(this).val(); //get message id
+                    var urlView = '{{ url("sub/dashboard/readOneApplication/:id") }}'; urlView = urlView.replace(':id', applicationID);
                     $.ajax({
                         type:"GET", url:urlView, dataType:"json",
                         success: function(response)
@@ -197,21 +198,23 @@
                             formatTime(response.data.created_at);
                             
                             applicationID = response.data.id;
-                            $('#sentOn').val(date+time);
+                            $('#sentOn').html('<label class="form-label" id="sentOn"><b>Received On:</b> '+date+time+'</label>');
                             $('#name').val(response.data.name);
                             $('#email').val(response.data.email);
                             $('#telephone').val(response.data.telephone);
                             $('#coverLetter').val(response.data.coverLetter);
+
+                            $('#pdfView').attr('data',response.data.cv);
                             
                             //sorting STATUS
                             switch(response.data.status) {
                                 case 'pending':
                                     $('#btnShortlist').removeClass('d-none');
-                                    $('#btnRejected').removeClass('d-none');
+                                    $('#btnReject').removeClass('d-none');
                                 break;
                                 default:
                                     $('#btnShortlist').addClass('d-none');
-                                    $('#btnRejected').addClass('d-none');
+                                    $('#btnReject').addClass('d-none');
                                 break;
                             }
                         }
@@ -223,13 +226,13 @@
                     e.preventDefault();
                     //check if note box is visible
                     var noteBox = document.getElementById("noteBox");
-                    if (noteBox.classList.contains("d-none")) 
+                    if (!noteBox.classList.contains("d-none")) 
                     {
                         $("#btnShortlist").prop("disabled", true).text("Shortlisting...");
                         var note = $('#note').val();
                         var data = { 'note':note, 'id':applicationID }
                         $.ajax({
-                            type: "POST", url: "{{ url('sub/dashboard/shortlistApplication') }}",
+                            type: "put", url: "{{ url('sub/dashboard/shortlistApplication') }}",
                             data: data,
                             success: function(response){
                                 if(response.status==800)
@@ -277,7 +280,7 @@
                         var note = $('#note').val();
                         var data = { 'note':note, 'id':applicationID }
                         $.ajax({
-                            type: "POST", url: "{{ url('sub/dashboard/rejectApplication') }}",
+                            type: "put", url: "{{ url('sub/dashboard/rejectApplication') }}",
                             data: data,
                             success: function(response){
                                 if(response.status==800)
@@ -324,7 +327,7 @@
                 
                 if ($(".mymce").length > 0) {
                     tinymce.init({
-                        selector: "textarea#mymce",
+                        selector: "textarea.mymce",
                         theme: "modern",
                         height: 300,
                         plugins: [

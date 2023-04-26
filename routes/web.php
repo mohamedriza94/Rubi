@@ -23,3 +23,6 @@ Route::get('/verifyBusiness/{businessNo}', [BusinessController::class, 'verifyBu
 Route::post('/verifyEmailAndSendOTP', [BusinessController::class, 'verifyEmailAndSendOTP'])->name('verifyEmailAndSendOTP');
 Route::get('resetPassword/{title}/{email}', function ($title, $email) {return view('client.resetPassword',['title' => $title, 'email' => $email, ]);})->name('client.resetPassword');
 Route::post('/resetPassword', [BusinessController::class, 'resetPassword'])->name('resetPassword');
+
+//apply for job
+Route::post('/applyJobPOST', [CareersController::class, 'applyJobPOST'])->name('applyJobPOST');

@@ -33,7 +33,7 @@ class ApplicationController extends Controller
             'applications.name AS name',
             'applications.email AS email',
             'applications.status AS status',
-            'vacancies.name AS vacancy'
+            'vacancies.position AS vacancy'
         ]);
         return response()->json(['data' => $applications]);
     }
@@ -52,7 +52,14 @@ class ApplicationController extends Controller
             $id = $request->input('id');
             
             Application::where('id', $id)->update(['status' => 'shortlisted']);
-            
+
+            //get application details
+            $application = Application::find($id);
+
+            //get business details
+            $authUser = auth()->guard('businessAdmin')->user();
+            $business = Business::find($authUser->business);
+
             // send Mail
             $data["email"] = $application->email;
             $data["title"] = "APPLICATION SHORTLISTED";
@@ -63,7 +70,7 @@ class ApplicationController extends Controller
                 $message->from($data["fromEmail"])->to($data["email"])
                 ->subject($data["title"]);
             });
-
+            
             DB::commit();
         } 
         catch (\Exception $e) 

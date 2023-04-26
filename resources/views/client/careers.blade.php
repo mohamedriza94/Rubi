@@ -43,11 +43,8 @@
                 <div class="job-card-two">
                     <div class="row align-items-center">
                         <div class="col-md-1">
-                            <div class="company-logo">
-                                <a>
-                                    <img src="{{ $business->photo }}" alt="logo">
-                                </a>
-                            </div>
+                            
+                            <img src="{{ $business->photo }}" alt="logo">
                         </div>
                         <div class="col-md-8">
                             <div class="job-info">
@@ -57,7 +54,7 @@
                                 <ul>                                          
                                     <li>
                                         <i class='bx bx-briefcase' ></i>
-                                        {{ $vacancy->salaryRange }}
+                                        LKR {{ $vacancy->salaryRange }}
                                     </li>
                                     <li>
                                         <i class='bx bx-briefcase' ></i>

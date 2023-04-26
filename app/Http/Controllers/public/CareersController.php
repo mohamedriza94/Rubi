@@ -18,7 +18,7 @@ class CareersController extends Controller
         return response()->json(['data' => $vacancy]);
     }
 
-    public function apply(Request $request)
+    public function applyJobPOST(Request $request)
     {
         // Start a database transaction
         DB::beginTransaction();
@@ -64,6 +64,6 @@ class CareersController extends Controller
         }
 
         // Return success message to the view
-        return redirect()->back()->with('success', 'Verify your business from the link that was sent to your Email');
+        return redirect()->back()->with('success', 'Application Sent! You will receive a response soon.');
     }
 }

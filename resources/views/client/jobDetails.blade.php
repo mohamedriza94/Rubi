@@ -68,12 +68,12 @@ $business = \App\Models\Business::find($vacancy->business);
                                     </div>
                                 </div>
                             </div>
-                            
+                            <br>
                             <div class="details-text">
                                 <h3>Description</h3>
                                 <p>{{ $vacancy->description }}</p>
                             </div>
-                            
+                            <hr>
                             <div class="details-text">
                                 <h3>Job Details</h3>
                                 <div class="row">
@@ -81,19 +81,19 @@ $business = \App\Models\Business::find($vacancy->business);
                                         <table class="table">
                                             <tbody>
                                                 <tr>
-                                                    <td><span>Company</span></td>
+                                                    <td><span>Company :&nbsp;</span></td>
                                                     <td>{{ $business->name }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span>Location</span></td>
+                                                    <td><span>Location :&nbsp;</span></td>
                                                     <td>{{ $business->country }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span>Website</span></td>
+                                                    <td><span>Website :&nbsp;</span></td>
                                                     <td>{{ $business->website }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span>Email</span></td>
+                                                    <td><span>Email :&nbsp;</span></td>
                                                     <td><a href="mailto:{{ $business->email }}">{{ $business->email }}</a></td>
                                                 </tr>
                                             </tbody>
@@ -101,11 +101,61 @@ $business = \App\Models\Business::find($vacancy->business);
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="theme-btn">
-                                <a href="#" class="default-btn">
-                                    Apply Now
-                                </a>
+                            <hr>
+                            <div class="container">
+                                <div class="contact-area">
+                                    <h3>Submit your CV here to apply</h3>
+                                    <form method="post" enctype="multipart/form-data" action="{{ route('applyJobPOST') }}">
+                                        @csrf
+                                        
+                                        @if (session('success'))
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="help-block" style="color:green"><b>{{ session('success') }}</b></div> 
+                                            </div>
+                                        </div>
+                                        @endif
+                                        <div class="row">
+                                            
+                                            <input type="hidden" name="vacancy" readonly value="{{ $vacancy->id }}">
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="name" required placeholder="Enter your name here">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control" name="email" required placeholder="Enter your email here">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="telephone" required placeholder="Enter your mobile no. here">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="5" name="coverLetter" placeholder="Cover Letter"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="">Upload CV: </label>
+                                                    <input type="file" class="form-control-file" name="cv" required>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-12 col-md-12 text-center">
+                                                <button type="submit" class="col-md-12 default-btn contact-btn"> Submit </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -180,23 +230,6 @@ $business = \App\Models\Business::find($vacancy->business);
             </div>
             @endforeach
         </div>
-        
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                
-                <li class="page-item">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                        <i class='bx bx-chevrons-left bx-fade-left'></i>
-                    </a>
-                </li>
-                
-                <li class="page-item">
-                    <a class="page-link" href="#">
-                        <i class='bx bx-chevrons-right bx-fade-right'></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </section>
 <!-- Job Section End -->    

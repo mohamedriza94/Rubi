@@ -47,8 +47,8 @@
     
     {{-- Modals --}}
     {{-- create modal --}}
-    <div class="modal bs-example-modal-sm animated fadeIn" id="createModal" tabindex="-1" aria-hidden="true" style="display:none;">
-        <div class="modal-dialog modal-sm">
+    <div class="modal bs-example-modal-lg animated fadeIn" id="createModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myLargeModalLabel">New Department</h4>
@@ -69,11 +69,11 @@
                                         
                                         <div class="form-group col-12">
                                             <label class="form-label">Description</label>
-                                            <textarea class="form-control mymce" id="description">
+                                            <textarea class="form-control" id="description"></textarea>
                                         </div>
                                         
                                         <div class="form-group col-6">
-                                            <label class="form-label">Salary Range (LKR) <b>From:</b></label>
+                                            <label class="form-label"><b>Salary (LKR)</b></label>
                                             <input class="form-control" type="number" min="1" id="salaryFrom">
                                         </div>
                                         
@@ -121,8 +121,8 @@
     </div>
     
     {{-- view modal --}}
-    <div class="modal bs-example-modal-sm animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
-        <div class="modal-dialog modal-sm">
+    <div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myLargeModalLabel">View Department</h4>
@@ -136,7 +136,8 @@
                                     <form class="row" id="updateForm" enctype="multipart/form-data" method="post">
                                         
                                         <div class="form-group col-12">
-                                            <label class="form-label" id="postedOn"></label>
+                                            <label class="form-label" id="postedOn"></label><br>
+                                            <label class="form-label" id="salary"></label>
                                         </div>
                                         
                                         <div class="form-group col-12">
@@ -146,7 +147,7 @@
                                         
                                         <div class="form-group col-12">
                                             <label class="form-label">Description</label>
-                                            <textarea class="form-control mymce" id="edit_description">
+                                            <textarea class="form-control" id="edit_description"></textarea>
                                         </div>
                                         
                                         <div class="form-group col-6">
@@ -236,8 +237,8 @@
                             formatTime(item.created_at);
                             
                             $('#table').append('<tr>\
-                                <td>'+item.title+'</td>\
-                                <td>'+item.salaryRange+'</td>\
+                                <td>'+item.position+'</td>\
+                                <td>LKR '+item.salaryRange+'</td>\
                                 <td>'+item.type+'</td>\
                                 <td>'+status_badge+'</td>\
                                 <td>\
@@ -304,7 +305,7 @@
             //View
             $(document).on('click', '#btnView', function(e){
                 e.preventDefault();
-                var vacancyID = $(this).val(); //get message id
+                vacancyID = $(this).val(); //get message id
                 var urlView = '{{ url("sub/dashboard/readOneVacancy/:id") }}'; urlView = urlView.replace(':id', vacancyID);
                 $.ajax({
                     type:"GET", url:urlView, dataType:"json",
@@ -320,12 +321,13 @@
                         $('#edit_type').val(response.data.type);
                         $('#edit_end').val(response.data.end);
                         updatedSalary = response.data.salaryRange;
-                        $('#postedOn').val(date+time);
+                        $('#postedOn').html('<label class="form-label" id="postedOn"><b>Posted On:</b> '+date+time+'</label>');
+                        $('#salary').html('<label class="form-label" id="postedOn"><b>Salary:</b> Rs.'+response.data.salaryRange+'</label>');
                     }
                 });
             });
             
-            //Create
+            //update
             $(document).on('click', '#btnUpdate', function(e) {
                 e.preventDefault();
                 
@@ -415,7 +417,7 @@
 
         if ($(".mymce").length > 0) {
             tinymce.init({
-                selector: "textarea#mymce",
+                selector: "textarea.mymce",
                 theme: "modern",
                 height: 300,
                 plugins: [
