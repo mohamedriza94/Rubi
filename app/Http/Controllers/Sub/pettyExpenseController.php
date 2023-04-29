@@ -49,7 +49,6 @@ class pettyExpenseController extends Controller
                 
                 PettyExpense::create([ 'purpose' => $request->input('purpose'), 
                 'amount' => $request->input('amount'),
-                'amount' => $request->input('amount'),
                 'no' => $no,
                 'business' => $businessNo,
                 'department' => $departmentNo,

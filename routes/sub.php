@@ -63,6 +63,18 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/readOneApplication/{id}', 'ApplicationController@readOne');
             Route::put('/shortlistApplication', 'ApplicationController@shortlist');
             Route::put('/rejectApplication', 'ApplicationController@reject');
+
+            //employees
+            Route::post('/createEmployee', 'EmployeeController@create');
+            Route::get('/searchEmployee/{search}', 'EmployeeController@search');
+            Route::get('/readEmployee/{type}', 'EmployeeController@sort');
+            Route::get('/readEmployees', 'EmployeeController@read');
+            Route::get('/readOneEmployee/{id}', 'EmployeeController@readOne');
+            Route::put('/updateEmployeeStatus', 'EmployeeController@updateStatus');
+
+            //departments
+            Route::get('/readActiveDepartments', 'EmployeeController@readActiveDepartments');
+            
         });
     });
 }); 
