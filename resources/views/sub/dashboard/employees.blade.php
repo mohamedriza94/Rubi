@@ -84,7 +84,12 @@
                                         </select>
                                     </div>
                                     
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-4">
+                                        <label class="form-label">Salary in LKR</label>
+                                        <input class="form-control" type="numeric" min="1" id="salary" name="salary">
+                                    </div>
+                                    
+                                    <div class="form-group col-8">
                                         <label class="form-label">Photo</label>
                                         <input class="form-control" type="file" id="photo" name="photo">
                                     </div>
@@ -126,6 +131,16 @@
                                 
                                 <form class="row" id="createForm" enctype="multipart/form-data" method="post">
                                     
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Position</label>
+                                        <input class="form-control" id="view_position" readonly>
+                                    </div>
+                                    
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Salary</label>
+                                        <input class="form-control" id="view_salary" readonly>
+                                    </div>
+
                                     <div class="form-group col-9">
                                         <label class="form-label">Fullname</label>
                                         <input class="form-control" id="view_fullname" readonly>
@@ -353,6 +368,8 @@
                     $('#view_email').val(response.data.email);
                     $('#view_photo').attr('src',response.data.photo);
                     $('#view_telephone').val(response.data.telephone);
+                    $('#view_salary').val(response.data.salary + ' LKR');
+                    $('#view_position').val(response.data.position);
                 }
             });
         });
@@ -385,8 +402,8 @@
                         else if(response.status == 200)
                         {
                             $("#btnCreate").prop("disabled", false).text("Create");
-                            $('#createForm')[0].reset(); //FORM RESET INPUT
-                            readAdmins();
+                            //$('#createForm')[0].reset(); //FORM RESET INPUT
+                            readEmployees();
                             
                             Swal.fire({ title: 'Success', text: "Employee Registered",
                             icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });

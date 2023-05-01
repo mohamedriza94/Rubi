@@ -158,8 +158,8 @@
                                     case 'rejected':
                                     status_badge = '<span class="label label-danger">Rejected</span>'; //ACTIVE
                                     break;
-                                    case 'selected':
-                                    status_badge = '<span class="label label-success">Selected</span>'; //INACTIVE
+                                    case 'recruited':
+                                    status_badge = '<span class="label label-success">Recruited</span>'; //INACTIVE
                                     break;
                                     case 'pending':
                                     status_badge = '<span class="label label-warning">Pending</span>'; //INACTIVE

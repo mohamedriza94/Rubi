@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role');
             $table->string('department');
+            $table->string('salary');
+            $table->string('position');
             $table->timestamps();
         });
     }

@@ -75,6 +75,9 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             //departments
             Route::get('/readActiveDepartments', 'EmployeeController@readActiveDepartments');
             
+            //payroll
+            Route::get('/setPayroll', 'PayrollController@setPayroll');
+            Route::get('/readPayroll', 'PayrollController@read');
         });
     });
 }); 

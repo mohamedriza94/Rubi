@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Department;
 use App\Models\Business;
+use App\Models\Vacancy;
+use App\Models\Application;
 use App\Models\BusinessAdmin;
 
 class EmployeeController extends Controller
@@ -24,6 +26,7 @@ class EmployeeController extends Controller
                 'department' => 'required|string',
                 'fullname' => 'required|string',
                 'dob' => 'required|string',
+                'salary' => 'required|numeric',
                 'email' => 'required|string|email|unique:business_admins',
                 'photo' => 'required|image',
                 'telephone' => 'required|string',
@@ -51,8 +54,8 @@ class EmployeeController extends Controller
                 }
 
                 //Record Activity
-                $data = [ 'userType' => 'business', 'activity' => 'Added a new admin',
-                'user' => auth()->guard('business')->user()->id ];
+                $data = [ 'userType' => 'business', 'activity' => 'Added a new Employee',
+                'user' => auth()->guard('businessAdmin')->user()->business ];
                 $activityController = new \App\Http\Controllers\common\ActivityController();
                 $activityController->recordActivity($data);
 
@@ -63,26 +66,40 @@ class EmployeeController extends Controller
                 $photoPath = request('photo')->store('businessAdmin', 'public');
                 $photo = '/'.'storage/'.$photoPath;
 
+                //get position
+                $position = Application::where('email',$request->input('email'))->first();
+                $position = $position->vacancy;
+                $position = Vacancy::find($position);
+                $position = $position->position;
+
                 BusinessAdmin::create([
                     'no' => $no,
                     'fullname' => $request->input('fullname'),
                     'dob' => $request->input('dob'),
                     'role' => 'employee',
                     'status' => 'active',
+                    'paymentStatus' => 'no',
                     'email' => $request->input('email'),
+                    'salary' => $request->input('salary'),
+                    'position' => $position,
                     'photo' => $photo,
                     'telephone' => $request->input('telephone'),
-                    'business' => auth()->guard('business')->user()->id,
+                    'business' => auth()->guard('businessAdmin')->user()->business,
                     'department' => $request->input('department'),
                     'password' => $hashedPassword]);
 
-                Application::where('email', $request->input('email'))->update(['status' => 'employed']);
+                Application::where('email', $request->input('email'))->update(['status' => 'recruited']);
+
+                //get business
+                $business = auth()->guard('businessAdmin')->user()->business;
+                $business = Business::find($business);
+                $business = $business->name;
 
                 //Send Credentials in Email
                 $data["email"] = $request->input('email');
-                $data["title"] = "Admin Credentials";
+                $data["title"] = "Employee Credentials";
                 $data["password"] = $password;
-                $data["business"] = auth()->guard('business')->user()->name;
+                $data["business"] = $business;
 
                 Mail::send('mail.businessEmployeeCredentials', $data, function ($message) use ($data) {
                     $message->to($data["email"])
@@ -137,6 +154,7 @@ class EmployeeController extends Controller
     {
         $businessAdmins = BusinessAdmin::join('departments','business_admins.department','=','departments.id')
         ->where('business_admins.business', auth()->guard('businessAdmin')->user()->business)
+        ->where('business_admins.role','employee')
         ->orderBy('business_admins.id', 'DESC')->get([
             'departments.name AS department',
             'business_admins.fullname AS fullname',
@@ -157,6 +175,8 @@ class EmployeeController extends Controller
             'business_admins.dob AS dob',
             'business_admins.email AS email',
             'business_admins.photo AS photo',
+            'business_admins.salary AS salary',
+            'business_admins.position AS position',
             'business_admins.telephone AS telephone',
             'business_admins.id AS id',
         ]);

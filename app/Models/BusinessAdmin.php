@@ -23,5 +23,8 @@ class BusinessAdmin extends Authenticatable
         'department',
         'role',
         'password',
+        'salary',
+        'position',
+        'paymentStatus'
     ];
 }

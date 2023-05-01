@@ -1,0 +1,92 @@
+@extends('layouts.sub')
+
+@section('content')
+
+{{-- breadcrumb --}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">{{ $title }}</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-end">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb justify-content-end">
+                <li class="breadcrumb-item"><a href="{{ route('sub.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{{-- content --}}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                        
+        <div class="btn-group m-b-10 m-r-10">
+            <button id="btnSortAll" class="btn btn-outline-primary font-18">All</button>
+            <button id="btnSortPending" class="btn btn-outline-warning font-18">Pending Payment</button>
+            <button id="btnSortPaid" class="btn btn-outline-success font-18">Paid</button>
+            <input placeholder="Search" class="form-control" id="search">
+        </div>
+
+                <div class="table-responsive">
+                    <table class="table color-table purple-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Payment Status</th>
+                                <th>Due</th>
+                                <th>Paid</th>
+                                <th>Pay Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- view modal --}}
+<div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Make Payment</h4>
+                <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form class="row" id="createForm" enctype="multipart/form-data" method="post">
+                                    
+                                    <div class="form-group col-12">
+                                        <label class="form-label">Amount</label>
+                                        <input class="form-control" id="amount" name="amount">
+                                    </div>
+                                            
+                                    <div class="col-12">
+                                        <div class="d-md-flex align-items-center">
+                                            <button id="btnPay" class="col-12 btn btn-danger">Pay</button>
+                                        </div>
+                                    </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+        @endsection
