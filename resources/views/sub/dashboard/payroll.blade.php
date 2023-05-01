@@ -24,8 +24,9 @@
             <div class="card-body">
                 
                 <div class="btn-group m-b-10 m-r-10">
+                    <button id="btnSetPayroll" class="btn btn-secondary font-18">Payroll</button>
                     <button id="btnSortAll" class="btn btn-outline-primary font-18">All</button>
-                    <button id="btnSortPending" class="btn btn-outline-warning font-18">Pending Payment</button>
+                    <button id="btnSortPending" class="btn btn-outline-warning font-18">Pending</button>
                     <button id="btnSortPaid" class="btn btn-outline-success font-18">Paid</button>
                     <input placeholder="Search" class="form-control" id="search">
                 </div>
@@ -64,7 +65,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="row" id="createForm" enctype="multipart/form-data" method="post">
+                                <form class="row" id="createForm">
                                     
                                     <div class="form-group col-12">
                                         <label class="form-label">Amount</label>
@@ -95,7 +96,7 @@
 <script>
     $(document).ready(function(){
         
-        var url = "{{ url('sub/dashboard/readPayroll') }}";
+        var url = "{{ url('sub/dashboard/readPayroll/all') }}";
         readPayroll();
         
         //read payroll
@@ -108,28 +109,30 @@
                     
                     $.each(response.data,function(key,item){
                         //display badges
-                        var status_badge = ''; var pay_button = '';
+                        var status_badge = ''; var pay_button = ''; var payDate = '';
                         
                         //sorting STATUS
                         switch(item.status) {
                             case 'pending':
+                            payDate = '-';
                             status_badge = '<span class="label label-warning">PENDING</span>'; //PENDING
                             pay_button = '<button id="btnView" value="'+item.id+'" class="btn btn-primary">Pay</button>';
                             break;
                             case 'paid':
+                            //format time
+                            formatTime(item.updated_at);
+                            payDate = date+time;
                             status_badge = '<span class="label label-success">PAID IN FULL</span>'; //PAID
-                            pay_button = '';
+                            pay_button = '-';
                             break;
                         }
-                        
-                        //format time
-                        formatTime(item.created_at);
                         
                         $('#table').append('<tr>\
                             <td>'+item.fullname+'</td>\
                             <td>'+status_badge+'</td>\
                             <td>LKR '+item.due+'</td>\
                             <td>LKR '+item.paid+'</td>\
+                            <td>'+payDate+'</td>\
                             <td>\
                                 <div class="btn-group m-b-10 m-r-10">\
                                     '+pay_button+'\
@@ -146,6 +149,7 @@
         $(document).on('click', '#btnView', function(e){
             e.preventDefault();
             payrollID = $(this).val(); //get payroll id
+            $('#viewModal').modal('show');
         });
         
         //sort all
@@ -183,6 +187,46 @@
                 url = url.replace(":search",$(this).val());
             }
             readPayroll();
+        });
+        //set payroll
+        $(document).on('click','#btnSetPayroll',function(e){
+            $.ajax({
+                type: "GET", url:"{{ url('sub/dashboard/setPayroll') }}", dataType:"json",
+                success:function(response){
+                    readPayroll();
+                }
+            });
+        });
+        //pay
+        $(document).on('click', '#btnPay', function(e) {
+            e.preventDefault();
+            
+            $("#btnPay").prop("disabled", true).text("Paying...");
+
+            var id = payrollID;
+            var amount = $('#amount').val();
+            var data = { 'id':id, 'amount':amount}
+            $.ajax({
+                type:"PUT",
+                url: "{{ url('sub/dashboard/pay') }}",
+                data:data,
+                dataType:"json",
+                success: function(response){
+                    if(response.status == 400)
+                    {
+                        $("#btnPay").prop("disabled", false).text("Pay");
+                        toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        readPayroll();
+                    }
+                    else if(response.status == 200)
+                    {
+                        $("#btnPay").prop("disabled", false).text("Pay");
+                        toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                        readPayroll();
+                        $('#amount').val('');
+                    }
+                }
+            });
         });
     });
 </script>

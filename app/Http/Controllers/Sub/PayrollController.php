@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Payroll;
 use App\Models\BusinessAdmin;
 use App\Models\PaymentDetails;
@@ -93,11 +94,15 @@ class PayrollController extends Controller
         
         // Create payroll records
         foreach ($employeeIds as $employeeId) {
+
+            $empSalary = BusinessAdmin::find($employeeId);
+            $empSalary = $empSalary->salary;
+
             Payroll::create([
                 'employee' => $employeeId,
                 'business' => $userBusiness->business,
                 'status' => 'pending',
-                'due' => $userBusiness->salary,
+                'due' => $empSalary,
                 'paid' => '0'
             ]);
         }
@@ -111,7 +116,7 @@ class PayrollController extends Controller
             $validator = Validator::make($request->all(), [
                 'amount' => 'required|numeric'
             ], [
-                'amount.required' => 'Enter the payment amount',
+                'amount.required' => 'Enter the payment amount'
             ]);
 
             if ($validator->fails()) {
@@ -126,18 +131,32 @@ class PayrollController extends Controller
                 //get employee details
                 $payroll = Payroll::find($payroll_id);
                 $employee = BusinessAdmin::find($payroll->employee);
-                $employee_payment_details = PaymentDetails::where('employee',$employee->id)->first();
+                $employee_payment_details = PaymentDetails::where('employee',$employee->no)->first();
 
                 //update payroll
                 $paid = $request->input('amount'); 
                 $due = $payroll->due;
+                $status = 'pending';
                 if($paid > $due)
                 {
                     $paid = $due;
                 }
                 $finalDue = $due - $paid; //calculate remaining payment
+                $finalPaid = $paid + $payroll->paid;
 
-                Payroll::where('id',$payroll_id)->update(['status'=>'paid','paid' => $paid,'due' => $finalDue]);
+                $responseMessage = '';
+                if($finalDue == 0)
+                {
+                    $status = 'paid';
+                    $responseMessage = 'in full';
+                }
+                else
+                {
+                    $status = 'pending';
+                    $responseMessage = 'partially';
+                }
+
+                Payroll::where('id',$payroll_id)->update(['status'=>$status,'paid' => $finalPaid,'due' => $finalDue]);
                 
                 //Send Payment Receipt in Mail
                 $data["email"] = $employee->email;
@@ -166,7 +185,8 @@ class PayrollController extends Controller
         }
 
         return response()->json([
-            'status'=>200
+            'status'=>200,
+            'message'=>'Payment Done '.$responseMessage
         ]);
     }
 }
