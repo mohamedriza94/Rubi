@@ -19,9 +19,11 @@ class PayrollController extends Controller
         where('payrolls.business',$userBusiness->business)->get([
             'payrolls.status AS status',
             'business_admins.fullname AS fullname',
-            'business_admins.photo AS photo',
             'payrolls.due AS due',
             'payrolls.paid AS paid',
+            'payrolls.updated_at AS updated_at',
+            'payrolls.id AS id',
+            'business_admins.id AS id',
         ]);
         
         return response()->json([

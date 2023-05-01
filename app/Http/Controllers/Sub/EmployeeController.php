@@ -13,6 +13,7 @@ use App\Models\Department;
 use App\Models\Business;
 use App\Models\Vacancy;
 use App\Models\Application;
+use App\Models\PaymentDetails;
 use App\Models\BusinessAdmin;
 
 class EmployeeController extends Controller
@@ -30,6 +31,10 @@ class EmployeeController extends Controller
                 'email' => 'required|string|email|unique:business_admins',
                 'photo' => 'required|image',
                 'telephone' => 'required|string',
+                'bank' => 'required|string',
+                'branch' => 'required|string',
+                'accountNo' => 'required|string',
+                'postalCode' => 'required|string',
             ], [
                 'department.required' => 'Choose a department',
                 'fullname.required' => 'Full name is required',
@@ -87,6 +92,14 @@ class EmployeeController extends Controller
                     'business' => auth()->guard('businessAdmin')->user()->business,
                     'department' => $request->input('department'),
                     'password' => $hashedPassword]);
+
+                PaymentDetails::create([
+                    'bank' => $request->input('bank'),
+                    'accountNo' => $request->input('accountNo'),
+                    'branch' => $request->input('branch'),
+                    'postalCode' => $request->input('postalCode'),
+                    'employee' => $no
+                ]);
 
                 Application::where('email', $request->input('email'))->update(['status' => 'recruited']);
 

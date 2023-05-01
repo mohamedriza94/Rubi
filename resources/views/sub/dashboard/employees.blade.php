@@ -97,6 +97,30 @@
                                     <div class="form-group col-12">
                                         <img id="photoDisplay" class="col-12">
                                     </div>
+
+                                    <hr>
+                                    <h5>Payment Details</h5>
+                                    
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Bank Name</label>
+                                        <input class="form-control" type="text" name="bank">
+                                    </div>
+                                    
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Branch</label>
+                                        <input class="form-control" type="text" name="branch">
+                                    </div>
+                                    
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Account No</label>
+                                        <input class="form-control" type="text" name="accountNo">
+                                    </div>
+                                    
+                                    <div class="form-group col-6">
+                                        <label class="form-label">Postal Code</label>
+                                        <input class="form-control" type="text" name="postalCode">
+                                    </div>
+
                                     
                                     <div class="col-12">
                                         <div class="d-md-flex align-items-center">

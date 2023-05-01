@@ -13,6 +13,7 @@ class PaymentDetails extends Model
         'bank',
         'accountNo',
         'branch',
-        'postalCode'
+        'postalCode',
+        'employee'
     ];
 }
