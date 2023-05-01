@@ -22,14 +22,14 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                        
-        <div class="btn-group m-b-10 m-r-10">
-            <button id="btnSortAll" class="btn btn-outline-primary font-18">All</button>
-            <button id="btnSortPending" class="btn btn-outline-warning font-18">Pending Payment</button>
-            <button id="btnSortPaid" class="btn btn-outline-success font-18">Paid</button>
-            <input placeholder="Search" class="form-control" id="search">
-        </div>
-
+                
+                <div class="btn-group m-b-10 m-r-10">
+                    <button id="btnSortAll" class="btn btn-outline-primary font-18">All</button>
+                    <button id="btnSortPending" class="btn btn-outline-warning font-18">Pending Payment</button>
+                    <button id="btnSortPaid" class="btn btn-outline-success font-18">Paid</button>
+                    <input placeholder="Search" class="form-control" id="search">
+                </div>
+                
                 <div class="table-responsive">
                     <table class="table color-table purple-table">
                         <thead>
@@ -70,23 +70,120 @@
                                         <label class="form-label">Amount</label>
                                         <input class="form-control" id="amount" name="amount">
                                     </div>
-                                            
+                                    
                                     <div class="col-12">
                                         <div class="d-md-flex align-items-center">
                                             <button id="btnPay" class="col-12 btn btn-danger">Pay</button>
                                         </div>
                                     </div>
-
-                                        </form>
-                                    </div>
-                                </div>
+                                    
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function(){
         
-        @endsection
+        var url = "{{ url('sub/dashboard/readPayroll') }}";
+        readPayroll();
+        
+        //read payroll
+        function readPayroll()
+        {
+            $.ajax({
+                type: "GET", url:url, dataType:"json",
+                success:function(response){
+                    $('#table').html(''); 
+                    
+                    $.each(response.data,function(key,item){
+                        //display badges
+                        var status_badge = ''; var pay_button = '';
+                        
+                        //sorting STATUS
+                        switch(item.status) {
+                            case 'pending':
+                            status_badge = '<span class="label label-warning">PENDING</span>'; //PENDING
+                            pay_button = '<button id="btnView" value="'+item.id+'" class="btn btn-primary">Pay</button>';
+                            break;
+                            case 'paid':
+                            status_badge = '<span class="label label-success">PAID IN FULL</span>'; //PAID
+                            pay_button = '';
+                            break;
+                        }
+                        
+                        //format time
+                        formatTime(item.created_at);
+                        
+                        $('#table').append('<tr>\
+                            <td>'+item.fullname+'</td>\
+                            <td>'+status_badge+'</td>\
+                            <td>LKR '+item.due+'</td>\
+                            <td>LKR '+item.paid+'</td>\
+                            <td>\
+                                <div class="btn-group m-b-10 m-r-10">\
+                                    '+pay_button+'\
+                                </div>\
+                            </td>\
+                        </tr>'); 
+                    });
+                }
+            });
+        }
+        
+        var payrollID = '';
+        //View
+        $(document).on('click', '#btnView', function(e){
+            e.preventDefault();
+            payrollID = $(this).val(); //get payroll id
+        });
+        
+        //sort all
+        $(document).on('click','#btnSortAll',function(e){
+            e.preventDefault();
+            url = "{{ url('sub/dashboard/readPayroll/:type') }}";
+            url = url.replace(":type","all");
+            readPayroll();
+        });
+        //sort shortlisted
+        $(document).on('click','#btnSortPending',function(e){
+            e.preventDefault();
+            url = "{{ url('sub/dashboard/readPayroll/:type') }}";
+            url = url.replace(":type","pending");
+            readPayroll();
+        });
+        //sort rejected
+        $(document).on('click','#btnSortPaid',function(e){
+            e.preventDefault();
+            url = "{{ url('sub/dashboard/readPayroll/:type') }}";
+            url = url.replace(":type","paid");
+            readPayroll();
+        });
+        //search
+        $(document).on('keyup','#search',function(e){
+            e.preventDefault();
+            if($(this).val().length == 0)
+            {
+                url = "{{ url('sub/dashboard/readPayroll/:type') }}";
+                url = url.replace(":type","all");
+            }
+            else
+            {
+                url = "{{ url('sub/dashboard/searchPayroll/:search') }}";
+                url = url.replace(":search",$(this).val());
+            }
+            readPayroll();
+        });
+    });
+</script>
+@endsection

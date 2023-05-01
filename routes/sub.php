@@ -77,7 +77,8 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             
             //payroll
             Route::get('/setPayroll', 'PayrollController@setPayroll');
-            Route::get('/readPayroll', 'PayrollController@read');
+            Route::get('/readPayroll/{type}', 'PayrollController@read');
+            Route::get('/searchPayroll/{search}', 'PayrollController@search');
             Route::post('/pay', 'PayrollController@pay');
         });
     });
