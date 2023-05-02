@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('business');
             $table->string('employee');
             $table->string('purpose');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->string('amount');
             $table->timestamps();
         });

@@ -36,13 +36,14 @@ class pettyExpenseController extends Controller
                 $departmentNo = auth()->guard('businessAdmin')->user()->department;
                 
                 //generate a number
-                $no = rand(0000,9999); $exists = PettyExpense::where('no', $no)->exists();
+                $no = rand(0000,9999); 
+                $exists = PettyExpense::where('no', $no)->exists();
                 while ($exists) {
                     $no = rand(0000,9999); $exists = PettyExpense::where('no', $no)->exists();
                 }
                 
                 //Record Activity
-                $data = [ 'userType' => 'employee', 'activity' => 'Recorded petty expense No.'.$no' of Rs.'.$request->input('amount'), 
+                $data = [ 'userType' => 'employee', 'activity' => 'Recorded petty expense No.'.$no.' of Rs.'.$request->input('amount'), 
                 'user' => auth()->guard('businessAdmin')->user()->id ];
                 $activityController = new \App\Http\Controllers\common\ActivityController;
                 $activityController->recordActivity($data);

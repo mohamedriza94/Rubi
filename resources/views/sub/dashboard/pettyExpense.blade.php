@@ -13,18 +13,20 @@
                 <li class="breadcrumb-item"><a href="{{ route('sub.dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
-            <button data-bs-toggle="modal" data-bs-target="#viewModal" class="btn btn-info d-none d-lg-block m-l-15 text-white">
-                <i class="fa fa-plus-circle"></i> Notes</button>
-            </div>
         </div>
     </div>
+</div>
 
-    {{-- content --}}
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
+{{-- content --}}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <button data-bs-toggle="modal" data-bs-target="#viewModal" class="btn btn-primary text-white">
+                    <i class="fa fa-plus-circle"></i> 
+                    Record an Expense
+                </button><hr>
                     <div class="table-responsive">
                         <table class="text-center table color-table red-table">
                             <thead>
@@ -68,7 +70,7 @@
                                             <label class="form-label">Note</label>
                                             <textarea class="form-control" rows="3" name="note"></textarea>
                                         </div>
-
+                                        
                                         <div class="form-group col-12">
                                             <label class="form-label">Amount (LKR)</label>
                                             <input class="form-control" name="amount">
@@ -95,7 +97,7 @@
     
     
     
-
+    
     @section('script')
     
     <script>
@@ -119,14 +121,15 @@
                         $('#table').html(''); 
                         
                         $.each(response.data,function(key,item){
-
+                            
                             //format time
                             formatTime(item.created_at);
                             
                             $('#table').append('<tr>\
-                            <td>'+item.purpose+'</td>\
-                            <td>'+item.amount+'</td>\
-                            <td>'+date+''+time+'</td>\
+                                <td>'+item.no+'</td>\
+                                <td>'+item.purpose+'</td>\
+                                <td> LKR '+item.amount+'</td>\
+                                <td>'+date+''+time+'</td>\
                             </tr>'); 
                         });
                     }
@@ -163,7 +166,7 @@
                         {
                             $("#btnCreate").prop("disabled", false).text("Record");
                             $('#createForm')[0].reset(); //FORM RESET INPUT
-                            readNotes();
+                            readExpenses();
                             
                             Swal.fire({ title: 'Success', text: "Expense Recorded",
                             icon: 'success', confirmButtonColor: '#3085d6', confirmButtonText: 'OK' });

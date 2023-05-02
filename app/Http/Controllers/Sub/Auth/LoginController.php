@@ -64,7 +64,7 @@ class LoginController extends Controller
             if($userData->role == 'employee')
             {
                 $data = [ 'business' => $userData->business, 'department' => $userData->department, 
-                'employee' => $userData->employee ];
+                'employee' => $userData->id ];
                 
                 $activityController = new \App\Http\Controllers\sub\AttendanceController;
                 $activityController->recordAttendance($data);

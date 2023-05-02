@@ -53,8 +53,8 @@
 </div>
 
 {{-- view modal --}}
-<div class="modal bs-example-modal-lg animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
-    <div class="modal-dialog modal-lg">
+<div class="modal bs-example-modal-sm animated fadeIn" id="viewModal" tabindex="-1" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Make Payment</h4>
