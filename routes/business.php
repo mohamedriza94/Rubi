@@ -38,6 +38,9 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
 
             //dashboard statistics
             Route::get('/readStatistics', 'DashboardController@statistics');
+
+            //cash outflow
+            Route::get('/readCashOutFlow/{type}', 'CashOutFlowController@read');
         });
     });
 });
