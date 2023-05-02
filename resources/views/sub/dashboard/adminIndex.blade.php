@@ -65,7 +65,7 @@
                     <div class="col-md-12">
                         <div class="d-flex no-block align-items-center">
                             <div>
-                                <h3><i class="icon-bubble"></i></h3>
+                                <h3><i class="icon-like"></i></h3>
                                 <p class="text-muted">COMPLETED TASKS</p>
                             </div>
                             <div class="ms-auto">
@@ -85,11 +85,197 @@
                     <div class="col-md-12">
                         <div class="d-flex no-block align-items-center">
                             <div>
-                                <h3><i class="icon-bubble"></i></h3>
+                                <h3><i class="icon-note"></i></h3>
                                 <p class="text-muted">UNOPENED NOTES</p>
                             </div>
                             <div class="ms-auto">
                                 <h2 class="counter text-warning" id="unopenedNotes">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ------ --}}
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-pin"></i></h3>
+                                <p class="text-muted text-uppercase">Today's Attendance</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-info" id="todaysAttendance">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-people"></i></h3>
+                                <p class="text-muted text-uppercase">Active Employees</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-success" id="activeEmployees">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-people"></i></h3>
+                                <p class="text-muted text-uppercase">Total Employees</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-info" id="totalEmployees">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ------ --}}
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-user-follow"></i></h3>
+                                <p class="text-muted text-uppercase">Active Vacancies</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-success" id="activeVacancies">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-book-open"></i></h3>
+                                <p class="text-muted text-uppercase">Pending Applications</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-warning" id="pendingApplications">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-book-open"></i></h3>
+                                <p class="text-muted text-uppercase">Shortlisted Applications</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-primary" id="shortlistedApplications">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ------ --}}
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-briefcase"></i></h3>
+                                <p class="text-muted text-uppercase">Pending Salary Payments</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-warning" id="pendingSalaryPayments">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-briefcase"></i></h3>
+                                <p class="text-muted text-uppercase">Completed Salary Payments</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-success" id="completedSalaryPayments">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-credit-card"></i></h3>
+                                <p class="text-muted text-uppercase">Total Due Salary Amount</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-danger" id="totalDueSalaryAmount">LKR 0</h2>
                             </div>
                         </div>
                     </div>
