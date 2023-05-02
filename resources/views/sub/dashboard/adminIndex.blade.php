@@ -478,6 +478,8 @@
             });
         }
         
+        $(document).on('click', '#btnCreatePDF', function(e){ $('#report').printThis(); });
+
         $(document).on('click', '#btnViewNote', function(e){
             e.preventDefault();
             var id = $(this).val(); //get note id
