@@ -98,7 +98,45 @@
         </div>
     </div>
 
-    
+    <div class="col-lg-6">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-screen-desktop"></i></h3>
+                                <p class="text-muted">TODAY'S TOTAL CASH OUT</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-danger" id="totalCashOutToday">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card border">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-screen-desktop"></i></h3>
+                                <p class="text-muted">TOTAL CASH OUT THIS MONTH</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-danger" id="totalCashOutThisMonth">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- today activities table --}}
     {{-- <div class="col-md-12">
         <div class="card">
@@ -145,8 +183,8 @@
                     $('#administrators').text(response.businessAdminCount);
                     $('#employees').text(response.businessEmployeeCount);
                     $('#pendingTasks').text(response.pendingTasksCount);
-                    
-                    
+                    $('#totalCashOutToday').text(response.totalCashOutToday);
+                    $('#totalCashOutThisMonth').text(response.totalCashOutThisMonth);
                 }
             });
         }
