@@ -6,7 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Note;
+use App\Models\Vacancy;
+use App\Models\Attendance;
+use App\Models\Payroll;
+use App\Models\PettyExpense;
 use App\Models\BusinessAdmin;
+use App\Models\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -55,30 +60,59 @@ class commonController extends Controller
 
     public function statistics()
     {
-        $department = auth()->guard('businessAdmin')->user()->department;
+        $userData = auth()->guard('businessAdmin')->user();
 
-        $ongoingTaskCount = Task::where('department',$department)->where('status','started')->count();
-        $pendingTaskCount = Task::where('department',$department)->where('status','pending')->count();
-        $completedTaskCount = Task::where('department',$department)->where('status','completed')->count();
-        $unopenedNotesCount = Note::where('department',$department)->where('isViewed','0')->count();
+        $ongoingTaskCount = Task::where('department',$userData->department)->where('status','started')->count();
+        $pendingTaskCount = Task::where('department',$userData->department)->where('status','pending')->count();
+        $completedTaskCount = Task::where('department',$userData->department)->where('status','completed')->count();
+        $unopenedNotesCount = Note::where('department',$userData->department)->where('isViewed','0')->count();
+
+        $todaysAttendanceCount = Attendance::where('business',$userData->business)->whereDate('created_at', today())->count();
+        $activeEmployeesCount = BusinessAdmin::where('role','employee')->where('status','active')->where('business',$userData->business)->count();
+        $totalEmployeesCount = BusinessAdmin::where('business',$userData->business)->count();
+        
+        $activeVacanciesCount = Vacancy::where('business',$userData->business)->where('status','active')->count();
+
+        //get applications of this business
+        $application = Application::join('vacancies','applications.vacancy','=','vacancies.id')
+        ->where('vacancies.business',$userData->business);
+
+        $pendingApplicationsCount = $application->where('applications.status','pending')->count();
+        $shortlistedApplicationsCount = $application->where('applications.status','shortlisted')->count();
+        
+        $pendingSalaryPaymentsCount = Payroll::where('business',$userData->business)->where('status','pending')->count();
+        $completedSalaryPaymentsCount = Payroll::where('business',$userData->business)->where('status','paid')->count();
+        $totalDuePaymentAmount = Payroll::where('business', $userData->business)->sum('due');
+        $todaysPettyExpenseAmount = PettyExpense::where('business', $userData->business)->whereDate('created_at', today())->sum('amount');
 
         $tasksStartedToday = Task::where('status','started')->whereDate('updated_at', today())->get();
         $notes = Note::join('business_admins','notes.employee','=','business_admins.id')->
-        where('notes.department',$department)->get([
+        where('notes.department',$userData->department)->get([
             'notes.subject AS subject',
             'business_admins.photo AS employeePhoto',
             'business_admins.fullname AS employeeName',
             'notes.isViewed AS isViewed',
             'notes.created_at AS created_at',
             'notes.id AS id']);
-
-        return response()->json([
-            'ongoingTaskCount' => $ongoingTaskCount, 
-            'pendingTaskCount' => $pendingTaskCount,
-            'completedTaskCount' => $completedTaskCount,
-            'unopenedNotesCount' => $unopenedNotesCount,
-            'tasksStartedToday' => $tasksStartedToday,
-            'notes' => $notes
-        ]);
+            
+            return response()->json([
+                'ongoingTaskCount' => $ongoingTaskCount, 
+                'pendingTaskCount' => $pendingTaskCount,
+                'completedTaskCount' => $completedTaskCount,
+                'unopenedNotesCount' => $unopenedNotesCount,
+                'tasksStartedToday' => $tasksStartedToday,
+                'todaysAttendanceCount' => $todaysAttendanceCount,
+                'activeEmployeesCount' => $activeEmployeesCount,
+                'totalEmployeesCount' => $totalEmployeesCount,
+                'activeVacanciesCount' => $activeVacanciesCount,
+                'pendingApplicationsCount' => $pendingApplicationsCount,
+                'shortlistedApplicationsCount' => $shortlistedApplicationsCount,
+                'pendingSalaryPaymentsCount' => $pendingSalaryPaymentsCount,
+                'completedSalaryPaymentsCount' => $completedSalaryPaymentsCount,
+                'totalDueSalaryAmountCount' => 'LKR '.$totalDuePaymentAmount,
+                'todaysPettyExpenseAmountCount' => 'LKR '.$todaysPettyExpenseAmount,
+                
+                'notes' => $notes
+            ]);
+        }
     }
-}

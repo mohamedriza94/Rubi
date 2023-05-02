@@ -12,11 +12,15 @@
             <ol class="breadcrumb justify-content-end">
                 <li class="breadcrumb-item"><a href="{{ route('sub.dashboard') }}">Home</a></li>
             </ol>
+            &nbsp;
+            &nbsp;
+            <button class="btn btn-dark" id="btnCreatePDF" >Create PDF</button>
+
         </div>
     </div>
 </div>
 
-<div class="row g-0">
+<div class="row g-0" id="report">
     
     <div class="col-lg-3">
         <div class="card border">
@@ -161,7 +165,7 @@
     </div>
 
     {{-- ------ --}}
-    
+
     <div class="col-lg-4">
         <div class="card border">
             <div class="card-body">
@@ -224,7 +228,7 @@
 
     {{-- ------ --}}
     
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="card border">
             <div class="card-body">
                 <div class="row">
@@ -244,7 +248,7 @@
         </div>
     </div>
     
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="card border">
             <div class="card-body">
                 <div class="row">
@@ -264,18 +268,38 @@
         </div>
     </div>
     
-    <div class="col-lg-4">
-        <div class="card border">
+    <div class="col-lg-6">
+        <div class="card border bg-success text-white">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="d-flex no-block align-items-center">
                             <div>
                                 <h3><i class="icon-credit-card"></i></h3>
-                                <p class="text-muted text-uppercase">Total Due Salary Amount</p>
+                                <p class="text-white text-uppercase">Total Due Salary Amount</p>
                             </div>
                             <div class="ms-auto">
-                                <h2 class="counter text-danger" id="totalDueSalaryAmount">LKR 0</h2>
+                                <h2 class="counter text-white" id="totalDueSalaryAmount">LKR 0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card border text-white bg-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-user-follow"></i></h3>
+                                <p class="text-uppercase text-white">Today's Total Petty Expense</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-white" id="todaysPettyExpenseAmount">0</h2>
                             </div>
                         </div>
                     </div>
@@ -398,6 +422,19 @@
                     $('#completedTasks').text(response.completedTaskCount);
                     $('#unopenedNotes').text(response.unopenedNotesCount);
                     
+                    $('#todaysAttendance').text(response.todaysAttendanceCount);
+                    $('#activeEmployees').text(response.activeEmployeesCount);
+                    $('#totalEmployees').text(response.totalEmployeesCount);
+                    
+                    $('#activeVacancies').text(response.activeVacanciesCount);
+                    $('#pendingApplications').text(response.pendingApplicationsCount);
+                    $('#shortlistedApplications').text(response.shortlistedApplicationsCount);
+                    
+                    $('#pendingSalaryPayments').text(response.pendingSalaryPaymentsCount);
+                    $('#completedSalaryPayments').text(response.completedSalaryPaymentsCount);
+                    $('#totalDueSalaryAmount').text(response.totalDueSalaryAmountCount);
+                    $('#todaysPettyExpenseAmount').text(response.todaysPettyExpenseAmountCount);
+
                     // show today's tasks
                     $('#taskTable').html(''); 
                     $.each(response.tasksStartedToday,function(key,item){
