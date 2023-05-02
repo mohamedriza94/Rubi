@@ -95,18 +95,20 @@ class TaskController extends Controller
             $id = $request->input('id');
             
             //get current status
-            $task = Task::where('id', $id)->first(); 
-            $currentStatus = $business->status;
+            $task = Task::find($id);
+            $currentStatus = $task->status;
             $message = '';
             
+            $time = NOW();
+
             switch ($currentStatus) 
             {
                 case 'pending':
-                    Task::where('id', $id)->update(['status' => 'started']); 
+                    Task::where('id', $id)->update(['status' => 'started','start' => $time]); 
                     $message = 'Task Started';
                 break;
                 case 'started':
-                    Task::where('id', $id)->update(['status' => 'completed']); 
+                    Task::where('id', $id)->update(['status' => 'completed','end' => $time]); 
                     $message = 'Task Completed';
                 break;
             }
@@ -121,9 +123,24 @@ class TaskController extends Controller
         return response()->json(['status' => 200, 'message' => $message]);
     }
     
+    // public function readTop()
+    // {
+    //     $task = Task::where('department',auth()->guard('businessAdmin')->user()->department)
+    //     ->where('status','pending')->orWhere('status','started')->first();
+    //     return response()->json(['data' => $task]);
+    // }
+    
     public function readTop()
     {
-        $task = Task::where('department',auth()->guard('businessAdmin')->user()->department)->where('status','pending')->first();
+        $task = Task::where(function($query) {
+            $query->where('department', auth()->guard('businessAdmin')->user()->department)
+            ->where(function($query) {
+                $query->where('status', 'pending')
+                ->orWhere('status', 'started');
+            });
+        })->first();
+        
         return response()->json(['data' => $task]);
     }
+
 }

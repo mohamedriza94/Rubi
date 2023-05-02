@@ -88,4 +88,16 @@ class NoteController extends Controller
             'message'=>'Noted!'
         ]);
     }
+
+    public function readOne($id)
+    {
+        $note = Note::find($id);
+
+        $note->isViewed = 1;
+        $note->save();
+
+        return response()->json([
+            'data' => $note
+        ]);
+    }
 }

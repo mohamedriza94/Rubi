@@ -13,8 +13,6 @@
                 <li class="breadcrumb-item"><a href="{{ route('sub.dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
-            <button data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-info d-none d-lg-block m-l-15 text-white">
-                <i class="fa fa-plus-circle"></i> New Task</button>
             </div>
         </div>
     </div>
@@ -80,7 +78,7 @@
                             
                             $('#table').append('<tr>\
                                 <td>'+item.no+'</td>\
-                                <td><img src="'+item.employeePhoto+'" class="profile-pic">'+item.employeeName+'</td>\
+                                <td><img src="'+item.employeePhoto+'" style="width:50px;"> &nbsp;&nbsp; '+item.employeeName+'</td>\
                                 <td>'+item.department+'</td>\
                                 <td>'+date+''+time+'</td>\
                             </tr>'); 

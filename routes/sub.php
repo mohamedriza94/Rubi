@@ -41,6 +41,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             //notes
             Route::post('/createNote', 'NoteController@create');
             Route::get('/readNotes', 'NoteController@read');
+            Route::get('/readOneNote/{id}', 'NoteController@readOne');
 
             //petty expenses
             Route::post('/recordExpense', 'pettyExpenseController@create');

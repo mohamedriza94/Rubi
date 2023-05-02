@@ -298,7 +298,7 @@
                         
                         $('#tableData').append('<tr>\
                             <td>'+item.fullname+'</td>\
-                            <td><img src="'+item.photo+'" style="border-radius:200px; width:50px;"></td>\
+                            <td><img src="'+item.photo+'" style="border-radius:200px; height:50px; width:50px;"></td>\
                             <td>'+item.department+'</td>\
                             <td>'+date+time+'</td>\
                             <td>'+status_badge+'</td>\

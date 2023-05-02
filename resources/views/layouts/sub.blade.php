@@ -105,7 +105,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
                                 <!-- text-->
-                                <a data-bs-toggle="modal" data-bs-target="#profileModal" class="dropdown-item"><i class="ti-user"></i>Business Profile</a>
+                                <a data-bs-toggle="modal" data-bs-target="#profileModal" class="dropdown-item"><i class="ti-user"></i> Business Profile</a>
                                 <!-- text-->
                                 <div class="dropdown-divider"></div>
                                 <!-- text-->

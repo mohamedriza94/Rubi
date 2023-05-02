@@ -176,14 +176,13 @@
                         </div>
                         
                         <div class="form-group col-12">
-                            <label class="form-label">Provided On</label>
-                            <input readonly class="form-control" id="providedOn">
+                            <label class="form-label" id="providedOn">Provided On</label>
                         </div>
                         
                         <div class="col-12">
                             <div class="d-md-flex align-items-center">
                                 <button type="submit" id="btnStart" class="col-12 btn btn-info">Start</button>
-                                <button type="submit" id="btnEnd" class="col-12 btn btn-info" style="display:none">End</button>
+                                <button type="submit" id="btnEnd" class="col-12 btn btn-danger" style="display:none">End</button>
                             </div>
                         </div>
                     </form>
@@ -238,7 +237,7 @@
                                 case 'started':
                                 status_badge = '<span class="label label-primary">Started</span>'; //INACTIVE
                                 break;
-                                case 'complete':
+                                case 'completed':
                                 status_badge = '<span class="label label-success">Complete</span>'; //INACTIVE
                                 break;
                                 case 'incomplete':
@@ -359,8 +358,9 @@
                         else if(response.status == 200)
                         {
                             toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
-                            $(this).hide();
+                            $('#btnStart').hide();
                             $('#btnEnd').show();
+                            viewTopTask();
                         }
                     }
                 });
@@ -383,6 +383,9 @@
                         else if(response.status == 200)
                         {
                             toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                            
+                            $('#btnStart').show();
+                            $('#btnEnd').hide();
                             viewTopTask();
                         }
                     }
@@ -406,12 +409,18 @@
                         $('#title').val(response.data.title);
                         $('#status').val(response.data.status);
                         $('#description').val(response.data.description);
-                        $('#providedOn').val(date+time);
+                        $('#providedOn').html('<label class="form-label" id="providedOn"><b>Provided On:</b>&nbsp; '+date+time+'</label>');
                         $('#start').val(response.data.start);
                         $('#End').val(response.data.End);
                         
-                        $('#btnStart').show();
-                        $('#btnEnd').hide();
+                        switch(response.data.status){
+                            case 'pending':
+                            $('#btnStart').show(); $('#btnEnd').hide();
+                            break;
+                            case 'started':
+                            $('#btnStart').hide(); $('#btnEnd').show();
+                            break;
+                        }
                     }
                 });
             }

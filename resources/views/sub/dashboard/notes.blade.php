@@ -2,6 +2,11 @@
 
 @section('content')
 
+@php
+$user = auth('businessAdmin')->user();
+$department = \App\Models\Department::find($user->department);
+@endphp
+
 {{-- breadcrumb --}}
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
@@ -13,8 +18,6 @@
                 <li class="breadcrumb-item"><a href="{{ route('sub.dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
-            <button data-bs-toggle="modal" data-bs-target="#viewModal" class="btn btn-info d-none d-lg-block m-l-15 text-white">
-                <i class="fa fa-plus-circle"></i> Notes</button>
             </div>
         </div>
     </div>
@@ -24,6 +27,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                
+                    <button data-bs-toggle="modal" data-bs-target="#viewModal" class="btn btn-dark text-white">
+                        Old Notes</button>
+                        <hr>
+
                     <form class="row" id="createForm" enctype="multipart/form-data" method="post">
                         <div class="form-group col-12">
                             <label class="form-label">Subject</label>
@@ -65,6 +73,7 @@
                                         <table class="text-center table color-table red-table">
                                             <thead>
                                                 <tr class="text-uppercase">
+                                                    <th>No.</th>
                                                     <th>Subject</th>
                                                     <th>Status</th>
                                                     <th>Made On</th>
@@ -118,10 +127,10 @@
                             
                             //sorting STATUS
                             switch(item.isViewed) {
-                                case '1':
+                                case 1:
                                 status_badge = '<span class="label label-success">Opened</span>'; //ACTIVE
                                 break;
-                                case '0':
+                                case 0:
                                 status_badge = '<span class="label label-info">Unopened</span>'; //INACTIVE
                                 break;
                             }

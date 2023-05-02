@@ -150,6 +150,46 @@
     </div>
 </div>
 
+{{-- view modal --}}
+<div class="modal bs-example-modal-lg animated fadeIn" id="viewNoteModal" tabindex="-1" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">View Note</h4>
+                <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form class="row">
+                                    <div class="form-group col-12">
+                                        <label class="form-label" id="noteDate">Noted On</label>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label class="form-label">Note No.</label>
+                                        <input class="form-control" id="noteNo" readonly>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label class="form-label">Subject</label>
+                                        <input class="form-control" id="noteSubject" readonly>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" id="noteDescription" readonly></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 @endsection
 
@@ -192,10 +232,10 @@
                         var status_badge = '';
                         //sorting STATUS
                         switch(item.isViewed) {
-                            case '1':
+                            case 1:
                             status_badge = '<span class="label label-success">Opened</span>'; //ACTIVE
                             break;
-                            case '0':
+                            case 0:
                             status_badge = '<span class="label label-warning">Unopened</span>'; //INACTIVE
                             break;
                         }
@@ -205,7 +245,7 @@
                         
                         $('#notesTable').append('<tr>\
                             <td>'+item.subject+'</td>\
-                            <td><img src="'+item.employeePhoto+' class="profile-pic"> &nbsp; '+item.employeeName+'</td>\
+                            <td>'+item.employeeName+'</td>\
                             <td>'+status_badge+'</td>\
                             <td>'+date+''+time+'</td>\
                             <td><button id="btnViewNote" value="'+item.id+'" class="btn-sm btn btn-info">Open</button></td>\
@@ -214,6 +254,27 @@
                 }
             });
         }
+        
+        $(document).on('click', '#btnViewNote', function(e){
+            e.preventDefault();
+            var id = $(this).val(); //get note id
+            
+            var urlView = '{{ url("sub/dashboard/readOneNote/:id") }}'; urlView = urlView.replace(':id', id);
+            $.ajax({
+                type:"GET", url:urlView, dataType:"json",
+                success: function(response)
+                {
+                    $('#viewNoteModal').modal('show');  //OPEN MODAL
+                    //format time
+                    formatTime(response.data.created_at);
+                    
+                    $('#noteNo').val(response.data.no);
+                    $('#noteDate').html('<label class="form-label" id="noteDate"><b>Noted On: </b>'+date+time+'</label>');
+                    $('#noteSubject').val(response.data.subject);
+                    $('#noteDescription').val(response.data.note);
+                }
+            });
+        });
         
     })
 </script>
