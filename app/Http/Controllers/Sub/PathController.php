@@ -30,8 +30,8 @@ class PathController extends Controller
         }
         else 
         {
-            $view_data['title'] = 'Employee Dashboard'; $view_data['brand'] = $this->brand;
-            return view('sub.dashboard.employeeIndex')->with($view_data);
+            $view_data['title'] = 'Tasks'; $view_data['brand'] = $this->brand;
+            return view('sub.dashboard.tasks')->with($view_data);
         }
     }
 

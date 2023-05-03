@@ -82,6 +82,9 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
             Route::get('/readPayroll/{type}', 'PayrollController@read');
             Route::get('/searchPayroll/{search}', 'PayrollController@search');
             Route::put('/pay', 'PayrollController@pay');
+
+            //cash inflow
+            Route::post('/recordCashInflow', 'CashInflowController@create');
         });
     });
 }); 

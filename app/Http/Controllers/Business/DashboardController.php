@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Department;
 use App\Models\PettyExpense;
 use App\Models\Payroll;
@@ -40,6 +41,13 @@ class DashboardController extends Controller
         ->whereBetween('updated_at', [$startDate, $endDate])
         ->sum('amount');
         $totalCashOutThisMonth = $totalPaidAmountThisMonth + $totalPettyExpenseAmountThisMonth;
+
+        $recruitmentRate = BusinessAdmin::where('status', 'active')
+        ->where('role', 'admin')
+        ->where('business', $userData->id)
+        ->select(DB::raw("DATE_FORMAT(created_at,'%M %Y') as monthYear"), DB::raw("COUNT(*) as count"))
+        ->groupBy('monthYear')
+        ->get();
     
         
         return response()->json([
@@ -49,7 +57,8 @@ class DashboardController extends Controller
             'businessEmployeeCount' => $businessEmployeeCount,
             'pendingTasksCount' => $pendingTasksCount,
             'totalCashOutToday' => 'LKR '.$totalCashOutToday,
-            'totalCashOutThisMonth' => 'LKR '.$totalCashOutThisMonth
+            'totalCashOutThisMonth' => 'LKR '.$totalCashOutThisMonth,
+            'recruitmentRate' => $recruitmentRate
         ]);
     }
 }

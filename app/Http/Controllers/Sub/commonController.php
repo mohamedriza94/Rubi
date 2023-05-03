@@ -13,6 +13,7 @@ use App\Models\PettyExpense;
 use Carbon\Carbon;
 use App\Models\BusinessAdmin;
 use App\Models\Application;
+use App\Models\CashInflow;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +86,7 @@ class commonController extends Controller
         $completedSalaryPaymentsCount = Payroll::where('business',$userData->business)->where('status','paid')->count();
         $totalDuePaymentAmount = Payroll::where('business', $userData->business)->sum('due');
         $todaysPettyExpenseAmount = PettyExpense::where('business', $userData->business)->whereDate('created_at', today())->sum('amount');
+        $todaysIncomeAmount = CashInflow::where('business', $userData->business)->whereDate('created_at', today())->sum('amount');
 
         $tasksStartedToday = Task::where('status','started')->whereDate('updated_at', today())->get();
         $notes = Note::join('business_admins','notes.employee','=','business_admins.id')->
@@ -112,6 +114,7 @@ class commonController extends Controller
                 'completedSalaryPaymentsCount' => $completedSalaryPaymentsCount,
                 'totalDueSalaryAmountCount' => 'LKR '.$totalDuePaymentAmount,
                 'todaysPettyExpenseAmountCount' => 'LKR '.$todaysPettyExpenseAmount,
+                'todaysIncomeAmountCount' => 'LKR '.$todaysIncomeAmount,
                 
                 'notes' => $notes
             ]);
@@ -140,9 +143,15 @@ class commonController extends Controller
         ->groupBy('monthYear')
         ->get();
         
+        $attendanceRate = Attendance::where('business', $userData->business)
+        ->select(DB::raw("DATE_FORMAT(created_at,'%M %Y') as monthYear"), DB::raw("COUNT(*) as count"))
+        ->groupBy('monthYear')
+        ->get();
+
         $response['recruitmentRate'] = $recruitmentRate;
         $response['pettyExpenseSum'] = $pettyExpenseSum;
         $response['applicationsRate'] = $applicationsRate;
+        $response['attendanceRate'] = $attendanceRate;
         
         return response()->json($response);
     }

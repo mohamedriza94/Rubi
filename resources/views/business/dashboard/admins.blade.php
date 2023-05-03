@@ -364,7 +364,6 @@
                         $('#editDepartment').val(response.data.department);
                         $('#viewPhoto').attr('src',response.data.photo);
                         $('#id').val(response.data.id);
-
                     }
                 });
             });

@@ -268,7 +268,7 @@
         </div>
     </div>
     
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card border bg-success text-white">
             <div class="card-body">
                 <div class="row">
@@ -288,18 +288,38 @@
         </div>
     </div>
     
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card border text-white bg-danger">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="d-flex no-block align-items-center">
                             <div>
-                                <h3><i class="icon-user-follow"></i></h3>
+                                <h3><i class="icon-wallet"></i></h3>
                                 <p class="text-uppercase text-white">Today's Total Petty Expense</p>
                             </div>
                             <div class="ms-auto">
                                 <h2 class="counter text-white" id="todaysPettyExpenseAmount">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border text-white bg-success">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex no-block align-items-center">
+                            <div>
+                                <h3><i class="icon-credit-card"></i></h3>
+                                <p class="text-uppercase text-white">Today's Total Income</p>
+                            </div>
+                            <div class="ms-auto">
+                                <h2 class="counter text-white" id="todaysIncomeAmount">0</h2>
                             </div>
                         </div>
                     </div>
@@ -330,7 +350,7 @@
         </div>
     </div>
     
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Applications Rate</h4>
@@ -341,6 +361,17 @@
         </div>
     </div>
     
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Attendance Rate</h4>
+                <div>
+                    <canvas id="attendanceChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- tasks started today table --}}
     <div class="col-md-12">
         <div class="card">
@@ -444,7 +475,7 @@
         readStatisctics();
         readChart();
         setInterval(() => { readStatisctics(); }, 5000);
-        
+
         function readStatisctics()
         {
             $.ajax({
@@ -468,6 +499,7 @@
                     $('#completedSalaryPayments').text(response.completedSalaryPaymentsCount);
                     $('#totalDueSalaryAmount').text(response.totalDueSalaryAmountCount);
                     $('#todaysPettyExpenseAmount').text(response.todaysPettyExpenseAmountCount);
+                    $('#todaysIncomeAmount').text(response.todaysIncomeAmountCount);
 
                     // show today's tasks
                     $('#taskTable').html(''); 
@@ -583,6 +615,25 @@
                                 }]
                             },"options":{}});
                             
+                            //attendance rate
+                            var attendanceLabels = [], attendanceTotals = [];
+                            $.each(response.attendanceRate, function(key, value){
+                                attendanceLabels.push(value.monthYear);
+                                attendanceTotals.push(value.count);
+                            });
+                            
+                            new Chart(document.getElementById("attendanceChart"),
+                            {
+                                "type":"line",
+                                "data":{"labels":attendanceLabels,
+                                "datasets":[{
+                                    "label":"",
+                                    "data":attendanceTotals,
+                                    "fill":false,
+                                    "borderColor":"rgb(7, 107, 222)",
+                                    "lineTension":0.1
+                                }]
+                            },"options":{}});
                         }
             
             });

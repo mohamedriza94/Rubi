@@ -14,6 +14,7 @@
     <link href="{{ asset('admin/assets/dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/dashboard4.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/dist/css/pages/inbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/assets/node_modules/morrisjs/morris.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/node_modules/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
@@ -78,27 +79,6 @@
                             </div>
                         </li>
                         
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
-                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-                            </a>
-                            <div class="dropdown-menu mailbox dropdown-menu-end animated bounceInDown" aria-labelledby="2">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">4 new messages</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            {{-- message --}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center link" href="javascript:void(0);"> <strong>See all Messages</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ auth()->guard('businessAdmin')->user()->photo }}" alt="user" class=""> 
@@ -132,7 +112,10 @@
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">--- GENERAL</li>
                         
+                        @if($user->role== 'admin')
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.dashboard') }}"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard</span></a></li>
+                        @endif
+
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.tasks') }}"><i class="icon-screen-tablet"></i><span class="hide-menu">Tasks</span></a></li>
                         
                         @if(auth('businessAdmin')->user()->role == 'employee')
@@ -158,6 +141,7 @@
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.vacancies') }}"><i class="icon-user-following"></i><span class="hide-menu">Vacancies</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.applications') }}"><i class="icon-docs"></i><span class="hide-menu">Applications</span></a></li>
                         <li><a class="waves-effect waves-dark" href="{{ route('sub.payroll') }}"><i class="icon-wallet"></i><span class="hide-menu">Payroll</span></a></li>
+                        <li><a class="waves-effect waves-dark" data-bs-toggle="modal" data-bs-target="#cashInflowModal"><i class="icon-paypal"></i><span class="hide-menu">Cash Inflow</span></a></li>
                         @endif
                         
                     </ul>
@@ -213,6 +197,7 @@
     <script src="{{ asset('admin/assets/node_modules/Chart.js/chartjs.init.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/Chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('admin/assets/node_modules/sparkline/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/dist/js/pages/morris-data.js') }}"></script>
     
     
     {{-- Profile modal --}}
@@ -293,6 +278,80 @@
                                     {
                                         toastType = 'error'; toastMessage = 'Passwords do not match!'; showToast(); //TOAST ALERT
                                     }
+                                });
+                                
+                            });
+                        </script>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {{-- Cash Inflow modal --}}
+    <div class="modal bs-example-modal-sm animated fadeIn" id="cashInflowModal" tabindex="-1" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">Today's Cash Inflow</h4>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                            <div class="form-group col-12">
+                                <label class="form-label">Note</label>
+                                <input type="text" class="form-control" name="CINote" id="CINote">
+                            </div>
+                            <div class="form-group col-12">
+                                <label class="form-label">Amount in LKR</label>
+                                <input type="text" class="form-control" name="CIAmount" id="CIAmount">
+                            </div>
+                            <div class="form-group text-center m-t-20">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-info w-100" id="btnCIRecord">Record</button>
+                                </div>
+                            </div>
+                        
+                        {{-- record cash inflow script --}}
+                        <script>
+                            $(document).ready(function(){
+                                
+                                //Change password
+                                $(document).on('click', '#btnCIRecord', function(e) {
+                                    e.preventDefault();
+                                    
+                                    var CINote = $('#CINote').val();
+                                    var CIAmount = $('#CIAmount').val();
+                                    var data = { 'note':CINote,'amount':CIAmount }
+                                    $.ajax({
+                                        type:"POST",
+                                        url: "{{ url('sub/dashboard/recordCashInflow') }}",
+                                        data:data,
+                                        dataType:"json",
+                                        success: function(response){
+                                            if(response.status==800)
+                                            {
+                                                $.each(response.errors,function(key,error)
+                                                {
+                                                    toastMessage = '';
+                                                    toastType = 'error'; toastMessage += error; showToast(); //TOAST ALERT
+                                                });
+                                                
+                                                $("#btnCIRecord").prop("disabled", false).text("Create");
+                                            }
+                                            else if(response.status == 400)
+                                            {
+                                                toastType = 'error'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                            }
+                                            else if(response.status == 200)
+                                            {
+                                                toastType = 'success'; toastMessage = response.message; showToast(); //TOAST ALERT
+                                            }
+                                        }
+                                    });
                                 });
                                 
                             });

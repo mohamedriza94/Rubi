@@ -137,6 +137,17 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administrator Recruitment Rate</h4>
+                <div>
+                    <canvas id="recruitmentChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- today activities table --}}
     {{-- <div class="col-md-12">
         <div class="card">
@@ -168,13 +179,15 @@
 
 @section('script')
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script>
     $(document).ready(function(){
         
-        readStatisctics();
-        setInterval(() => { readStatisctics(); }, 5000);
+        readChart();
+        readStatistics();
+        setInterval(() => { readStatistics(); }, 5000);
         
-        function readStatisctics()
+        function readStatistics()
         {
             $.ajax({
                 type: "GET", url:"{{ url('business/dashboard/readStatistics') }}", dataType:"json",
@@ -188,7 +201,41 @@
                 }
             });
         }
-        
+         
+        function readChart()
+        {
+            //fill chart
+            $.ajax({
+                        url: "{{ url('business/dashboard/readStatistics') }}",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(response) 
+                        {
+                            //recruitement chart
+                            var recruitementLabels = [], recruitementCounts = [];
+                            $.each(response.recruitmentRate, function(key, value){
+                                recruitementLabels.push(value.monthYear);
+                                recruitementCounts.push(value.count);
+                            });
+                           
+                            new Chart(document.getElementById("recruitmentChart"),
+                            {
+                                "type":"bar",
+                                "data":{"labels":recruitementLabels,
+                                "datasets":[{
+                                    "label":"",
+                                    "data":recruitementCounts,
+                                    "fill":false,
+                                    "backgroundColor":["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"],
+                                    "borderColor":["rgb(255, 99, 132)","rgb(255, 159, 64)","rgb(255, 205, 86)","rgb(75, 192, 192)","rgb(54, 162, 235)","rgb(153, 102, 255)","rgb(201, 203, 207)"],
+                                    "borderWidth":1}
+                                    ]},
+                                    "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
+                            });
+                        }
+            
+            });
+        }
     })
 </script>
     
