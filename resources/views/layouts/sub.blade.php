@@ -210,6 +210,9 @@
     <script src="{{ asset('admin/assets/upload.js') }}"></script>
     <script src="{{ asset('admin/print/printThis.js') }}"></script>
     <script src="{{ asset('admin/assets/custom.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/Chart.js/chartjs.init.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/Chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/node_modules/sparkline/jquery.sparkline.min.js') }}"></script>
     
     
     {{-- Profile modal --}}

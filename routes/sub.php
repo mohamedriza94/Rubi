@@ -37,6 +37,7 @@ Route::prefix('sub')->namespace('App\Http\Controllers\Sub')->middleware(['web'])
 
             //statistics
             Route::get('/readStatistics', 'commonController@statistics');
+            Route::get('/getChart', 'commonController@getChart');
 
             //notes
             Route::post('/createNote', 'NoteController@create');

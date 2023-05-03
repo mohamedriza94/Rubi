@@ -14,7 +14,7 @@
             </ol>
             &nbsp;
             &nbsp;
-            <button class="btn btn-dark" id="btnCreatePDF" >Create PDF</button>
+            <button class="btn btn-dark" id="btnCreatePDF" >Download Report PDF</button>
 
         </div>
     </div>
@@ -307,6 +307,39 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Employee Recruitment Rate</h4>
+                <div>
+                    <canvas id="recruitmentChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Petty Expense Rate</h4>
+                <div>
+                    <canvas id="pettyExpenseChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Applications Rate</h4>
+                <div>
+                    <canvas id="applicationChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     
     {{-- tasks started today table --}}
     <div class="col-md-12">
@@ -404,11 +437,12 @@
 @endsection
 
 @section('script')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script>
     $(document).ready(function(){
         
         readStatisctics();
+        readChart();
         setInterval(() => { readStatisctics(); }, 5000);
         
         function readStatisctics()
@@ -478,6 +512,82 @@
             });
         }
         
+        function readChart()
+        {
+            //fill chart
+            $.ajax({
+                        url: "{{ url('sub/dashboard/getChart') }}",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(response) 
+                        {
+                            //recruitement chart
+                            var recruitementLabels = [], recruitementCounts = [];
+                            $.each(response.recruitmentRate, function(key, value){
+                                recruitementLabels.push(value.monthYear);
+                                recruitementCounts.push(value.count);
+                            });
+                           
+                            new Chart(document.getElementById("recruitmentChart"),
+                            {
+                                "type":"bar",
+                                "data":{"labels":recruitementLabels,
+                                "datasets":[{
+                                    "label":"",
+                                    "data":recruitementCounts,
+                                    "fill":false,
+                                    "backgroundColor":["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"],
+                                    "borderColor":["rgb(255, 99, 132)","rgb(255, 159, 64)","rgb(255, 205, 86)","rgb(75, 192, 192)","rgb(54, 162, 235)","rgb(153, 102, 255)","rgb(201, 203, 207)"],
+                                    "borderWidth":1}
+                                    ]},
+                                    "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
+                            });
+                                
+                            //petty expense chart
+                            var pettyExpenseLabels = [], pettyExpenseTotals = [];
+                            $.each(response.pettyExpenseSum, function(key, value){
+                                pettyExpenseLabels.push(value.monthYear);
+                                pettyExpenseTotals.push(value.total);
+                            });
+                        
+                            new Chart(document.getElementById("pettyExpenseChart"),
+                            {
+                                "type":"line",
+                                "data":{"labels":pettyExpenseLabels,
+                                "datasets":[{
+                                    "label":"",
+                                    "data":pettyExpenseTotals,
+                                    "fill":false,
+                                    "borderColor":"rgb(75, 192, 192)",
+                                    "lineTension":0.1
+                                }]
+                            },"options":{}});
+
+                            //applications rate
+                            var applicationsLabels = [], applicationsTotals = [];
+                            $.each(response.applicationsRate, function(key, value){
+                                applicationsLabels.push(value.monthYear);
+                                applicationsTotals.push(value.count);
+                            });
+                            
+                            new Chart(document.getElementById("applicationChart"),
+                            {
+                                "type":"line",
+                                "data":{"labels":applicationsLabels,
+                                "datasets":[{
+                                    "label":"",
+                                    "data":applicationsTotals,
+                                    "fill":false,
+                                    "borderColor":"rgb(252, 69, 3)",
+                                    "lineTension":0.1
+                                }]
+                            },"options":{}});
+                            
+                        }
+            
+            });
+        }
+
         $(document).on('click', '#btnCreatePDF', function(e){ $('#report').printThis(); });
 
         $(document).on('click', '#btnViewNote', function(e){
@@ -500,7 +610,6 @@
                 }
             });
         });
-        
     })
 </script>
 

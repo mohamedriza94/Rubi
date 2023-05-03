@@ -10,6 +10,7 @@ use App\Models\Vacancy;
 use App\Models\Attendance;
 use App\Models\Payroll;
 use App\Models\PettyExpense;
+use Carbon\Carbon;
 use App\Models\BusinessAdmin;
 use App\Models\Application;
 use Illuminate\Support\Facades\DB;
@@ -114,5 +115,35 @@ class commonController extends Controller
                 
                 'notes' => $notes
             ]);
-        }
     }
+    
+    public function getChart()
+    {
+        $userData = auth()->guard('businessAdmin')->user();
+        $response = [];
+        
+        $recruitmentRate = BusinessAdmin::where('status', 'active')
+        ->where('role', 'employee')
+        ->where('business', $userData->business)
+        ->select(DB::raw("DATE_FORMAT(created_at,'%M %Y') as monthYear"), DB::raw("COUNT(*) as count"))
+        ->groupBy('monthYear')
+        ->get();
+        
+        $pettyExpenseSum = PettyExpense::where('business', $userData->business)
+        ->select(DB::raw("DATE_FORMAT(created_at,'%M %Y') as monthYear"), DB::raw("SUM(amount) as total"))
+        ->groupBy('monthYear')
+        ->get();
+        
+        $applicationsRate = Application::join('vacancies','applications.vacancy','=','vacancies.id')
+        ->where('vacancies.business', $userData->business)
+        ->select(DB::raw("DATE_FORMAT(applications.created_at,'%M %Y') as monthYear"), DB::raw("COUNT(*) as count"))
+        ->groupBy('monthYear')
+        ->get();
+        
+        $response['recruitmentRate'] = $recruitmentRate;
+        $response['pettyExpenseSum'] = $pettyExpenseSum;
+        $response['applicationsRate'] = $applicationsRate;
+        
+        return response()->json($response);
+    }
+}
