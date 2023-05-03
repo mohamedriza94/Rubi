@@ -97,18 +97,13 @@
         </div>
     </div>
     {{-- chart --}}
-    <div class="col-lg-12 col-md-12">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex m-b-40 align-items-center no-block">
-                    <h5 class="card-title ">MONTHLY REGISTRATIONS</h5>
-                    <div class="ms-auto">
-                        <ul class="list-inline font-12">
-                            <li><i class="fa fa-circle text-cyan"></i> Business Registration</li>
-                        </ul>
-                    </div>
+                <h4 class="card-title">BUSINESS REGISTRATIONS</h4>
+                <div>
+                    <canvas id="businessRegistrationChart" height="150"></canvas>
                 </div>
-                <div id="morris-area-chart" style="height: 340px;"></div>
             </div>
         </div>
     </div>
@@ -143,6 +138,11 @@
 @endsection
 
 @section('script')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="{{ asset('admin/assets/node_modules/Chart.js/chartjs.init.js') }}"></script>
+<script src="{{ asset('admin/assets/node_modules/Chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('admin/assets/node_modules/sparkline/jquery.sparkline.min.js') }}"></script>
 
 <script>
     $(document).ready(function(){
@@ -181,23 +181,24 @@
             $.ajax({
                 type: "GET", url:"{{ url('rubi/dashboard/count') }}", dataType:"json",
                 success:function(response){
-                    let data = response.businessesCountByMonth;
-                    Morris.Area({
-                        element: 'morris-area-chart',
-                        data: data,
-                        xkey: ['month'],
-                        ykeys: ['count'],
-                        labels: ['Business'],
-                        pointSize: 3,
-                        fillOpacity: 0,
-                        pointStrokeColors: ['#00bfc7'],
-                        behaveLikeLine: true,
-                        gridLineColor: '#e0e0e0',
-                        lineWidth: 3,
-                        hideHover: 'auto',
-                        lineColors: ['#00bfc7'],
-                        resize: true
+                    var applicationsLabels = [], applicationsTotals = [];
+                    $.each(response.businessesCountByMonth, function(key, value){
+                        applicationsLabels.push(value.monthYear);
+                        applicationsTotals.push(value.count);
                     });
+                    
+                    new Chart(document.getElementById("businessRegistrationChart"),
+                    {
+                        "type":"line",
+                        "data":{"labels":applicationsLabels,
+                        "datasets":[{
+                            "label":"",
+                            "data":applicationsTotals,
+                            "fill":false,
+                            "borderColor":"rgb(252, 69, 3)",
+                            "lineTension":0.1
+                        }]
+                    },"options":{}});
                 }
             });
         }
