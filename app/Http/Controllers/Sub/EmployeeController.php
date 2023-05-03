@@ -60,7 +60,7 @@ class EmployeeController extends Controller
 
                 //Record Activity
                 $data = [ 'userType' => 'business', 'activity' => 'Added a new Employee',
-                'user' => auth()->guard('businessAdmin')->user()->business ];
+                'user' => auth()->guard('businessAdmin')->user()->id ];
                 $activityController = new \App\Http\Controllers\common\ActivityController();
                 $activityController->recordActivity($data);
 

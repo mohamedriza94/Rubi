@@ -40,7 +40,11 @@ Route::prefix('business')->namespace('App\Http\Controllers\Business')->middlewar
             Route::get('/readStatistics', 'DashboardController@statistics');
 
             //cash outflow
-            Route::get('/readCashOutFlow/{type}', 'CashOutFlowController@read');
+            Route::get('/readCashOut/{type}', 'CashOutFlowController@read');
+
+            //activities
+            Route::get('/readActivities/{limit}', 'ActivityController@read');
+            Route::get('/searchActivities/{search}/{limit}', 'ActivityController@search');
         });
     });
 });

@@ -16,11 +16,11 @@ class CashOutFlowController extends Controller
 
         switch ($type) {
             case 'payroll':
-                $data = Payroll::where('business',$business->id)->get();
+                $data = Payroll::where('business',$business->id)->orderby('id','desc')->get();
             break;
             
             case 'pettyExpense':
-                $data = PettyExpense::where('business',$business->id)->get();
+                $data = PettyExpense::where('business',$business->id)->orderby('id','desc')->get();
             break;
         }
 
